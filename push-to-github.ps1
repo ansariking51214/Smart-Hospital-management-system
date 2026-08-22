@@ -12,6 +12,7 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
     Write-Host "[*] Searching for Git installation in standard folders..." -ForegroundColor Yellow
     
     $gitPaths = @(
+        "C:\Users\hm\.gemini\antigravity\scratch\git-bin\cmd\git.exe",
         "C:\Program Files\Git\cmd\git.exe",
         "C:\Program Files\Git\bin\git.exe",
         "C:\Program Files (x86)\Git\cmd\git.exe",

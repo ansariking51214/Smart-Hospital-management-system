@@ -1,4 +1,5 @@
 @echo off
+set "PATH=C:\Users\hm\.gemini\antigravity\scratch\git-bin\cmd;%PATH%"
 echo ========================================================
 echo   Pushing Smart Hospital Management System to GitHub
 echo   Target: https://github.com/ansariking51214/Smart-Hospital-management-system.git
