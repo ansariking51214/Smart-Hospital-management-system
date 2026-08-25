@@ -1,7 +1,7 @@
 # 🏥 Smart Hospital Management System (HMS)
 
 > **Cloud-Based Healthcare Management & Clinical Operations Platform**  
-> **Internship Project Submission — Module 1: Day 1 Deliverable**
+> **Internship Project Submission — Module 1: Day 1 & Day 2 Deliverables**
 
 ---
 
@@ -10,24 +10,46 @@ The **Cloud-Based Hospital Management System (HMS)** is an enterprise-grade heal
 
 ---
 
-## 🚀 Module 1 — Day 1 Deliverables (Aug 24, 2026)
+## 🚀 Module 1 Deliverables Summary
 
-### ✅ What was completed on Day 1:
-1. **Full-Stack Project Scaffolding:**
-   - Modular structure with Express.js backend (`server/`) and React + Tailwind CSS client (`client/`).
-   - Unified orchestration scripts, CORS, Helmet security headers, and environment variable configuration.
-2. **Database Schema Design (Prisma ORM):**
-   - **User & RBAC:** Enum roles (`ADMIN`, `DOCTOR`, `RECEPTIONIST`, `NURSE`, `PHARMACIST`, `PATIENT`).
-   - **Doctor Profiles:** Specialization, room number, shift timing, consultation fee, license numbers.
-   - **Patient Demographics:** Medical Record Number (MRN) standard `MRN-YYYY-XXXX`, emergency contacts, allergies, blood groups, and chronic conditions.
-   - **Departments:** Clinical unit management (`Cardiology`, `Pediatrics`, `Neurology`, etc.).
-   - **Audit Logs:** Immutable security trail for login and entity mutations.
-   - **Future-Proof Models:** Database hooks and relations ready for Module 2 (Appointments, OPD Queue, Vitals), Module 3 (EHR SOAP notes, e-Prescriptions, Lab orders), and Module 4 (Pharmacy inventory, Ward Beds, Invoices).
-3. **Automated Identifiers & Seed Data Fixtures:**
-   - Collision-safe sequential `MRN` generator (`MRN-2026-0001` format).
-   - Database seeding script with multi-role accounts and patient profiles.
-4. **Interactive Day 1 Dashboard & Schema Inspector:**
-   - Real-time API health diagnostics and schema explorer.
+| Day | Date | Focus Scope | Deliverable Status |
+|---|---|---|---|
+| **Day 1** | Aug 24 | DB Schema Design & Full Stack Scaffolding | ✅ **Completed & Verified** |
+| **Day 2** | Aug 25 | JWT Auth (Login/Signup/Logout & Password Hashing) | ✅ **Completed & Verified** |
+| **Day 3** | Aug 26 | Role-Based Access Control (Admin, Doctor, Receptionist, Patient) | ⏳ *Next Milestone* |
+| **Day 4** | Aug 27 | Patient Registration & Demographic Forms (Auto MRN ID) | ⏳ *Upcoming* |
+| **Day 5** | Aug 28 | Patient Search, Medical History & Emergency Contacts | ⏳ *Upcoming* |
+
+---
+
+## 🔐 Module 1 — Day 2 Deliverables (Aug 25, 2026)
+
+### ✅ What was completed on Day 2:
+1. **Cryptographic Password Hashing (`bcryptjs`):**
+   - Implemented `hashPassword` and `comparePassword` with 10 salt rounds.
+   - Live password strength validation (length, uppercase, lowercase, numbers, special characters).
+2. **JSON Web Token (JWT) Authentication (`jsonwebtoken`):**
+   - Token issuance with standard payload claims (`id`, `email`, `role`, `fullName`, `mrn`).
+   - Token signature verification and tamper detection (`HS256`).
+   - Configurable session expiration (`JWT_EXPIRES_IN=7d`).
+3. **Authentication REST Endpoints:**
+   - `POST /api/auth/register` — User signup, input validation, bcrypt hashing, auto-MRN generation for patients, audit log creation, and token generation.
+   - `POST /api/auth/login` — Credential verification, account status checks, last login recording, audit logging, and JWT issuance.
+   - `POST /api/auth/logout` — Session termination with audit log tracking.
+   - `GET /api/auth/me` — Protected endpoint returning current user profile and RBAC metadata.
+   - `POST /api/auth/change-password` — Secure password update requiring old password verification.
+   - `POST /api/auth/inspect-token` — Token decoder returning cryptographic claims and remaining lifespan.
+   - `GET /api/auth/audit-logs` — Immutable security log stream for authentication events.
+4. **Security & Route Guard Middleware:**
+   - `authenticateToken` — Validates Bearer tokens from the `Authorization` header, handles expired (`TOKEN_EXPIRED`) and tampered (`TOKEN_INVALID`) tokens, and verifies active user status in the database.
+   - `requireRoles` — Granular role-based guard middleware.
+   - `validateRegister`, `validateLogin`, `validateChangePassword` — Request validation middleware.
+5. **Interactive Day 2 Security & Auth Dashboard:**
+   - **Live Token Inspector:** Decodes raw JWTs into Header, Payload, and Signature with live countdown timer.
+   - **BCrypt Playground:** Interactive salt generation and password verification tester.
+   - **Live API Tester:** One-click execution of 200 OK, 401 Unauthorized, and 403 Forbidden scenarios.
+   - **Real-Time Security Audit Trail:** Live table of recent authentication events.
+   - **Auth Modal:** Sign in, registration, and 1-click persona quick-login switcher.
 
 ---
 
@@ -50,16 +72,17 @@ erDiagram
     USER {
         string id PK
         string email UK
-        string passwordHash
+        string passwordHash "BCrypt Salted"
         string fullName
         string phone
-        string role "ADMIN | DOCTOR | RECEPTIONIST | NURSE | PATIENT"
+        string role "ADMIN | DOCTOR | RECEPTIONIST | NURSE | PHARMACIST | PATIENT"
         boolean isActive
+        datetime lastLoginAt
     }
 
     PATIENT_PROFILE {
         string id PK
-        string mrn UK "MRN-2026-XXXX"
+        string mrn UK "MRN-YYYY-XXXX"
         string firstName
         string lastName
         string gender
@@ -80,6 +103,15 @@ erDiagram
         string shiftStart
         string shiftEnd
     }
+
+    AUDIT_LOG {
+        string id PK
+        string userId FK
+        string action "USER_LOGIN | USER_REGISTER | PASSWORD_CHANGED"
+        string entity
+        string details "JSON"
+        datetime createdAt
+    }
 ```
 
 ---
@@ -90,81 +122,88 @@ erDiagram
 |---|---|
 | **Frontend** | React 18, Vite, Tailwind CSS, Lucide React Icons, Axios |
 | **Backend API** | Node.js, Express.js (ESM), Helmet, Morgan, CORS |
+| **Authentication** | JSON Web Tokens (JWT), BCrypt.js, RBAC Middleware |
 | **Database & ORM** | Prisma ORM, SQLite (Zero-config local) / PostgreSQL compatible |
-| **Auth & Security** | JWT (JSON Web Tokens), BCrypt.js, RBAC Middleware |
-| **Utilities** | MRN Generator, Custom Error Handlers, Seed Scripts |
+| **Utilities** | Auto MRN Generator, Custom Error Handlers, Test Suites |
 
 ---
 
 ## 📂 Project Structure
 
 ```
-Smart-Hospital-management-/
-├── package.json                   # Root scripts
+Smart-Hospital-management-system/
+├── package.json
 ├── .gitignore
 ├── README.md
+├── push-to-github.bat                 # 1-Click push script (Windows)
+├── push-to-github.ps1                 # PowerShell push script
 │
-├── server/                        # Backend REST API
+├── server/                            # Express Backend REST API
 │   ├── prisma/
-│   │   ├── schema.prisma          # Database schema (11 Models)
-│   │   └── seed.js                # Seed script with demo clinical data
+│   │   ├── schema.prisma              # 11 Relational Prisma Models
+│   │   └── seed.js                    # Database seed fixtures
 │   ├── src/
-│   │   ├── config/                # Database singleton
-│   │   │   └── db.js
-│   │   ├── controllers/           # Health & Schema inspection controllers
-│   │   │   ├── healthController.js
-│   │   │   └── schemaController.js
-│   │   ├── middleware/            # Error & logging middlewares
-│   │   │   ├── errorHandler.js
-│   │   │   └── requestLogger.js
-│   │   ├── routes/                # API routes
-│   │   │   ├── api.js
+│   │   ├── config/db.js               # Prisma client singleton
+│   │   ├── controllers/
+│   │   │   ├── authController.js      # Day 2: JWT Login, Signup, Logout, Audit
+│   │   │   ├── healthController.js    # Health diagnostics
+│   │   │   └── schemaController.js    # Database schema reflection
+│   │   ├── middleware/
+│   │   │   ├── authMiddleware.js      # Day 2: JWT Bearer & RBAC validation
+│   │   │   ├── validateAuth.js        # Input validation middleware
+│   │   │   ├── errorHandler.js        # Global error interceptor
+│   │   │   └── requestLogger.js       # Request logging
+│   │   ├── routes/
+│   │   │   ├── api.js                 # API route aggregator
+│   │   │   ├── authRoutes.js          # Day 2: Auth REST endpoints
 │   │   │   ├── healthRoutes.js
 │   │   │   └── schemaRoutes.js
-│   │   ├── utils/                 # MRN & Invoice number generator
-│   │   │   └── mrnGenerator.js
-│   │   ├── app.js                 # Express application
-│   │   └── server.js              # Server entry point
-│   ├── .env.example
+│   │   ├── utils/
+│   │   │   ├── jwt.js                 # JWT sign, verify, decode utilities
+│   │   │   ├── password.js            # BCrypt hash & compare utilities
+│   │   │   └── mrnGenerator.js        # Sequential MRN generator
+│   │   ├── app.js
+│   │   └── server.js
+│   ├── test-auth.js                   # Automated Day 2 test suite (23 assertions)
 │   └── package.json
 │
-└── client/                        # Frontend React Application
+└── client/                            # React + Vite Frontend
     ├── src/
-    │   ├── components/            # UI components
-    │   │   ├── Navbar.jsx
-    │   │   ├── Sidebar.jsx
-    │   │   ├── StatsCards.jsx
-    │   │   ├── Day1SchemaExplorer.jsx
-    │   │   ├── SeedDataViewer.jsx
-    │   │   └── ModuleTimeline.jsx
-    │   ├── services/              # API Client (Axios)
-    │   │   └── api.js
-    │   ├── App.jsx                # Main Application shell
-    │   ├── main.jsx
-    │   └── index.css              # Tailwind CSS
-    ├── index.html
-    ├── vite.config.js
-    ├── tailwind.config.js
+    │   ├── components/
+    │   │   ├── Day2AuthExplorer.jsx   # Interactive JWT & BCrypt Security Hub
+    │   │   ├── AuthModal.jsx          # Login, Registration & Demo Switcher
+    │   │   ├── Day1SchemaExplorer.jsx # Schema & ERD inspector
+    │   │   ├── SeedDataViewer.jsx     # Clinical fixtures viewer
+    │   │   ├── Navbar.jsx             # Top bar with Auth user pill
+    │   │   ├── Sidebar.jsx            # Module & Day navigation
+    │   │   └── StatsCards.jsx         # System counters
+    │   ├── context/
+    │   │   └── AuthContext.jsx        # React Auth Provider & state hook
+    │   ├── services/
+    │   │   └── api.js                 # Axios instance with Bearer interceptor
+    │   ├── App.jsx
+    │   └── index.css
     └── package.json
 ```
 
 ---
 
-## ⚡ Quick Start & Setup
+## ⚡ Quick Start & Run
 
-### 1. Install & Run Backend
-```bash
+### 1. Backend Server
+```powershell
 cd server
 npm install
 npx prisma generate
 npx prisma db push
 node prisma/seed.js
+node test-auth.js      # Run 23 automated auth tests
 npm run dev
 ```
-*Backend runs on `http://localhost:5000` (Health check: `/api/health`)*
+*Backend runs on `http://localhost:5000` (Health: `/api/health`)*
 
-### 2. Install & Run Frontend
-```bash
+### 2. Frontend Client
+```powershell
 cd ../client
 npm install
 npm run dev
@@ -183,14 +222,6 @@ npm run dev
 | **Receptionist** | `receptionist@hms.hospital` | `Password@123` | Patient Registration & Tokens |
 | **Nurse** | `nurse.maria@hms.hospital` | `Password@123` | Triage & Vital Signs Recording |
 | **Patient** | `david.miller@gmail.com` | `Password@123` | Patient Portal (MRN-2026-0001) |
-
----
-
-## 📅 Next Upcoming Milestones (Module 1)
-- **Day 2:** JWT Authentication (Login, Signup, Logout, Password Hashing).
-- **Day 3:** Role-Based Access Control (RBAC Middleware & Route Guards).
-- **Day 4:** Patient Registration & Demographic Intake Forms.
-- **Day 5:** Patient Search, Emergency Contacts & Medical History Logging.
 
 ---
 

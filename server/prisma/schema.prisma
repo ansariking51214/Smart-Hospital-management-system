@@ -1,5 +1,6 @@
 // Prisma Database Schema for Cloud-Based Hospital Management System (HMS)
 // Designed for Module 1 (Auth, RBAC, Patient Registration) & Full System Foundation
+// Compatible with SQLite (Local dev zero-config) & PostgreSQL / MySQL (Production)
 
 generator client {
   provider = "prisma-client-js"
@@ -11,75 +12,17 @@ datasource db {
 }
 
 // -------------------------------------------------------------
-// ENUMS
-// -------------------------------------------------------------
-
-enum UserRole {
-  ADMIN
-  DOCTOR
-  RECEPTIONIST
-  NURSE
-  PHARMACIST
-  PATIENT
-}
-
-enum Gender {
-  MALE
-  FEMALE
-  OTHER
-}
-
-enum AppointmentStatus {
-  SCHEDULED
-  CONFIRMED
-  IN_QUEUE
-  IN_CONSULTATION
-  COMPLETED
-  CANCELLED
-  NO_SHOW
-}
-
-enum QueueStatus {
-  WAITING
-  CALLED
-  IN_PROGRESS
-  COMPLETED
-  SKIPPED
-}
-
-enum BedStatus {
-  AVAILABLE
-  OCCUPIED
-  MAINTENANCE
-  RESERVED
-}
-
-enum PaymentStatus {
-  PENDING
-  PARTIAL
-  PAID
-  REFUNDED
-}
-
-enum LabOrderStatus {
-  REQUESTED
-  SAMPLE_COLLECTED
-  PROCESSING
-  COMPLETED
-  CANCELLED
-}
-
-// -------------------------------------------------------------
 // MODULE 1: AUTHENTICATION, RBAC & USER MANAGEMENT
 // -------------------------------------------------------------
 
+// Roles: ADMIN | DOCTOR | RECEPTIONIST | NURSE | PHARMACIST | PATIENT
 model User {
   id           String      @id @default(cuid())
   email        String      @unique
   passwordHash String
   fullName     String
   phone        String?
-  role         UserRole    @default(PATIENT)
+  role         String      @default("PATIENT") // UserRole enum
   avatarUrl    String?
   isActive     Boolean     @default(true)
   lastLoginAt  DateTime?
@@ -149,17 +92,17 @@ model PatientProfile {
   firstName             String
   lastName              String
   dateOfBirth           DateTime
-  gender                Gender
+  gender                String      @default("OTHER") // MALE | FEMALE | OTHER
   bloodGroup            String?     // A+, A-, B+, B-, AB+, AB-, O+, O-
   nationalId            String?     // CNIC / SSN / Passport
-  phone                 String
+  phone                 String?
   email                 String?
   address               String?
   city                  String?
   state                 String?
   postalCode            String?
-  emergencyContactName  String
-  emergencyContactPhone String
+  emergencyContactName  String?
+  emergencyContactPhone String?
   emergencyContactRelation String?
   allergies             String?     // Known drug/food allergies
   chronicConditions     String?     // Hypertension, Diabetes, Asthma, etc.
@@ -188,7 +131,7 @@ model AuditLog {
   id        String   @id @default(cuid())
   userId    String?
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  action    String   // e.g. "USER_LOGIN", "PATIENT_REGISTERED", "RECORD_UPDATED"
+  action    String   // e.g. "USER_LOGIN", "USER_REGISTER", "USER_LOGOUT", "PASSWORD_CHANGED"
   entity    String   // e.g. "User", "PatientProfile", "Prescription"
   entityId  String?
   details   String?  // JSON string or text summary
@@ -205,6 +148,7 @@ model AuditLog {
 // MODULE 2: APPOINTMENTS, OPD QUEUE & NURSE TRIAGE (VITALS)
 // -------------------------------------------------------------
 
+// Status: SCHEDULED | CONFIRMED | IN_QUEUE | IN_CONSULTATION | COMPLETED | CANCELLED | NO_SHOW
 model Appointment {
   id              String            @id @default(cuid())
   patientId       String
@@ -214,7 +158,7 @@ model Appointment {
   appointmentDate DateTime
   timeSlot        String            // "10:00 - 10:30"
   type            String            @default("OPD") // OPD, Follow-up, Emergency, Routine
-  status          AppointmentStatus @default(SCHEDULED)
+  status          String            @default("SCHEDULED") // AppointmentStatus
   reasonForVisit  String?
   notes           String?
   createdAt       DateTime          @default(now())
@@ -230,6 +174,7 @@ model Appointment {
   @@index([appointmentDate])
 }
 
+// Status: WAITING | CALLED | IN_PROGRESS | COMPLETED | SKIPPED
 model QueueToken {
   id            String       @id @default(cuid())
   tokenNumber   Int          // Daily sequence: 1, 2, 3...
@@ -241,7 +186,7 @@ model QueueToken {
   doctor        DoctorProfile  @relation(fields: [doctorId], references: [id], onDelete: Cascade)
   appointmentId String?      @unique
   appointment   Appointment? @relation(fields: [appointmentId], references: [id])
-  status        QueueStatus  @default(WAITING)
+  status        String       @default("WAITING") // QueueStatus
   calledAt      DateTime?
   completedAt   DateTime?
   createdAt     DateTime     @default(now())
@@ -336,6 +281,7 @@ model PrescriptionItem {
   instructions   String?
 }
 
+// Status: REQUESTED | SAMPLE_COLLECTED | PROCESSING | COMPLETED | CANCELLED
 model LabOrder {
   id                 String           @id @default(cuid())
   orderNumber        String           @unique
@@ -345,7 +291,7 @@ model LabOrder {
   consultationNote   ConsultationNote? @relation(fields: [consultationNoteId], references: [id])
   testName           String
   category           String           // Hematology, Radiology, Biochemistry, etc.
-  status             LabOrderStatus   @default(REQUESTED)
+  status             String           @default("REQUESTED") // LabOrderStatus
   resultsSummary     String?
   reportUrl          String?
   requestedAt        DateTime         @default(now())
@@ -401,13 +347,14 @@ model Ward {
   beds         Bed[]
 }
 
+// Status: AVAILABLE | OCCUPIED | MAINTENANCE | RESERVED
 model Bed {
   id          String          @id @default(cuid())
   wardId      String
   ward        Ward            @relation(fields: [wardId], references: [id], onDelete: Cascade)
   bedNumber   String
   dailyCharge Float           @default(0.0)
-  status      BedStatus       @default(AVAILABLE)
+  status      String          @default("AVAILABLE") // BedStatus
   allocations BedAllocation[]
 
   @@unique([wardId, bedNumber])
@@ -427,6 +374,7 @@ model BedAllocation {
   @@index([bedId])
 }
 
+// Status: PENDING | PARTIAL | PAID | REFUNDED
 model Invoice {
   id            String        @id @default(cuid())
   invoiceNumber String        @unique // e.g. "INV-2026-0001"
@@ -439,7 +387,7 @@ model Invoice {
   totalAmount   Float         @default(0.0)
   paidAmount    Float         @default(0.0)
   balanceDue    Float         @default(0.0)
-  paymentStatus PaymentStatus @default(PENDING)
+  paymentStatus String        @default("PENDING") // PaymentStatus
   paymentMethod String?       // Cash, Card, Insurance, Online
   issuedDate    DateTime      @default(now())
   dueDate       DateTime?

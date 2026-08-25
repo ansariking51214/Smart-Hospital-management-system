@@ -3,7 +3,7 @@
 
 Write-Host "========================================================" -ForegroundColor Cyan
 Write-Host "  Pushing Smart Hospital Management System to GitHub" -ForegroundColor Cyan
-Write-Host "  Module 1: Day 1 - DB Schema Design & Full-Stack Setup" -ForegroundColor Yellow
+Write-Host "  Module 1: Day 2 - JWT Auth, Password Hashing & RBAC" -ForegroundColor Yellow
 Write-Host "========================================================" -ForegroundColor Cyan
 
 # 1. Check if git is available
@@ -42,12 +42,12 @@ if (-not (Test-Path ".git")) {
 }
 
 # 3. Stage files
-Write-Host "[2/5] Staging Day 1 project files..." -ForegroundColor Green
+Write-Host "[2/5] Staging Day 1 & Day 2 project files..." -ForegroundColor Green
 git add .
 
 # 4. Commit
 Write-Host "[3/5] Committing changes..." -ForegroundColor Green
-git commit -m "feat(module1-day1): complete database schema design, RBAC models, MRN generation, seed data fixtures, and full stack HMS dashboard"
+git commit -m "feat(module1-day2): implement JWT auth (login, signup, logout), bcrypt password hashing, auth middleware, and security explorer UI"
 
 # 5. Remote and Branch
 Write-Host "[4/5] Setting up remote origin and branch..." -ForegroundColor Green
