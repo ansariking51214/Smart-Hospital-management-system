@@ -1,5 +1,6 @@
 import { verifyToken } from '../utils/jwt.js';
 import prisma from '../config/db.js';
+import { hasPermission } from '../utils/rbacConfig.js';
 
 /**
  * Middleware to verify JWT authentication token
@@ -112,7 +113,35 @@ export function requireRoles(...allowedRoles) {
 }
 
 /**
- * Optional authentication middleware (populates req.user if token valid, but does not reject if missing)
+ * Permission-Based Access Control middleware factory
+ * @param {string} permission
+ */
+export function requirePermission(permission) {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        code: 'UNAUTHENTICATED',
+        message: 'Authentication required before verifying permission.',
+      });
+    }
+
+    if (!hasPermission(req.user.role, permission)) {
+      return res.status(403).json({
+        success: false,
+        code: 'PERMISSION_DENIED',
+        message: `Forbidden. Role '${req.user.role}' lacks the required '${permission}' permission.`,
+        userRole: req.user.role,
+        requiredPermission: permission,
+      });
+    }
+
+    next();
+  };
+}
+
+/**
+ * Optional authentication middleware
  */
 export async function optionalAuth(req, res, next) {
   const authHeader = req.headers.authorization || req.headers.Authorization;

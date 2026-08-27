@@ -75,4 +75,29 @@ export const authAPI = {
   },
 };
 
+// Role-Based Access Control (RBAC) Endpoints (Day 3)
+export const rbacAPI = {
+  getMatrix: async () => {
+    const response = await api.get('/rbac/matrix');
+    return response.data;
+  },
+  getUsers: async () => {
+    const response = await api.get('/rbac/users');
+    return response.data;
+  },
+  updateUserRole: async (userId, newRole) => {
+    const response = await api.patch(`/rbac/users/${userId}/role`, { newRole });
+    return response.data;
+  },
+  updateUserStatus: async (userId, isActive) => {
+    const response = await api.patch(`/rbac/users/${userId}/status`, { isActive });
+    return response.data;
+  },
+  testRoleGuard: async (roleType, customToken) => {
+    const headers = customToken ? { Authorization: `Bearer ${customToken}` } : {};
+    const response = await api.get(`/rbac/guard/${roleType}`, { headers });
+    return response.data;
+  },
+};
+
 export default api;

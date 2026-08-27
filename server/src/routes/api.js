@@ -2,12 +2,14 @@ import { Router } from 'express';
 import healthRoutes from './healthRoutes.js';
 import schemaRoutes from './schemaRoutes.js';
 import authRoutes from './authRoutes.js';
+import rbacRoutes from './rbacRoutes.js';
 
 const apiRouter = Router();
 
 apiRouter.use('/health', healthRoutes);
 apiRouter.use('/schema', schemaRoutes);
 apiRouter.use('/auth', authRoutes);
+apiRouter.use('/rbac', rbacRoutes);
 
 // Placeholder routes for Module 1 Day 2-5 (ready to be hooked up)
 apiRouter.get('/version', (req, res) => {

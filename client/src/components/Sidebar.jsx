@@ -10,7 +10,8 @@ import {
   Layers,
   Sparkles,
   ShieldCheck,
-  Lock,
+  Users,
+  ShieldAlert,
 } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab }) {
@@ -18,12 +19,12 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     {
       id: 'module1',
       title: 'Module 1: Auth, RBAC & Patients',
-      badge: 'Active (Day 1 & Day 2 Ready)',
-      badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+      badge: 'Active (Day 1, 2 & 3 Done)',
+      badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
       days: [
         { day: 'Day 1', label: 'DB Schema Design & Setup', status: 'completed' },
         { day: 'Day 2', label: 'JWT Auth & Password Hash', status: 'completed' },
-        { day: 'Day 3', label: 'RBAC (Admin, Doctor, Nurse, Patient)', status: 'upcoming' },
+        { day: 'Day 3', label: 'RBAC (Admin, Doctor, Receptionist, Patient)', status: 'completed' },
         { day: 'Day 4', label: 'Patient Registration & Auto MRN', status: 'upcoming' },
         { day: 'Day 5', label: 'Search & Medical History Logs', status: 'upcoming' },
       ],
@@ -78,26 +79,42 @@ export default function Sidebar({ activeTab, setActiveTab }) {
       {/* Navigation Tabs */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-sm">
         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
-          <Layers className="w-4 h-4 text-blue-400" />
+          <Layers className="w-4 h-4 text-indigo-400" />
           Module 1 Navigation
         </h2>
         <nav className="space-y-1">
-          {/* Day 2 Primary Tab */}
+          {/* Day 3 Primary Tab */}
           <button
-            onClick={() => setActiveTab('auth')}
+            onClick={() => setActiveTab('rbac')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-              activeTab === 'auth'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/20'
+              activeTab === 'rbac'
+                ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <ShieldCheck className="w-4 h-4 text-cyan-300" />
-              <span>Day 2: JWT Auth & Security</span>
+              <Users className="w-4 h-4 text-cyan-300" />
+              <span>Day 3: Role-Based Access (RBAC)</span>
             </div>
-            <span className="text-[10px] bg-blue-400/20 text-blue-200 border border-blue-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
+            <span className="text-[10px] bg-indigo-400/20 text-indigo-200 border border-indigo-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
               Current
             </span>
+          </button>
+
+          {/* Day 2 JWT Auth Tab */}
+          <button
+            onClick={() => setActiveTab('auth')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'auth'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Day 2: JWT Auth & Security</span>
+            </div>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">Auth</span>
           </button>
 
           {/* Day 1 Schema Tab */}
@@ -105,7 +122,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
             onClick={() => setActiveTab('schema')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'schema'
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
@@ -121,7 +138,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
             onClick={() => setActiveTab('seed')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'seed'
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
@@ -140,7 +157,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
             Project Roadmap & Schedule
           </h2>
-          <span className="text-[10px] text-blue-400 font-mono">Module 1 / Day 2</span>
+          <span className="text-[10px] text-indigo-400 font-mono">Module 1 / Day 3</span>
         </div>
 
         <div className="space-y-3">
@@ -153,7 +170,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                 key={m.id}
                 className={`p-3 rounded-xl border transition ${
                   isCurrentModule
-                    ? 'bg-blue-950/20 border-blue-500/40 ring-1 ring-blue-500/20'
+                    ? 'bg-indigo-950/20 border-indigo-500/40 ring-1 ring-indigo-500/20'
                     : 'bg-slate-800/40 border-slate-800/80 opacity-75'
                 }`}
               >
@@ -162,7 +179,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                     <div
                       className={`p-1.5 rounded-lg ${
                         isCurrentModule
-                          ? 'bg-blue-600 text-white font-bold'
+                          ? 'bg-indigo-600 text-white font-bold'
                           : 'bg-slate-700 text-slate-300'
                       }`}
                     >
@@ -179,7 +196,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                 </div>
 
                 {isCurrentModule && (
-                  <div className="mt-2 space-y-1.5 pt-2 border-t border-blue-500/20">
+                  <div className="mt-2 space-y-1.5 pt-2 border-t border-indigo-500/20">
                     {m.days.map((d, dIdx) => (
                       <div key={dIdx} className="flex items-center justify-between text-xs py-0.5">
                         <div className="flex items-center gap-1.5">

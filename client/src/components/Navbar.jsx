@@ -17,20 +17,20 @@ export default function Navbar({ healthData, isLoading, onOpenAuthModal }) {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-lg font-bold tracking-tight text-white">Smart HMS</h1>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 font-semibold font-mono">
-                v1.1.0 (Day 2)
+              <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 font-semibold font-mono">
+                v1.2.0 (Day 3)
               </span>
             </div>
-            <p className="text-xs text-slate-400">Cloud Healthcare Operations & Security</p>
+            <p className="text-xs text-slate-400">Cloud Healthcare Operations & Multi-Role RBAC</p>
           </div>
         </div>
 
         {/* Center Pill: Current Module & Day */}
         <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700/60 text-xs">
-          <span className="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
-          <span className="text-slate-300 font-medium">Module 1 : Day 2</span>
+          <span className="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
+          <span className="text-slate-300 font-medium">Module 1 : Day 3</span>
           <span className="text-slate-500">•</span>
-          <span className="text-blue-400 font-semibold">JWT Auth & Password Security</span>
+          <span className="text-indigo-400 font-semibold">Role-Based Access Control (RBAC)</span>
         </div>
 
         {/* Right Actions & User Account Status */}
