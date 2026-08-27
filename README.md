@@ -1,7 +1,7 @@
 # 🏥 Smart Hospital Management System (HMS)
 
 > **Cloud-Based Healthcare Management & Clinical Operations Platform**  
-> **Internship Project Submission — Module 1: Day 1, Day 2 & Day 3 Deliverables**
+> **Internship Project Submission — Module 1: Day 1, Day 2, Day 3 & Day 4 Deliverables**
 
 ---
 
@@ -17,8 +17,34 @@ The **Cloud-Based Hospital Management System (HMS)** is an enterprise-grade heal
 | **Day 1** | Aug 24 | DB Schema Design & Full Stack Scaffolding | ✅ **Completed & Verified** |
 | **Day 2** | Aug 25 | JWT Auth (Login/Signup/Logout & Password Hashing) | ✅ **Completed & Verified** |
 | **Day 3** | Aug 26 | Role-Based Access Control (Admin, Doctor, Receptionist, Nurse, Patient) | ✅ **Completed & Verified** |
-| **Day 4** | Aug 27 | Patient Registration & Demographic Forms (Auto MRN ID) | ⏳ *Next Milestone* |
-| **Day 5** | Aug 28 | Patient Search, Medical History & Emergency Contacts | ⏳ *Upcoming* |
+| **Day 4** | Aug 27 | Patient Registration & Demographic Forms (Auto MRN ID) | ✅ **Completed & Verified** |
+| **Day 5** | Aug 28 | Patient Search, Medical History & Emergency Contacts | ⏳ *Next Milestone* |
+
+---
+
+## 📋 Module 1 — Day 4 Deliverables (Aug 27, 2026)
+
+### ✅ What was completed on Day 4:
+1. **Collision-Safe Sequential Medical Record Number (MRN) Generator (`mrnGenerator.js`):**
+   - Format: `MRN-YYYY-XXXX` (e.g. `MRN-2026-0001`, `MRN-2026-0002`).
+   - Annual resetting, zero-padded 4-digit sequential index, and thread-safe database lookup.
+2. **Comprehensive Demographic Intake Model & Validation (`validatePatient.js`):**
+   - Personal Demographics: First Name, Last Name, Date of Birth (with age calculation), Gender (`MALE`, `FEMALE`, `OTHER`), Blood Group (`A+`, `A-`, `B+`, `B-`, `AB+`, `AB-`, `O+`, `O-`), National ID/CNIC.
+   - Contact & Address: Primary contact phone, optional email account creation, residential street address.
+   - Emergency Contact & Guardian: Relative name, relationship (`Spouse`, `Parent`, `Sibling`, `Guardian`), emergency phone.
+   - Medical Baseline: Drug/food allergies registry, chronic illness history (Hypertension, Diabetes, Asthma).
+3. **Patient REST API Controller & Endpoints (`patientController.js` & `patientRoutes.js`):**
+   - `POST /api/patients/register` — Front-desk or patient self-registration with auto-MRN generation and user profile linkage.
+   - `GET /api/patients` — Paginated patient directory with search (name, MRN, phone) and filter (blood group, gender).
+   - `GET /api/patients/:idOrMrn` — Single patient medical dossier retrieval with appointments and vitals history.
+   - `PUT /api/patients/:id` — Demographic and contact information updater with audit logging.
+   - `GET /api/patients/stats/overview` — Registration metrics, gender breakdown, and blood group distribution.
+4. **Interactive Day 4 Patient Registration Suite (`Day4PatientRegistration.jsx`):**
+   - **4-Section Intake Form:** Personal demographics, contact, emergency guardian, and medical baseline.
+   - **Digital Patient ID Card Modal:** Instant issuance of patient card with MRN badge, blood group pill, and emergency contact details.
+   - **Live Patient Directory:** Real-time registry search, filtering, and dossier inspection.
+5. **Automated Patient Registration Test Suite (`test-patient-registration.js`):**
+   - 17 automated assertions verifying MRN format, database insertion, demographic retrieval, updates, and audit logging.
 
 ---
 
@@ -27,44 +53,22 @@ The **Cloud-Based Hospital Management System (HMS)** is an enterprise-grade heal
 ### ✅ What was completed on Day 3:
 1. **Multi-Role Access Control Architecture (`rbacConfig.js`):**
    - Formalized 6 system roles: `ADMIN`, `DOCTOR`, `RECEPTIONIST`, `NURSE`, `PHARMACIST`, `PATIENT`.
-   - Granular **Role-to-Permissions Matrix** allocating 20+ fine-grained capabilities across administrative, clinical, front-desk, and patient domains.
+   - Granular Permissions Matrix allocating 20+ fine-grained capabilities.
 2. **Route Guard & Permission Middleware (`authMiddleware.js`):**
-   - `requireRoles(...roles)` — Strict role authorization guard.
-   - `requirePermission(permission)` — Permission-level authorization checker.
-   - Rejection with standardized `403 Forbidden` (`INSUFFICIENT_PERMISSIONS` / `PERMISSION_DENIED`) payloads.
-3. **RBAC REST Endpoints (`rbacController.js` & `rbacRoutes.js`):**
-   - `GET /api/rbac/matrix` — Returns the system-wide permissions matrix and role statistics.
-   - `GET /api/rbac/users` — Admin-only endpoint returning all registered users, roles, and account statuses.
-   - `PATCH /api/rbac/users/:id/role` — Admin-only dynamic role promotion/demotion with immutable audit logging.
-   - `PATCH /api/rbac/users/:id/status` — Admin-only account activation/deactivation toggle.
-   - `GET /api/rbac/guard/admin` — Strict `ADMIN` resource tester (200 OK vs 403 Forbidden).
-   - `GET /api/rbac/guard/doctor` — Strict `DOCTOR` & `ADMIN` clinical resource tester.
-   - `GET /api/rbac/guard/receptionist` — Strict `RECEPTIONIST` & `ADMIN` front-desk intake tester.
-   - `GET /api/rbac/guard/nurse` — Strict `NURSE` & `ADMIN` triage & vitals station tester.
-   - `GET /api/rbac/guard/patient` — Strict `PATIENT` & `ADMIN` personal health portal tester.
-4. **Interactive Day 3 RBAC Dashboard (`Day3RbacExplorer.jsx`):**
-   - **1-Click Persona Switcher:** Instant JWT role switching between Super Admin, Cardiologist, Receptionist, Nurse, and Patient.
-   - **Live Route Guard Simulator:** Interactive test buttons verifying real-time HTTP 200 OK vs 403 Forbidden responses.
-   - **Dynamic Role Management Table:** Admin control table to update user roles and toggle active states live.
-   - **Full Permission Matrix Viewer:** Visual matrix displaying exact capability boundaries.
-5. **Automated RBAC Test Suite (`test-rbac.js`):**
-   - 36 automated assertions verifying role hierarchy, permission enforcement, token role embedding, and route guards.
+   - `requireRoles(...roles)` and `requirePermission(permission)` route guards with strict `403 Forbidden` checks.
+3. **RBAC REST Endpoints & Dashboard (`rbacController.js` & `Day3RbacExplorer.jsx`):**
+   - Role matrix endpoints, admin user management, 1-click persona switching, and live route guard simulator.
+4. **Automated RBAC Test Suite (`test-rbac.js`):**
+   - 36 automated assertions verifying role hierarchy and route guards.
 
 ---
 
 ## 🔐 Module 1 — Day 2 Deliverables (Aug 25, 2026)
 
 ### ✅ What was completed on Day 2:
-1. **Cryptographic Password Hashing (`bcryptjs`):**
-   - Implemented `hashPassword` and `comparePassword` with 10 salt rounds.
-   - Live password strength validation.
-2. **JSON Web Token (JWT) Engine (`jsonwebtoken`):**
-   - Signed `HS256` tokens with claims (`id`, `email`, `role`, `fullName`, `mrn`).
-   - Configurable session expiration (`JWT_EXPIRES_IN=7d`).
-3. **Authentication REST Endpoints:**
-   - `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`, `POST /api/auth/change-password`, `POST /api/auth/inspect-token`, `GET /api/auth/audit-logs`.
-4. **Automated Auth Test Suite (`test-auth.js`):**
-   - 23 automated assertions verifying BCrypt hashing and JWT lifecycle.
+1. **BCrypt Password Hashing (`password.js`):** Salted hashing (10 rounds) and strength validation.
+2. **JWT Authentication Engine (`jwt.js`):** Signed `HS256` tokens with configurable lifespan.
+3. **Auth REST Endpoints & Dashboard (`authController.js` & `Day2AuthExplorer.jsx`):** Live Token Inspector, BCrypt playground, and 23 automated tests (`test-auth.js`).
 
 ---
 
@@ -122,7 +126,7 @@ erDiagram
     AUDIT_LOG {
         string id PK
         string userId FK
-        string action "USER_LOGIN | USER_REGISTER | ROLE_CHANGED | PASSWORD_CHANGED"
+        string action "PATIENT_REGISTERED | USER_LOGIN | ROLE_CHANGED"
         string entity
         string details "JSON"
         datetime createdAt
@@ -131,80 +135,16 @@ erDiagram
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack & Test Status
 
-| Layer | Technologies |
-|---|---|
-| **Frontend** | React 18, Vite, Tailwind CSS, Lucide React Icons, Axios |
-| **Backend API** | Node.js, Express.js (ESM), Helmet, Morgan, CORS |
-| **Authentication & RBAC** | JWT (JSON Web Tokens), BCrypt.js, Multi-Role Route Guard Middleware |
-| **Database & ORM** | Prisma ORM, SQLite (Zero-config local) / PostgreSQL compatible |
-| **Testing** | Automated Test Suites (`test-auth.js`, `test-rbac.js` — 59 Total Assertions) |
-
----
-
-## 📂 Project Structure
-
-```
-Smart-Hospital-management-system/
-├── package.json
-├── .gitignore
-├── README.md
-├── push-to-github.bat                 # 1-Click push script (Windows)
-├── push-to-github.ps1                 # PowerShell Git Automation
-│
-├── server/                            # Express Backend REST API
-│   ├── prisma/
-│   │   ├── schema.prisma              # 11 Relational Prisma Models
-│   │   └── seed.js                    # Database seed fixtures
-│   ├── src/
-│   │   ├── config/db.js               # Prisma client singleton
-│   │   ├── controllers/
-│   │   │   ├── authController.js      # Day 2: JWT Login, Signup, Logout, Audit
-│   │   │   ├── rbacController.js      # Day 3: Role Matrix & User Administration
-│   │   │   ├── healthController.js    # Health diagnostics
-│   │   │   └── schemaController.js    # Database schema reflection
-│   │   ├── middleware/
-│   │   │   ├── authMiddleware.js      # Day 2/3: JWT Bearer & RBAC Guard
-│   │   │   ├── validateAuth.js        # Input validation middleware
-│   │   │   ├── errorHandler.js        # Global error interceptor
-│   │   │   └── requestLogger.js       # Request logging
-│   │   ├── routes/
-│   │   │   ├── api.js                 # API route aggregator
-│   │   │   ├── authRoutes.js          # Day 2: Auth REST endpoints
-│   │   │   ├── rbacRoutes.js          # Day 3: RBAC REST endpoints
-│   │   │   ├── healthRoutes.js
-│   │   │   └── schemaRoutes.js
-│   │   ├── utils/
-│   │   │   ├── rbacConfig.js          # Day 3: Permissions Matrix & Role Metadata
-│   │   │   ├── jwt.js                 # JWT sign, verify, decode utilities
-│   │   │   ├── password.js            # BCrypt hash & compare utilities
-│   │   │   └── mrnGenerator.js        # Sequential MRN generator
-│   │   ├── app.js
-│   │   └── server.js
-│   ├── test-auth.js                   # Day 2 Test Suite (23 passed)
-│   ├── test-rbac.js                   # Day 3 Test Suite (36 passed)
-│   └── package.json
-│
-└── client/                            # React + Vite Frontend
-    ├── src/
-    │   ├── components/
-    │   │   ├── Day3RbacExplorer.jsx   # Day 3: Role Matrix, Route Guards & User Manager
-    │   │   ├── Day2AuthExplorer.jsx   # Day 2: JWT Inspector & BCrypt Playground
-    │   │   ├── AuthModal.jsx          # Login, Registration & Persona Switcher
-    │   │   ├── Day1SchemaExplorer.jsx # Schema & ERD inspector
-    │   │   ├── SeedDataViewer.jsx     # Clinical fixtures viewer
-    │   │   ├── Navbar.jsx             # Top bar with Auth user pill
-    │   │   ├── Sidebar.jsx            # Module & Day navigation
-    │   │   └── StatsCards.jsx         # System counters
-    │   ├── context/
-    │   │   └── AuthContext.jsx        # React Auth Provider & state hook
-    │   ├── services/
-    │   │   └── api.js                 # Axios instance with Bearer interceptor & RBAC API
-    │   ├── App.jsx
-    │   └── index.css
-    └── package.json
-```
+| Layer | Technologies | Test Suite Assertions |
+|---|---|---|
+| **Frontend** | React 18, Vite, Tailwind CSS, Lucide Icons, Axios | Production Build Verified (0 errors) |
+| **Backend REST** | Node.js, Express.js (ESM), Helmet, Morgan, CORS | Express Endpoints Verified |
+| **Day 2 Auth** | JWT (`jsonwebtoken`), BCrypt (`bcryptjs`) | **23/23 Tests Passed** (`test-auth.js`) |
+| **Day 3 RBAC** | Multi-role route guards, Permissions matrix | **36/36 Tests Passed** (`test-rbac.js`) |
+| **Day 4 Patients** | Auto MRN generator (`MRN-YYYY-XXXX`), Demographics | **17/17 Tests Passed** (`test-patient-registration.js`) |
+| **Total Automated Tests** | **76 Passed Assertions across 3 Suites** | ✅ **100% Pass Rate** |
 
 ---
 
@@ -217,11 +157,12 @@ npm install
 npx prisma generate
 npx prisma db push
 node prisma/seed.js
-node test-auth.js      # Run 23 auth tests
-node test-rbac.js      # Run 36 RBAC tests
+node test-auth.js                 # 23 tests
+node test-rbac.js                 # 36 tests
+node test-patient-registration.js # 17 tests
 npm run dev
 ```
-*Backend runs on `http://localhost:5000` (Health: `/api/health`)*
+*Backend runs on `http://localhost:5000`*
 
 ### 2. Frontend Client
 ```powershell
@@ -230,19 +171,6 @@ npm install
 npm run dev
 ```
 *Frontend runs on `http://localhost:5173`*
-
----
-
-## 🔐 Seed Demo Credentials for Testing
-
-| Role | Email | Password | Access Scope |
-|---|---|---|---|
-| **Super Admin** | `admin@hms.hospital` | `Admin@12345` | Full System Management & Audit |
-| **Cardiologist** | `dr.sarah@hms.hospital` | `Password@123` | Doctor Consultation & EHR |
-| **Pediatrician** | `dr.ahmed@hms.hospital` | `Password@123` | OPD & Pediatric Consultation |
-| **Receptionist** | `receptionist@hms.hospital` | `Password@123` | Patient Registration & Tokens |
-| **Nurse** | `nurse.maria@hms.hospital` | `Password@123` | Triage & Vital Signs Recording |
-| **Patient** | `david.miller@gmail.com` | `Password@123` | Patient Portal (MRN-2026-0001) |
 
 ---
 

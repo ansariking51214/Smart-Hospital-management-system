@@ -100,4 +100,28 @@ export const rbacAPI = {
   },
 };
 
+// Patient Registration & Demographic Endpoints (Day 4)
+export const patientsAPI = {
+  register: async (patientData) => {
+    const response = await api.post('/patients/register', patientData);
+    return response.data;
+  },
+  getAll: async (params = {}) => {
+    const response = await api.get('/patients', { params });
+    return response.data;
+  },
+  getByIdOrMrn: async (idOrMrn) => {
+    const response = await api.get(`/patients/${idOrMrn}`);
+    return response.data;
+  },
+  update: async (id, updateData) => {
+    const response = await api.put(`/patients/${id}`, updateData);
+    return response.data;
+  },
+  getStats: async () => {
+    const response = await api.get('/patients/stats/overview');
+    return response.data;
+  },
+};
+
 export default api;

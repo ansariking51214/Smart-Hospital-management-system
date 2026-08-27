@@ -1,3 +1,5 @@
+import prisma from '../config/db.js';
+
 /**
  * Utility functions for generating unique sequential identifiers in the Hospital Management System
  */
@@ -5,15 +7,15 @@
 /**
  * Generates an auto-incremented Medical Record Number (MRN)
  * Format: MRN-YYYY-XXXX (e.g., MRN-2026-0001)
- * @param {import('@prisma/client').PrismaClient} prisma
+ * @param {import('@prisma/client').PrismaClient} [prismaClient]
  * @returns {Promise<string>}
  */
-export async function generateMRN(prisma) {
+export async function generateMRN(prismaClient = prisma) {
   const currentYear = new Date().getFullYear();
   const prefix = `MRN-${currentYear}-`;
 
   // Find the highest MRN for the current year
-  const latestPatient = await prisma.patientProfile.findFirst({
+  const latestPatient = await prismaClient.patientProfile.findFirst({
     where: {
       mrn: {
         startsWith: prefix,
@@ -42,15 +44,17 @@ export async function generateMRN(prisma) {
   return `${prefix}${paddedSeq}`;
 }
 
+export const generateNextMRN = generateMRN;
+
 /**
  * Generates an auto-incremented Prescription Number
  * Format: RX-YYYY-XXXX (e.g., RX-2026-0001)
  */
-export async function generatePrescriptionNumber(prisma) {
+export async function generatePrescriptionNumber(prismaClient = prisma) {
   const currentYear = new Date().getFullYear();
   const prefix = `RX-${currentYear}-`;
 
-  const latestRx = await prisma.prescription.findFirst({
+  const latestRx = await prismaClient.prescription.findFirst({
     where: {
       prescriptionNumber: {
         startsWith: prefix,
@@ -83,11 +87,11 @@ export async function generatePrescriptionNumber(prisma) {
  * Generates an auto-incremented Invoice Number
  * Format: INV-YYYY-XXXX (e.g., INV-2026-0001)
  */
-export async function generateInvoiceNumber(prisma) {
+export async function generateInvoiceNumber(prismaClient = prisma) {
   const currentYear = new Date().getFullYear();
   const prefix = `INV-${currentYear}-`;
 
-  const latestInvoice = await prisma.invoice.findFirst({
+  const latestInvoice = await prismaClient.invoice.findFirst({
     where: {
       invoiceNumber: {
         startsWith: prefix,
