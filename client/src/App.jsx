@@ -8,13 +8,14 @@ import ModuleTimeline from './components/ModuleTimeline';
 import { Day2AuthExplorer } from './components/Day2AuthExplorer';
 import { Day3RbacExplorer } from './components/Day3RbacExplorer';
 import { Day4PatientRegistration } from './components/Day4PatientRegistration';
+import { Day5MedicalHistoryExplorer } from './components/Day5MedicalHistoryExplorer';
 import { AuthModal } from './components/AuthModal';
 import { AuthProvider } from './context/AuthContext';
 import { fetchHealthStatus, fetchSchemaDetails } from './services/api';
-import { RefreshCw, UserPlus } from 'lucide-react';
+import { RefreshCw, Search } from 'lucide-react';
 
 function DashboardContent() {
-  const [activeTab, setActiveTab] = useState('patients'); // 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
+  const [activeTab, setActiveTab] = useState('history'); // 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
   const [healthData, setHealthData] = useState(null);
   const [schemaData, setSchemaData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -68,11 +69,11 @@ function DashboardContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-                    <UserPlus className="w-5 h-5 text-emerald-400" />
-                    Patient Intake & Clinical Registration Center
+                    <Search className="w-5 h-5 text-cyan-400" />
+                    Patient Search & Longitudinal Medical Record Center
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Module 1 &bull; Day 4: Patient Registration, Demographics & Auto MRN ID Generator (MRN-YYYY-XXXX)
+                    Module 1 &bull; Day 5: Multi-Criteria Patient Search, EHR Medical History Timeline & Emergency Management
                   </p>
                 </div>
                 <button
@@ -81,7 +82,7 @@ function DashboardContent() {
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-300 transition"
                   title="Refresh status from backend"
                 >
-                  <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-emerald-400' : ''}`} />
+                  <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-cyan-400' : ''}`} />
                   <span>Sync</span>
                 </button>
               </div>
@@ -90,6 +91,13 @@ function DashboardContent() {
             </div>
 
             {/* Dynamic Tab Body */}
+            {activeTab === 'history' && (
+              <div className="space-y-8">
+                <Day5MedicalHistoryExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
             {activeTab === 'patients' && (
               <div className="space-y-8">
                 <Day4PatientRegistration />
@@ -132,7 +140,7 @@ function DashboardContent() {
       {/* Footer */}
       <footer className="border-t border-slate-800/80 bg-slate-900/60 py-4 px-6 text-center text-xs text-slate-500">
         <p>
-          Cloud-Based Hospital Management System (HMS) &bull; Module 1: Day 4 Deliverable (Aug 27, 2026)
+          Cloud-Based Hospital Management System (HMS) &bull; Module 1 Completed: Days 1 - 5 (Aug 29, 2026)
         </p>
       </footer>
     </div>

@@ -17,20 +17,20 @@ export default function Navbar({ healthData, isLoading, onOpenAuthModal }) {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-lg font-bold tracking-tight text-white">Smart HMS</h1>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold font-mono">
-                v1.3.0 (Day 4)
+              <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold font-mono">
+                v1.4.0 (Day 5 - Module 1 Complete)
               </span>
             </div>
-            <p className="text-xs text-slate-400">Clinical Patient Registration & Demographics</p>
+            <p className="text-xs text-slate-400">Search, Longitudinal EHR & Emergency Management</p>
           </div>
         </div>
 
         {/* Center Pill: Current Module & Day */}
         <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700/60 text-xs">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          <span className="text-slate-300 font-medium">Module 1 : Day 4</span>
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          <span className="text-slate-300 font-medium">Module 1 : Day 5</span>
           <span className="text-slate-500">•</span>
-          <span className="text-emerald-400 font-semibold">Patient Registration & Auto MRN ID</span>
+          <span className="text-cyan-400 font-semibold">Search, Medical History & Emergency</span>
         </div>
 
         {/* Right Actions & User Account Status */}

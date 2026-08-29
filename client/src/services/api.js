@@ -124,4 +124,24 @@ export const patientsAPI = {
   },
 };
 
+// Patient Search, Medical History & Emergency Contacts (Day 5)
+export const medicalHistoryAPI = {
+  searchPatients: async (params = {}) => {
+    const response = await api.get('/medical-history/search', { params });
+    return response.data;
+  },
+  getHistory: async (idOrMrn) => {
+    const response = await api.get(`/medical-history/patient/${idOrMrn}`);
+    return response.data;
+  },
+  updateBaseline: async (patientId, data) => {
+    const response = await api.patch(`/medical-history/patient/${patientId}/medical-baseline`, data);
+    return response.data;
+  },
+  updateEmergencyContact: async (patientId, data) => {
+    const response = await api.patch(`/medical-history/patient/${patientId}/emergency-contact`, data);
+    return response.data;
+  },
+};
+
 export default api;

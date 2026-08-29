@@ -4,98 +4,82 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting Hospital Management System Database Seed...');
+  console.log('🌱 Starting Smart Hospital Management System Database Seed...');
 
-  // 1. Clean existing records (in reverse dependency order)
-  console.log('🧹 Cleaning existing data...');
-  await prisma.auditLog.deleteMany({});
-  await prisma.invoiceItem.deleteMany({});
-  await prisma.invoice.deleteMany({});
-  await prisma.bedAllocation.deleteMany({});
-  await prisma.bed.deleteMany({});
-  await prisma.ward.deleteMany({});
-  await prisma.inventoryBatch.deleteMany({});
-  await prisma.medicine.deleteMany({});
-  await prisma.labOrder.deleteMany({});
-  await prisma.prescriptionItem.deleteMany({});
-  await prisma.prescription.deleteMany({});
-  await prisma.consultationNote.deleteMany({});
-  await prisma.vitalSign.deleteMany({});
-  await prisma.queueToken.deleteMany({});
-  await prisma.appointment.deleteMany({});
-  await prisma.doctorProfile.deleteMany({});
-  await prisma.patientProfile.deleteMany({});
-  await prisma.department.deleteMany({});
-  await prisma.user.deleteMany({});
+  // Clear existing records in reverse dependency order
+  await prisma.auditLog.deleteMany();
+  await prisma.prescriptionItem.deleteMany();
+  await prisma.invoiceItem.deleteMany();
+  await prisma.invoice.deleteMany();
+  await prisma.bedAllocation.deleteMany();
+  await prisma.bed.deleteMany();
+  await prisma.ward.deleteMany();
+  await prisma.prescription.deleteMany();
+  await prisma.consultationNote.deleteMany();
+  await prisma.vitalSign.deleteMany();
+  await prisma.queueToken.deleteMany();
+  await prisma.appointment.deleteMany();
+  await prisma.medicine.deleteMany();
+  await prisma.patientProfile.deleteMany();
+  await prisma.doctorProfile.deleteMany();
+  await prisma.department.deleteMany();
+  await prisma.user.deleteMany();
 
-  // 2. Create Departments
-  console.log('🏥 Creating Clinical Departments...');
+  const defaultPasswordHash = await bcrypt.hash('Password@123', 10);
+  const adminPasswordHash = await bcrypt.hash('Admin@12345', 10);
+
+  // 1. Seed Hospital Departments
+  console.log('🏥 Seeding Clinical Departments...');
   const deptCardio = await prisma.department.create({
     data: {
       name: 'Cardiology',
       code: 'CARD',
-      description: 'Department of Cardiovascular and Heart Sciences',
-      isActive: true,
+      description: 'Comprehensive cardiovascular disease diagnosis, surgical interventions, and post-op care.',
     },
   });
 
   const deptPeds = await prisma.department.create({
     data: {
       name: 'Pediatrics',
-      code: 'PED',
-      description: 'Child Healthcare and Neonatal Department',
-      isActive: true,
+      code: 'PEDS',
+      description: 'General pediatric medicine, neonatal intensive care, and child immunization.',
     },
   });
 
-  const deptNeuro = await prisma.department.create({
-    data: {
-      name: 'Neurology',
-      code: 'NEUR',
-      description: 'Brain, Spine and Nervous System Care',
-      isActive: true,
-    },
-  });
-
-  const deptOrtho = await prisma.department.create({
+  const deptOrthopedics = await prisma.department.create({
     data: {
       name: 'Orthopedics',
-      code: 'ORTH',
-      description: 'Bone, Joint and Musculoskeletal Services',
-      isActive: true,
+      code: 'ORTHO',
+      description: 'Musculoskeletal trauma surgery, joint reconstruction, and sports medicine.',
     },
   });
 
-  const deptGenMed = await prisma.department.create({
+  const deptNeurology = await prisma.department.create({
     data: {
-      name: 'General Medicine',
-      code: 'GEN',
-      description: 'Internal Medicine, OPD Consultation & Primary Care',
-      isActive: true,
+      name: 'Neurology',
+      code: 'NEURO',
+      description: 'Diagnosis and clinical treatment of central and peripheral nervous system disorders.',
     },
   });
 
-  // 3. Password Hashes
-  const defaultPasswordHash = await bcrypt.hash('Password@123', 10);
-  const adminPasswordHash = await bcrypt.hash('Admin@12345', 10);
-
-  // 4. Create Users (Super Admin, Doctors, Staff, Patients)
-  console.log('👥 Creating System Users & Profiles (RBAC)...');
-
-  // Super Admin
+  // 2. Seed Super Administrator User
+  console.log('👤 Seeding Super Administrator...');
   const adminUser = await prisma.user.create({
     data: {
       email: 'admin@hms.hospital',
       passwordHash: adminPasswordHash,
-      fullName: 'System Administrator',
+      fullName: 'Dr. Arthur Sterling',
       phone: '+1-555-0100',
       role: 'ADMIN',
-      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+      avatarUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=150',
     },
   });
 
-  // Doctor 1 (Cardiology)
-  const drSarahUser = await prisma.user.create({
+  // 3. Seed Doctors & Physician Profiles
+  console.log('🩺 Seeding Doctors & Clinical Staff...');
+  
+  // Doctor 1 - Cardiologist
+  const doc1User = await prisma.user.create({
     data: {
       email: 'dr.sarah@hms.hospital',
       passwordHash: defaultPasswordHash,
@@ -106,50 +90,53 @@ async function main() {
     },
   });
 
-  await prisma.doctorProfile.create({
+  const docSarah = await prisma.doctorProfile.create({
     data: {
-      userId: drSarahUser.id,
-      specialization: 'Interventional Cardiology',
+      userId: doc1User.id,
       departmentId: deptCardio.id,
-      licenseNumber: 'MD-CARD-88341',
-      qualification: 'MBBS, MD (Cardiology), FACC',
-      consultationFee: 75.0,
-      roomNumber: 'OPD-102',
+      specialization: 'Interventional Cardiology',
+      licenseNumber: 'LIC-CARD-99482',
+      qualification: 'MD, FACC (Harvard Medical School)',
+      consultationFee: 150.0,
+      roomNumber: 'Room 204',
       availableDays: 'Mon,Tue,Wed,Thu,Fri',
       shiftStart: '09:00',
       shiftEnd: '15:00',
-      bio: 'Senior consultant cardiologist with over 12 years of clinical experience in cardiac diagnostics and coronary interventions.',
+      bio: 'Board-certified cardiologist with over 12 years of experience in coronary interventions and cardiac electrophysiology.',
     },
   });
 
-  // Doctor 2 (Pediatrics)
-  const drAhmedUser = await prisma.user.create({
+  // Doctor 2 - Pediatrician
+  const doc2User = await prisma.user.create({
     data: {
       email: 'dr.ahmed@hms.hospital',
       passwordHash: defaultPasswordHash,
-      fullName: 'Dr. Ahmed Farooq, MD',
+      fullName: 'Dr. Ahmed Farooq, MBBS, FCPS',
       phone: '+1-555-0122',
       role: 'DOCTOR',
-      avatarUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=150',
+      avatarUrl: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=150',
     },
   });
 
   await prisma.doctorProfile.create({
     data: {
-      userId: drAhmedUser.id,
-      specialization: 'General Pediatrics',
+      userId: doc2User.id,
       departmentId: deptPeds.id,
-      licenseNumber: 'MD-PEDS-64219',
-      qualification: 'MBBS, FCPS (Pediatrics), DCH',
-      consultationFee: 60.0,
-      roomNumber: 'OPD-105',
-      availableDays: 'Mon,Tue,Wed,Thu,Sat',
+      specialization: 'Pediatric Infectious Diseases',
+      licenseNumber: 'LIC-PEDS-77319',
+      qualification: 'MBBS, FCPS (Pediatrics)',
+      consultationFee: 120.0,
+      roomNumber: 'Room 108',
+      availableDays: 'Mon,Wed,Fri',
       shiftStart: '10:00',
       shiftEnd: '16:00',
-      bio: 'Consultant pediatrician dedicated to child wellness, immunization, and pediatric primary care.',
+      bio: 'Specialist in pediatric developmental care and childhood respiratory infections.',
     },
   });
 
+  // 4. Seed Hospital Staff Users
+  console.log('👥 Seeding Receptionist, Nurse, Pharmacist...');
+  
   // Receptionist
   await prisma.user.create({
     data: {
@@ -163,7 +150,7 @@ async function main() {
   });
 
   // Nurse
-  await prisma.user.create({
+  const nurseUser = await prisma.user.create({
     data: {
       email: 'nurse.maria@hms.hospital',
       passwordHash: defaultPasswordHash,
@@ -186,7 +173,7 @@ async function main() {
     },
   });
 
-  // 5. Create Patient Users & Demographic Profiles (with auto MRN format)
+  // 5. Create Patient Users & Demographic Profiles
   console.log('📋 Creating Patient Demographic Profiles (MRNs)...');
 
   // Patient 1
@@ -200,7 +187,7 @@ async function main() {
     },
   });
 
-  await prisma.patientProfile.create({
+  const patDavid = await prisma.patientProfile.create({
     data: {
       userId: patient1User.id,
       mrn: 'MRN-2026-0001',
@@ -219,54 +206,76 @@ async function main() {
       emergencyContactName: 'Sarah Miller',
       emergencyContactPhone: '+1-555-0202',
       emergencyContactRelation: 'Spouse',
-      allergies: 'Penicillin, Peanuts',
-      chronicConditions: 'Primary Hypertension',
+      allergies: 'Penicillin, Dust Mites',
+      chronicConditions: 'Mild Hypertension',
       insuranceProvider: 'Blue Cross Blue Shield',
-      insurancePolicyNo: 'BCBS-9948201',
-      notes: 'Patient requires regular blood pressure monitoring.',
+      insurancePolicyNo: 'BCBS-9918230',
+      notes: 'Patient reports mild shortness of breath during exertion.',
     },
   });
 
-  // Patient 2 (Walk-in / Unlinked user account)
+  // Patient 2
+  const patient2User = await prisma.user.create({
+    data: {
+      email: 'fatima.noor@gmail.com',
+      passwordHash: defaultPasswordHash,
+      fullName: 'Fatima Noor',
+      phone: '+1-555-0301',
+      role: 'PATIENT',
+    },
+  });
+
   await prisma.patientProfile.create({
     data: {
+      userId: patient2User.id,
       mrn: 'MRN-2026-0002',
-      firstName: 'Ayesha',
-      lastName: 'Khan',
-      dateOfBirth: new Date('1995-09-20'),
+      firstName: 'Fatima',
+      lastName: 'Noor',
+      dateOfBirth: new Date('1994-11-23'),
       gender: 'FEMALE',
-      bloodGroup: 'B+',
-      nationalId: 'ID-95201948',
+      bloodGroup: 'O+',
+      nationalId: 'ID-94112390',
       phone: '+1-555-0301',
-      email: 'ayesha.khan@example.com',
-      address: '120 Elm Street, Apt 4B',
-      city: 'Metro City',
-      state: 'NY',
-      postalCode: '10001',
-      emergencyContactName: 'Tariq Khan',
+      email: 'fatima.noor@gmail.com',
+      address: '45 Lakeview Boulevard',
+      city: 'Chicago',
+      state: 'IL',
+      postalCode: '60601',
+      emergencyContactName: 'Omar Noor',
       emergencyContactPhone: '+1-555-0302',
-      emergencyContactRelation: 'Father',
-      allergies: 'Aspirin, NSAIDs',
-      chronicConditions: 'Mild Asthma',
+      emergencyContactRelation: 'Brother',
+      allergies: 'Peanuts, Shellfish',
+      chronicConditions: 'Asthma',
       insuranceProvider: 'Aetna Health',
-      insurancePolicyNo: 'AET-449102',
-      notes: 'Carries salbutamol inhaler.',
+      insurancePolicyNo: 'AET-772910',
+      notes: 'Carry rescue inhaler at all times.',
     },
   });
 
   // Patient 3
+  const patient3User = await prisma.user.create({
+    data: {
+      email: 'robert.chen@gmail.com',
+      passwordHash: defaultPasswordHash,
+      fullName: 'Robert Chen',
+      phone: '+1-555-0401',
+      role: 'PATIENT',
+    },
+  });
+
   await prisma.patientProfile.create({
     data: {
+      userId: patient3User.id,
       mrn: 'MRN-2026-0003',
       firstName: 'Robert',
       lastName: 'Chen',
-      dateOfBirth: new Date('1972-11-05'),
+      dateOfBirth: new Date('1965-02-18'),
       gender: 'MALE',
-      bloodGroup: 'O+',
-      nationalId: 'ID-72110599',
+      bloodGroup: 'B+',
+      nationalId: 'ID-65021811',
       phone: '+1-555-0401',
-      email: 'robert.chen@example.com',
-      address: '88 Oakridge Boulevard',
+      email: 'robert.chen@gmail.com',
+      address: '108 Grand Avenue',
       city: 'Oakville',
       state: 'CA',
       postalCode: '90210',
@@ -281,7 +290,84 @@ async function main() {
     },
   });
 
-  // 6. Seed Pharmacy Medicines (Foundation for Module 4)
+  // 6. Seed Longitudinal Medical History for David Miller
+  console.log('🩺 Seeding Longitudinal Clinical History for David Miller...');
+  
+  const appt1 = await prisma.appointment.create({
+    data: {
+      patientId: patDavid.id,
+      doctorId: docSarah.id,
+      appointmentDate: new Date('2026-08-20T10:00:00Z'),
+      timeSlot: '10:00 - 10:30',
+      type: 'OPD',
+      status: 'COMPLETED',
+      reasonForVisit: 'Routine cardiovascular follow-up & BP check.',
+    },
+  });
+
+  await prisma.consultationNote.create({
+    data: {
+      appointmentId: appt1.id,
+      patientId: patDavid.id,
+      doctorId: doc1User.id,
+      subjective: 'Patient reports symptoms occur 1-2 times weekly after walking upstairs.',
+      objective: 'BP 132/85 mmHg, Heart Sounds regular S1/S2, No murmurs detected.',
+      assessment: 'Primary Stage-1 Essential Hypertension, well-compensated.',
+      plan: 'Continue low sodium diet, 30 min daily walking, prescribe ACE Inhibitor.',
+      icd10Codes: 'I10',
+    },
+  });
+
+  await prisma.vitalSign.create({
+    data: {
+      appointmentId: appt1.id,
+      patientId: patDavid.id,
+      recordedById: nurseUser.id,
+      systolicBp: 132,
+      diastolicBp: 85,
+      pulseRate: 74,
+      temperature: 98.6,
+      respiratoryRate: 16,
+      oxygenSaturation: 99.0,
+      weightKg: 78.5,
+      heightCm: 178.0,
+      bmi: 24.8,
+      triageNotes: 'Stable outpatient triage.',
+    },
+  });
+
+  const rx1 = await prisma.prescription.create({
+    data: {
+      patientId: patDavid.id,
+      doctorId: docSarah.id,
+      prescriptionNumber: 'RX-2026-0001',
+      generalAdvice: 'Review in clinic after 4 weeks with BP chart.',
+      dietaryAdvice: 'Low sodium diet, reduce caffeine intake.',
+    },
+  });
+
+  await prisma.prescriptionItem.createMany({
+    data: [
+      {
+        prescriptionId: rx1.id,
+        medicineName: 'Lisinopril 10mg',
+        dosage: '1 Tablet Daily',
+        frequency: 'Once Daily',
+        duration: '30 Days',
+        instructions: 'Take in morning with water',
+      },
+      {
+        prescriptionId: rx1.id,
+        medicineName: 'Aspirin 81mg',
+        dosage: '1 Tablet Daily',
+        frequency: 'Once Daily',
+        duration: '30 Days',
+        instructions: 'Take after breakfast',
+      },
+    ],
+  });
+
+  // 7. Seed Pharmacy Medicines
   console.log('💊 Seeding Pharmacy Inventory foundation...');
   const sampleMedicines = [
     { name: 'Amoxicillin 500mg', genericName: 'Amoxicillin', category: 'Antibiotic', manufacturer: 'GSK', unitPrice: 12.5, stockQuantity: 250, dosageForm: 'Capsule' },
@@ -295,7 +381,7 @@ async function main() {
     await prisma.medicine.create({ data: med });
   }
 
-  // 7. Seed Wards & Beds (Foundation for Module 4)
+  // 8. Seed Wards & Beds
   console.log('🛏️ Seeding Inpatient Wards & Beds foundation...');
   const icuWard = await prisma.ward.create({
     data: {
@@ -317,28 +403,19 @@ async function main() {
     ],
   });
 
-  // 8. Create Initial Audit Log
+  // 9. Create Initial Audit Log
   await prisma.auditLog.create({
     data: {
       userId: adminUser.id,
       action: 'SYSTEM_INITIALIZATION',
       entity: 'System',
-      details: 'Hospital Management System Day 1 DB schema migration and baseline seed completed successfully.',
+      details: 'Hospital Management System Day 1-5 DB schema migration and baseline seed completed successfully.',
       ipAddress: '127.0.0.1',
       userAgent: 'SeedScript/1.0',
     },
   });
 
   console.log('✅ Database Seed Completed Successfully!');
-  console.log('----------------------------------------------------');
-  console.log('🔐 Demo Credentials for Module 1 Testing:');
-  console.log('  • Admin:        admin@hms.hospital        / Admin@12345');
-  console.log('  • Doctor (Card):dr.sarah@hms.hospital      / Password@123');
-  console.log('  • Doctor (Peds):dr.ahmed@hms.hospital      / Password@123');
-  console.log('  • Receptionist: receptionist@hms.hospital  / Password@123');
-  console.log('  • Nurse:        nurse.maria@hms.hospital   / Password@123');
-  console.log('  • Patient:      david.miller@gmail.com     / Password@123');
-  console.log('----------------------------------------------------');
 }
 
 main()
