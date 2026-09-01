@@ -13,6 +13,7 @@ import {
   Users,
   UserPlus,
   Search,
+  Stethoscope,
 } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab }) {
@@ -20,12 +21,12 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     {
       id: 'module1',
       title: 'Module 1: Auth, RBAC & Patients',
-      badge: 'Completed (All 5 Days Done) ✅',
+      badge: 'Completed (Days 1 - 5 Done) ✅',
       badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
       days: [
         { day: 'Day 1', label: 'DB Schema Design & Setup', status: 'completed' },
         { day: 'Day 2', label: 'JWT Auth & Password Hash', status: 'completed' },
-        { day: 'Day 3', label: 'RBAC (Admin, Doctor, Receptionist, Patient)', status: 'completed' },
+        { day: 'Day 3', label: 'RBAC Multi-Role Guards', status: 'completed' },
         { day: 'Day 4', label: 'Patient Registration & Auto MRN', status: 'completed' },
         { day: 'Day 5', label: 'Search & Medical History Logs', status: 'completed' },
       ],
@@ -34,14 +35,14 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     {
       id: 'module2',
       title: 'Module 2: Doctor Rostering & OPD',
-      badge: 'Upcoming (Module 2)',
-      badgeColor: 'bg-slate-800 text-slate-400 border-slate-700',
+      badge: 'In Progress (Day 1 Active) 🚀',
+      badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
       days: [
-        { day: 'Day 1', label: 'Doctor Profile & Shift Roster' },
-        { day: 'Day 2', label: 'Slot Booking Engine' },
-        { day: 'Day 3', label: 'OPD Queue & Token Display' },
-        { day: 'Day 4', label: 'Nurse Vitals Triage Desk' },
-        { day: 'Day 5', label: 'Appointment Status Flow' },
+        { day: 'Day 1', label: 'Doctor Profile & Shift Roster', status: 'completed' },
+        { day: 'Day 2', label: 'Slot Booking Engine', status: 'upcoming' },
+        { day: 'Day 3', label: 'OPD Queue & Token Display', status: 'upcoming' },
+        { day: 'Day 4', label: 'Nurse Vitals Triage Desk', status: 'upcoming' },
+        { day: 'Day 5', label: 'Appointment Status Flow', status: 'upcoming' },
       ],
       icon: CalendarClock,
     },
@@ -80,29 +81,45 @@ export default function Sidebar({ activeTab, setActiveTab }) {
       {/* Navigation Tabs */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-sm">
         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
-          <Layers className="w-4 h-4 text-cyan-400" />
-          Module 1 Navigation (All Days)
+          <Layers className="w-4 h-4 text-teal-400" />
+          Active Workspaces
         </h2>
         <nav className="space-y-1">
-          {/* Day 5 Primary Tab */}
+          {/* Module 2 Day 1: Doctor Shift Roster */}
           <button
-            onClick={() => setActiveTab('history')}
+            onClick={() => setActiveTab('roster')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-              activeTab === 'history'
-                ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg shadow-blue-600/20'
+              activeTab === 'roster'
+                ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg shadow-teal-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <Search className="w-4 h-4 text-cyan-300" />
-              <span>Day 5: Search & Medical History</span>
+              <Stethoscope className="w-4 h-4 text-teal-300" />
+              <span>M2 Day 1: Doctor Shift Roster</span>
             </div>
-            <span className="text-[10px] bg-cyan-400/20 text-cyan-200 border border-cyan-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
+            <span className="text-[10px] bg-teal-400/20 text-teal-200 border border-teal-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
               Current
             </span>
           </button>
 
-          {/* Day 4 Patient Registration Tab */}
+          {/* Module 1 Day 5: Search & History Tab */}
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'history'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Search className="w-4 h-4" />
+              <span>M1 Day 5: Patient Search & EHR</span>
+            </div>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M1</span>
+          </button>
+
+          {/* Module 1 Day 4: Patient Registration Tab */}
           <button
             onClick={() => setActiveTab('patients')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
@@ -113,12 +130,12 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           >
             <div className="flex items-center gap-2.5">
               <UserPlus className="w-4 h-4" />
-              <span>Day 4: Patient Registration</span>
+              <span>M1 Day 4: Patient Registration</span>
             </div>
             <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">MRN</span>
           </button>
 
-          {/* Day 3 RBAC Tab */}
+          {/* Module 1 Day 3: RBAC Tab */}
           <button
             onClick={() => setActiveTab('rbac')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
@@ -129,12 +146,12 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           >
             <div className="flex items-center gap-2.5">
               <Users className="w-4 h-4" />
-              <span>Day 3: Role-Based Access (RBAC)</span>
+              <span>M1 Day 3: RBAC Access Control</span>
             </div>
             <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">RBAC</span>
           </button>
 
-          {/* Day 2 JWT Auth Tab */}
+          {/* Module 1 Day 2: JWT Auth Tab */}
           <button
             onClick={() => setActiveTab('auth')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
@@ -145,12 +162,12 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           >
             <div className="flex items-center gap-2.5">
               <ShieldCheck className="w-4 h-4" />
-              <span>Day 2: JWT Auth & Security</span>
+              <span>M1 Day 2: JWT Security</span>
             </div>
             <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">Auth</span>
           </button>
 
-          {/* Day 1 Schema Tab */}
+          {/* Module 1 Day 1: Schema Tab */}
           <button
             onClick={() => setActiveTab('schema')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
@@ -161,25 +178,9 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           >
             <div className="flex items-center gap-2.5">
               <Database className="w-4 h-4" />
-              <span>Day 1: Schema & ERD</span>
+              <span>M1 Day 1: Database & ERD</span>
             </div>
             <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">11 Models</span>
-          </button>
-
-          {/* Seed Data Tab */}
-          <button
-            onClick={() => setActiveTab('seed')}
-            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-              activeTab === 'seed'
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-            }`}
-          >
-            <div className="flex items-center gap-2.5">
-              <KeyRound className="w-4 h-4" />
-              <span>Seed Credentials & Data</span>
-            </div>
-            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">6 Roles</span>
           </button>
         </nav>
       </div>
@@ -188,22 +189,24 @@ export default function Sidebar({ activeTab, setActiveTab }) {
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-            Project Roadmap & Schedule
+            Internship Syllabus Roadmap
           </h2>
-          <span className="text-[10px] text-emerald-400 font-mono font-bold">Module 1 Complete</span>
+          <span className="text-[10px] text-teal-400 font-mono font-bold">Module 2 Active</span>
         </div>
 
         <div className="space-y-3">
           {modules.map((m) => {
             const Icon = m.icon;
-            const isCurrentModule = m.id === 'module1';
+            const isCurrentModule = m.id === 'module2';
 
             return (
               <div
                 key={m.id}
                 className={`p-3 rounded-xl border transition ${
                   isCurrentModule
-                    ? 'bg-emerald-950/20 border-emerald-500/40 ring-1 ring-emerald-500/20'
+                    ? 'bg-teal-950/20 border-teal-500/40 ring-1 ring-teal-500/20'
+                    : m.id === 'module1'
+                    ? 'bg-emerald-950/20 border-emerald-500/30'
                     : 'bg-slate-800/40 border-slate-800/80 opacity-75'
                 }`}
               >
@@ -212,7 +215,9 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                     <div
                       className={`p-1.5 rounded-lg ${
                         isCurrentModule
-                          ? 'bg-emerald-600 text-white font-bold'
+                          ? 'bg-teal-600 text-white font-bold'
+                          : m.id === 'module1'
+                          ? 'bg-emerald-600 text-white'
                           : 'bg-slate-700 text-slate-300'
                       }`}
                     >
@@ -229,17 +234,33 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                 </div>
 
                 {isCurrentModule && (
-                  <div className="mt-2 space-y-1.5 pt-2 border-t border-emerald-500/20">
+                  <div className="mt-2 space-y-1.5 pt-2 border-t border-teal-500/20">
                     {m.days.map((d, dIdx) => (
                       <div key={dIdx} className="flex items-center justify-between text-xs py-0.5">
                         <div className="flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                          <span className="text-emerald-300 font-semibold">
+                          {d.status === 'completed' ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+                          ) : (
+                            <CircleDot className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                          )}
+                          <span
+                            className={
+                              d.status === 'completed'
+                                ? 'text-teal-300 font-semibold'
+                                : 'text-slate-400'
+                            }
+                          >
                             <strong className="text-slate-300">{d.day}:</strong> {d.label}
                           </span>
                         </div>
-                        <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded font-mono">
-                          Done
+                        <span
+                          className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                            d.status === 'completed'
+                              ? 'bg-teal-500/20 text-teal-300'
+                              : 'bg-slate-800 text-slate-500'
+                          }`}
+                        >
+                          {d.status === 'completed' ? 'Done' : 'Next'}
                         </span>
                       </div>
                     ))}

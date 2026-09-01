@@ -144,4 +144,28 @@ export const medicalHistoryAPI = {
   },
 };
 
+// Doctor Profile & Shift Roster Endpoints (Module 2 Day 1)
+export const doctorRosterAPI = {
+  getAll: async (params = {}) => {
+    const response = await api.get('/doctors', { params });
+    return response.data;
+  },
+  getById: async (id) => {
+    const response = await api.get(`/doctors/${id}`);
+    return response.data;
+  },
+  create: async (doctorData) => {
+    const response = await api.post('/doctors', doctorData);
+    return response.data;
+  },
+  updateRoster: async (id, rosterData) => {
+    const response = await api.put(`/doctors/${id}/roster`, rosterData);
+    return response.data;
+  },
+  getStats: async () => {
+    const response = await api.get('/doctors/stats/overview');
+    return response.data;
+  },
+};
+
 export default api;

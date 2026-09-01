@@ -1,17 +1,18 @@
 # 🏥 Smart Hospital Management System (HMS)
 
 > **Cloud-Based Healthcare Management & Clinical Operations Platform**  
-> **Internship Project Submission — Module 1: Complete Deliverables (Days 1 — 5)**
+> **Internship Project Submission — Module 2: Day 1 (Doctor Profiles & Shift Rostering)**
 
 ---
 
 ## 📌 Project Overview
-The **Cloud-Based Hospital Management System (HMS)** is an enterprise-grade healthcare web application designed to automate clinical workflows, patient registration, outpatient scheduling, EHR consultations, pharmacy dispensing, inpatient bed tracking, and billing.
+The **Cloud-Based Hospital Management System (HMS)** is an enterprise-grade healthcare web application designed to automate clinical workflows, patient registration, outpatient scheduling, doctor shift rostering, EHR consultations, pharmacy dispensing, inpatient bed tracking, and billing.
 
 ---
 
-## 🚀 Module 1 Deliverables Summary (All 5 Days Completed)
+## 🚀 Internship Syllabus & Milestone Status
 
+### ✅ Module 1: Authentication, RBAC & Patient Registration (100% Completed)
 | Day | Date | Focus Scope | Deliverable Status |
 |---|---|---|---|
 | **Day 1** | Aug 24 | DB Schema Design & Full Stack Scaffolding | ✅ **Completed & Verified** |
@@ -22,124 +23,47 @@ The **Cloud-Based Hospital Management System (HMS)** is an enterprise-grade heal
 
 ---
 
-## 🔍 Module 1 — Day 5 Deliverables (Aug 28, 2026)
-
-### ✅ What was completed on Day 5:
-1. **Multi-Criteria Patient Search Engine (`medicalHistoryController.js`):**
-   - Search across MRN (`MRN-2026-XXXX`), Full Name, Phone, National ID (CNIC), and Emergency Contact.
-   - Filter chips by Blood Group (`A+`, `B+`, `O+`, `AB+`), Allergy Alerts, and Chronic Conditions.
-2. **Longitudinal EHR & Medical History Timeline (`medicalHistoryRoutes.js`):**
-   - Aggregated clinical consultation visits, SOAP notes (Subjective, Objective, Assessment, Plan), vital signs time-series (BP, Pulse, Temp, SpO2, BMI), and issued e-prescriptions.
-   - Chronologically unified clinical dossier for attending physicians.
-3. **Emergency Contact & Next-of-Kin Management (`updateEmergencyContact`):**
-   - Rapid emergency contact updater with guardian relationship tagging and security audit logging.
-4. **Allergy & Chronic Illness Safety Registry (`updateMedicalBaseline`):**
-   - Dynamic drug/food allergy tracking and chronic condition baseline updates.
-5. **Interactive Day 5 EHR & Patient Search Dashboard (`Day5MedicalHistoryExplorer.jsx`):**
-   - Instant search console with auto-complete.
-   - Longitudinal medical timeline with visual event badges.
-   - 1-Click emergency contact and allergy baseline editor modals.
-6. **Automated Day 5 Test Suite (`test-medical-history.js`):**
-   - 16 automated assertions verifying multi-criteria search, timeline aggregation, emergency updates, allergy expansions, and audit logging.
+### 🩺 Module 2: Doctor Rostering & OPD Management (In Progress)
+| Day | Date | Focus Scope | Deliverable Status |
+|---|---|---|---|
+| **Day 1** | Aug 31 / Sep 01 | Doctor Profile, Department Setup & Shift Roster | ✅ **Completed & Verified** |
+| **Day 2** | Sep 02 | Slot Booking Engine (Date/Time Slot Generation) | ⏳ *Next Milestone* |
+| **Day 3** | Sep 03 | OPD Queue & Token Display System | ⏳ *Upcoming* |
+| **Day 4** | Sep 04 | Nurse Vitals Triage Desk | ⏳ *Upcoming* |
+| **Day 5** | Sep 05 | Appointment Status & Consultation Flow | ⏳ *Upcoming* |
 
 ---
 
-## 📋 Module 1 — Day 4 Deliverables (Aug 27, 2026)
-- **Collision-Safe MRN Generator (`mrnGenerator.js`):** `MRN-YYYY-XXXX`.
-- **Demographic Intake Validation & API (`patientController.js`):** Registration & demographic endpoints.
-- **Automated Tests:** 17/17 tests passed (`test-patient-registration.js`).
+## 🩺 Module 2 — Day 1 Deliverables (Doctor Profiles & Shift Rostering)
+
+### ✅ What was completed on Module 2 Day 1:
+1. **Doctor Profile & Roster Controller (`doctorRosterController.js`):**
+   - Endpoints: `GET /api/doctors`, `GET /api/doctors/:id`, `POST /api/doctors`, `PUT /api/doctors/:id/roster`, `GET /api/doctors/stats/overview`.
+   - Physician details: Specialization, Medical License Number, Qualifications (MD, MBBS, FCPS), Consultation Fee, Assigned Examination Room, Shift Hours (`09:00 - 15:00`), Weekly Working Days (`Mon,Tue,Wed,Thu,Fri`).
+   - Dynamic real-time on-duty status calculation based on current day of the week.
+2. **Physician Onboarding & Shift Configuration Engine (`createDoctor`):**
+   - Admin-gated onboarding system creating physician user credentials with `DOCTOR` role, department assignment, and linked shift roster.
+3. **Input Validation Middleware (`validateDoctorRoster.js`):**
+   - Validates medical license uniqueness, positive fee structures, and strict shift chronology (`shiftStart < shiftEnd`).
+4. **Interactive Doctor Shift Roster Explorer Dashboard (`Day1DoctorRosterExplorer.jsx`):**
+   - Real-time Duty Board with On-Duty / Off-Duty status badges.
+   - 1-Click Interactive Shift Roster Editor Modal (working days toggles, shift hour time pickers, fee and room updates).
+   - Physician Onboarding Modal for rapid clinical staff registration.
+5. **Automated Test Suite (`test-doctor-roster.js`):**
+   - **18/18 Automated Assertions Passed** verifying doctor relations, onboarding, roster updates, duty calculations, and audit logging.
 
 ---
 
-## 🛡️ Module 1 — Day 3 Deliverables (Aug 26, 2026)
-- **Multi-Role RBAC System (`rbacConfig.js`):** 6 Roles, 20+ permissions matrix, route guards.
-- **Automated Tests:** 36/36 tests passed (`test-rbac.js`).
-
----
-
-## 🔐 Module 1 — Day 2 Deliverables (Aug 25, 2026)
-- **JWT Engine & BCrypt Security (`jwt.js`, `password.js`):** 10 Salt rounds, token issuance, inspect-token.
-- **Automated Tests:** 23/23 tests passed (`test-auth.js`).
-
----
-
-## 🗄️ Module 1 — Day 1 Deliverables (Aug 24, 2026)
-- **11 Prisma Relational Models:** Multi-role schema, doctor/patient profiles, departments, beds, audit logs.
-
----
-
-## 🏗️ Entity Relationship Diagram (ERD)
-
-```mermaid
-erDiagram
-    USER ||--o| DOCTOR_PROFILE : "has profile (if doctor)"
-    USER ||--o| PATIENT_PROFILE : "has profile (if patient)"
-    USER ||--o{ AUDIT_LOG : "triggers"
-    DEPARTMENT ||--o{ DOCTOR_PROFILE : "employs"
-    DEPARTMENT ||--o{ WARD : "houses"
-    PATIENT_PROFILE ||--o{ APPOINTMENT : "books"
-    PATIENT_PROFILE ||--o{ VITAL_SIGN : "has"
-    PATIENT_PROFILE ||--o{ PRESCRIPTION : "receives"
-    PATIENT_PROFILE ||--o{ INVOICE : "billed"
-    DOCTOR_PROFILE ||--o{ APPOINTMENT : "consults"
-    DOCTOR_PROFILE ||--o{ PRESCRIPTION : "issues"
-
-    USER {
-        string id PK
-        string email UK
-        string passwordHash "BCrypt Salted"
-        string fullName
-        string phone
-        string role "ADMIN | DOCTOR | RECEPTIONIST | NURSE | PHARMACIST | PATIENT"
-        boolean isActive
-        datetime lastLoginAt
-    }
-
-    PATIENT_PROFILE {
-        string id PK
-        string mrn UK "MRN-YYYY-XXXX"
-        string firstName
-        string lastName
-        string gender
-        date dateOfBirth
-        string bloodGroup
-        string emergencyContactName
-        string emergencyContactPhone
-        string emergencyContactRelation
-        string allergies
-        string chronicConditions
-    }
-
-    DOCTOR_PROFILE {
-        string id PK
-        string specialization
-        string licenseNumber UK
-        string qualification
-        decimal consultationFee
-        string roomNumber
-    }
-
-    AUDIT_LOG {
-        string id PK
-        string userId FK
-        string action "MEDICAL_HISTORY_UPDATED | PATIENT_REGISTERED | ROLE_CHANGED"
-        string entity
-        string details "JSON"
-        datetime createdAt
-    }
-```
-
----
-
-## 🛠️ Automated Test Suites (92 Total Passed Assertions)
+## 🛠️ Automated Test Suites (110 Total Passed Assertions)
 
 | Test Suite | Deliverable Scope | Assertions | Status |
 |---|---|---|---|
-| `test-auth.js` | Day 2: JWT Auth, Hashing, Token Tampering | 23 Assertions | ✅ **PASS (100%)** |
-| `test-rbac.js` | Day 3: RBAC Matrix, Route Guards & Admin | 36 Assertions | ✅ **PASS (100%)** |
-| `test-patient-registration.js` | Day 4: Auto-MRN & Demographic Intake | 17 Assertions | ✅ **PASS (100%)** |
-| `test-medical-history.js` | Day 5: Multi-Criteria Search & Longitudinal EHR | 16 Assertions | ✅ **PASS (100%)** |
-| **Total Test Coverage** | **Module 1 (Days 1 — 5)** | **92 Assertions** | ✅ **100% Passed** |
+| `test-auth.js` | M1 Day 2: JWT Auth, Hashing, Token Tampering | 23 Assertions | ✅ **PASS (100%)** |
+| `test-rbac.js` | M1 Day 3: RBAC Matrix, Route Guards & Admin | 36 Assertions | ✅ **PASS (100%)** |
+| `test-patient-registration.js` | M1 Day 4: Auto-MRN & Demographic Intake | 17 Assertions | ✅ **PASS (100%)** |
+| `test-medical-history.js` | M1 Day 5: Multi-Criteria Search & Longitudinal EHR | 16 Assertions | ✅ **PASS (100%)** |
+| `test-doctor-roster.js` | M2 Day 1: Doctor Profile & Shift Roster | 18 Assertions | ✅ **PASS (100%)** |
+| **Total Test Coverage** | **Modules 1 & 2 (Day 1)** | **110 Assertions** | ✅ **100% Passed** |
 
 ---
 
@@ -156,6 +80,7 @@ node test-auth.js                 # 23 tests
 node test-rbac.js                 # 36 tests
 node test-patient-registration.js # 17 tests
 node test-medical-history.js      # 16 tests
+node test-doctor-roster.js        # 18 tests
 npm run dev
 ```
 
