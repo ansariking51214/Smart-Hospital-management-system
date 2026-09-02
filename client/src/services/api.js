@@ -168,4 +168,34 @@ export const doctorRosterAPI = {
   },
 };
 
+// Slot Booking Engine & OPD Appointments (Module 2 Day 2)
+export const appointmentsAPI = {
+  getAvailableSlots: async (doctorId, date, slotDuration = 30) => {
+    const response = await api.get('/appointments/slots', {
+      params: { doctorId, date, slotDuration },
+    });
+    return response.data;
+  },
+  book: async (bookingData) => {
+    const response = await api.post('/appointments/book', bookingData);
+    return response.data;
+  },
+  getAll: async (params = {}) => {
+    const response = await api.get('/appointments', { params });
+    return response.data;
+  },
+  reschedule: async (id, rescheduleData) => {
+    const response = await api.patch(`/appointments/${id}/reschedule`, rescheduleData);
+    return response.data;
+  },
+  cancel: async (id, cancellationData = {}) => {
+    const response = await api.patch(`/appointments/${id}/cancel`, cancellationData);
+    return response.data;
+  },
+  getStats: async () => {
+    const response = await api.get('/appointments/stats/overview');
+    return response.data;
+  },
+};
+
 export default api;

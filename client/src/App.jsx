@@ -10,13 +10,14 @@ import { Day3RbacExplorer } from './components/Day3RbacExplorer';
 import { Day4PatientRegistration } from './components/Day4PatientRegistration';
 import { Day5MedicalHistoryExplorer } from './components/Day5MedicalHistoryExplorer';
 import { Day1DoctorRosterExplorer } from './components/Day1DoctorRosterExplorer';
+import { Day2AppointmentBookingExplorer } from './components/Day2AppointmentBookingExplorer';
 import { AuthModal } from './components/AuthModal';
 import { AuthProvider } from './context/AuthContext';
 import { fetchHealthStatus, fetchSchemaDetails } from './services/api';
-import { RefreshCw, CalendarClock } from 'lucide-react';
+import { RefreshCw, CalendarCheck } from 'lucide-react';
 
 function DashboardContent() {
-  const [activeTab, setActiveTab] = useState('roster'); // 'roster' | 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
+  const [activeTab, setActiveTab] = useState('booking'); // 'booking' | 'roster' | 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
   const [healthData, setHealthData] = useState(null);
   const [schemaData, setSchemaData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -70,11 +71,11 @@ function DashboardContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-                    <CalendarClock className="w-5 h-5 text-teal-400" />
-                    Doctor Profiles & Clinical Shift Rostering Center
+                    <CalendarCheck className="w-5 h-5 text-teal-400" />
+                    Slot Booking Engine & OPD Scheduling Center
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Module 2 &bull; Day 1: Physician Onboarding, Shift Schedules, Weekly Rosters & Real-Time Availability
+                    Module 2 &bull; Day 2: Dynamic Time Slot Generation, Collision Guard, Queue Token Issuance & Rescheduling
                   </p>
                 </div>
                 <button
@@ -92,6 +93,13 @@ function DashboardContent() {
             </div>
 
             {/* Dynamic Tab Body */}
+            {activeTab === 'booking' && (
+              <div className="space-y-8">
+                <Day2AppointmentBookingExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
             {activeTab === 'roster' && (
               <div className="space-y-8">
                 <Day1DoctorRosterExplorer />
@@ -148,7 +156,7 @@ function DashboardContent() {
       {/* Footer */}
       <footer className="border-t border-slate-800/80 bg-slate-900/60 py-4 px-6 text-center text-xs text-slate-500">
         <p>
-          Cloud-Based Hospital Management System (HMS) &bull; Module 2: Day 1 (Doctor Profiles & Shift Rosters)
+          Cloud-Based Hospital Management System (HMS) &bull; Module 2: Day 2 (Slot Booking Engine & OPD Scheduling)
         </p>
       </footer>
     </div>
