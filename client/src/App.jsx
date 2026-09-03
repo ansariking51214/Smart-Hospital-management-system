@@ -12,13 +12,14 @@ import { Day5MedicalHistoryExplorer } from './components/Day5MedicalHistoryExplo
 import { Day1DoctorRosterExplorer } from './components/Day1DoctorRosterExplorer';
 import { Day2AppointmentBookingExplorer } from './components/Day2AppointmentBookingExplorer';
 import { Day3OpdQueueExplorer } from './components/Day3OpdQueueExplorer';
+import { Day4NurseTriageExplorer } from './components/Day4NurseTriageExplorer';
 import { AuthModal } from './components/AuthModal';
 import { AuthProvider } from './context/AuthContext';
 import { fetchHealthStatus, fetchSchemaDetails } from './services/api';
-import { RefreshCw, Ticket } from 'lucide-react';
+import { RefreshCw, Activity } from 'lucide-react';
 
 function DashboardContent() {
-  const [activeTab, setActiveTab] = useState('queue'); // 'queue' | 'booking' | 'roster' | 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
+  const [activeTab, setActiveTab] = useState('triage'); // 'triage' | 'queue' | 'booking' | 'roster' | 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
   const [healthData, setHealthData] = useState(null);
   const [schemaData, setSchemaData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -72,11 +73,11 @@ function DashboardContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-                    <Ticket className="w-5 h-5 text-teal-400" />
-                    OPD Live Queue & Token Display Center
+                    <Activity className="w-5 h-5 text-teal-400" />
+                    Nurse Vitals Triage Desk & Early Warning Center
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Module 2 &bull; Day 3: Real-Time Patient Calling Board, Sequential Token Numbering & Triage Desk
+                    Module 2 &bull; Day 4: Pre-Consultation Vitals Screening, Auto-BMI Calculation & NEWS Severity Alerts
                   </p>
                 </div>
                 <button
@@ -94,6 +95,13 @@ function DashboardContent() {
             </div>
 
             {/* Dynamic Tab Body */}
+            {activeTab === 'triage' && (
+              <div className="space-y-8">
+                <Day4NurseTriageExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
             {activeTab === 'queue' && (
               <div className="space-y-8">
                 <Day3OpdQueueExplorer />
@@ -164,7 +172,7 @@ function DashboardContent() {
       {/* Footer */}
       <footer className="border-t border-slate-800/80 bg-slate-900/60 py-4 px-6 text-center text-xs text-slate-500">
         <p>
-          Cloud-Based Hospital Management System (HMS) &bull; Module 2: Day 3 (OPD Queue & Token Display System)
+          Cloud-Based Hospital Management System (HMS) &bull; Module 2: Day 4 (Nurse Vitals Triage Desk & Early Warning System)
         </p>
       </footer>
     </div>

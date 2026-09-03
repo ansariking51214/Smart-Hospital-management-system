@@ -18,19 +18,19 @@ export default function Navbar({ healthData, isLoading, onOpenAuthModal }) {
             <div className="flex items-center gap-2">
               <h1 className="text-lg font-bold tracking-tight text-white">Smart HMS</h1>
               <span className="text-xs px-2 py-0.5 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 font-semibold font-mono">
-                v2.3.0 (Module 2 - Day 3)
+                v2.4.0 (Module 2 - Day 4)
               </span>
             </div>
-            <p className="text-xs text-slate-400">OPD Queue & Live Token Display System</p>
+            <p className="text-xs text-slate-400">Nurse Vitals Triage Desk & Early Warning System</p>
           </div>
         </div>
 
         {/* Center Pill: Current Module & Day */}
         <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700/60 text-xs">
           <span className="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
-          <span className="text-slate-300 font-medium">Module 2 : Day 3</span>
+          <span className="text-slate-300 font-medium">Module 2 : Day 4</span>
           <span className="text-slate-500">•</span>
-          <span className="text-teal-400 font-semibold">OPD Queue & Token Display</span>
+          <span className="text-teal-400 font-semibold">Nurse Vitals Triage Desk</span>
         </div>
 
         {/* Right Actions & User Account Status */}

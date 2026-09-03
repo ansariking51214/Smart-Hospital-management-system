@@ -222,4 +222,24 @@ export const opdQueueAPI = {
   },
 };
 
+// Nurse Vitals Triage Desk & Early Warning System (Module 2 Day 4)
+export const triageAPI = {
+  recordVitals: async (vitalsData) => {
+    const response = await api.post('/triage/vitals', vitalsData);
+    return response.data;
+  },
+  getQueue: async () => {
+    const response = await api.get('/triage/queue');
+    return response.data;
+  },
+  getPatientHistory: async (patientId) => {
+    const response = await api.get(`/triage/patient/${patientId}/history`);
+    return response.data;
+  },
+  getStats: async () => {
+    const response = await api.get('/triage/stats/overview');
+    return response.data;
+  },
+};
+
 export default api;

@@ -2,13 +2,13 @@
 
 > **Cloud-Based Healthcare Management & Clinical Operations Platform**  
 > **Student / Intern Name:** Muhammad Tabish Ahmad  
-> **Internship ID:** `ZYNVEX-CERT-110`  
+> **Internship ID:** `ZYNVEX-CERT-1101`  
 > **Repository:** [Smart-Hospital-management-system](https://github.com/ansariking51214/Smart-Hospital-management-system)
 
 ---
 
 ## 📌 Project Overview
-The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack healthcare web application designed to automate clinical operations, outpatient scheduling, dynamic time slot booking, electronic health records (EHR), physician shift rostering, OPD live queue & token calling, pharmacy dispensing, inpatient bed tracking, and billing workflows.
+The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack healthcare web application designed to automate clinical operations, outpatient scheduling, dynamic time slot booking, electronic health records (EHR), physician shift rostering, OPD live queue & token calling, nurse vitals triage desk & early warning scoring, pharmacy dispensing, inpatient bed tracking, and billing workflows.
 
 ---
 
@@ -30,34 +30,33 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 |:---:|:---:|:---|:---|:---:|
 | **Day 1** | Aug 31 / Sep 01 | Doctor Profile & Shift Rostering | Physician Onboarding, Shift Schedules, Weekly Rosters, Real-time Duty Board | ✅ **Completed** |
 | **Day 2** | Sep 02 | Slot Booking Engine & OPD Scheduling | Dynamic Slot Generation, Collision Guard, Queue Token Issuance & Rescheduling | ✅ **Completed** |
-| **Day 3** | Sep 03 | **OPD Queue & Token Display System** | **Live Patient Calling Board, Sequential Tokens, TV Display Screen, Triage Desk** | ✅ **Completed & Verified** |
-| **Day 4** | Sep 04 | Nurse Vitals Triage Desk | Clinical Vitals Recording & Triage Status | ⏳ *Next Milestone* |
-| **Day 5** | Sep 05 | Appointment Status Flow | Check-In, In-Consultation & Completion Workflow | ⏳ *Upcoming* |
+| **Day 3** | Sep 03 | OPD Queue & Token Display System | Live Patient Calling Board, Sequential Tokens, TV Display Screen, Triage Desk | ✅ **Completed** |
+| **Day 4** | Sep 04 | **Nurse Vitals Triage Desk & Alerts** | **Pre-Consultation Vitals, Auto-BMI, NEWS Early Warning Severity Alerts (Green/Amber/Red)** | ✅ **Completed & Verified** |
+| **Day 5** | Sep 05 | Appointment Status Flow | Check-In, In-Consultation & Completion Workflow | ⏳ *Next Milestone* |
 
 ---
 
-## 🎫 Module 2 — Day 3 Deliverables: OPD Live Queue & Token Display System
+## 🩺 Module 2 — Day 4 Deliverables: Nurse Vitals Triage Desk & Early Warning System
 
-### 1. Backend OPD Queue Management Core & API Endpoints
-* **Controller:** [`server/src/controllers/opdQueueController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/opdQueueController.js)
-* **Routes:** [`server/src/routes/opdQueueRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/opdQueueRoutes.js) mounted on `/api/queue`
-* **Validation:** [`server/src/middleware/validateOpdQueue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/middleware/validateOpdQueue.js)
+### 1. Clinical Vitals Engine & Triage Risk Classifier
+* **Controller:** [`server/src/controllers/nurseTriageController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/nurseTriageController.js)
+* **Routes:** [`server/src/routes/nurseTriageRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/nurseTriageRoutes.js) mounted on `/api/triage`
+* **Validation:** [`server/src/middleware/validateNurseTriage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/middleware/validateNurseTriage.js)
 
 | Method | Endpoint | Access | Purpose |
 |:---|:---|:---:|:---|
-| `GET` | `/api/queue/live` | Public / Staff | Real-time live OPD queue board returning Currently Serving, Waiting Line with estimated wait times, and Completed tokens |
-| `POST` | `/api/queue/call-next` | Doctor / Receptionist | Pages and calls next waiting patient in line, updates status to `CALLED`, sets `calledAt` timestamp, and triggers room chime |
-| `PATCH` | `/api/queue/token/:id/status` | Doctor / Receptionist | Transitions token state (`IN_CONSULTATION`, `COMPLETED`, `SKIPPED`, `RECALLED`) and updates linked appointment |
-| `POST` | `/api/queue/issue-walkin` | Receptionist / Admin | Issues instant walk-in OPD token with sequential numbering (e.g. `CARD-001`, `PEDS-002`) |
-| `GET` | `/api/queue/stats/overview` | Public / Staff | Live queue statistics: currently serving count, waiting depth, completed consultations, and average wait time |
+| `POST` | `/api/triage/vitals` | Nurse / Doctor / Admin | Records BP, Pulse, SpO2, Temp, RR, Height, Weight; auto-computes BMI and evaluates NEWS triage risk level (`GREEN`, `AMBER`, `RED`) |
+| `GET` | `/api/triage/queue` | Authenticated | Pre-consultation nurse triage queue (checked-in patients pending vital signs screening) |
+| `GET` | `/api/triage/patient/:patientId/history` | Authenticated | Longitudinal vitals time-series history for clinical trend analysis |
+| `GET` | `/api/triage/stats/overview` | Authenticated | Triage metrics: Total Vitals Today, Red Critical Alerts, Amber Urgent Alerts, Green Stable |
 
-### 2. Interactive Frontend OPD Queue & TV Display Dashboard
-* **React Component:** [`client/src/components/Day3OpdQueueExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day3OpdQueueExplorer.jsx)
+### 2. Interactive Frontend Nurse Triage Explorer
+* **React Component:** [`client/src/components/Day4NurseTriageExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day4NurseTriageExplorer.jsx)
 * **Features:**
-  * **Waiting Hall TV Display Mode:** High-contrast pulsing "NOW SERVING" digital cards with Token Code, Patient Name, Attending Doctor, and Examination Room number.
-  * **Doctor Consultation Desk:** 1-Click "Call Next Patient" paging button, Start Consultation, Mark Completed, and Skip / No-Show controls.
-  * **Reception Walk-in Desk:** 1-Click instant walk-in token issuer.
-  * **Auto-Refreshing Live Queue Stream:** 8-second polling lifecycle for real-time waiting hall synchronization.
+  * **Interactive Intake Form:** Real-time dual-slider and numerical entry with immediate auto-BMI calculation and color category badges (`Underweight`, `Normal`, `Overweight`, `Obese`).
+  * **Live Early Warning Score (NEWS / Triage Risk Badge):** Real-time physiological alert generation for acute hypoxemia (SpO2 < 90%), hypertensive crisis (BP > 180/110), tachycardia, and pyrexia.
+  * **Pre-Consultation Triage Queue:** 1-Click triage intake for waiting patients.
+  * **Longitudinal Vitals Trend Log:** Historical time-series record with clinical annotations.
 
 ---
 
@@ -65,43 +64,32 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 
 ```mermaid
 erDiagram
-    USER ||--o| DOCTOR_PROFILE : "has clinical profile"
-    USER ||--o| PATIENT_PROFILE : "has patient profile"
-    USER ||--o{ AUDIT_LOG : "generates"
-    DEPARTMENT ||--o{ DOCTOR_PROFILE : "employs"
-    DOCTOR_PROFILE ||--o{ APPOINTMENT : "consults"
-    PATIENT_PROFILE ||--o{ APPOINTMENT : "books"
-    APPOINTMENT ||--o| QUEUE_TOKEN : "issues token"
-    PATIENT_PROFILE ||--o{ QUEUE_TOKEN : "holds token"
-    DOCTOR_PROFILE ||--o{ QUEUE_TOKEN : "serves"
+    PATIENT_PROFILE ||--o{ VITAL_SIGN : "has vitals recorded"
+    APPOINTMENT ||--o| VITAL_SIGN : "linked to consultation"
+    USER ||--o{ VITAL_SIGN : "nurse recorded"
 
-    QUEUE_TOKEN {
+    VITAL_SIGN {
         string id PK
+        string patientId FK
         string appointmentId FK
-        string patientId FK
-        string doctorId FK
-        int tokenNumber "Sequential daily counter (1, 2, 3...)"
-        string tokenCode "e.g. CARD-001, PEDS-002"
-        string status "WAITING | CALLED | IN_CONSULTATION | COMPLETED | SKIPPED | CANCELLED"
-        datetime calledAt
-        datetime completedAt
-        datetime date
-    }
-
-    APPOINTMENT {
-        string id PK
-        string patientId FK
-        string doctorId FK
-        datetime appointmentDate
-        string timeSlot "10:00 - 10:30"
-        string status "SCHEDULED | CONFIRMED | IN_QUEUE | IN_CONSULTATION | COMPLETED | CANCELLED"
-        string reasonForVisit
+        string recordedById FK
+        int systolicBp "mmHg (50 - 260)"
+        int diastolicBp "mmHg (30 - 160)"
+        int pulseRate "bpm (30 - 240)"
+        float temperature "°F (85.0 - 110.0)"
+        int respiratoryRate "breaths/min"
+        float oxygenSaturation "SpO2 % (50 - 100)"
+        float heightCm "cm"
+        float weightKg "kg"
+        float bmi "Auto-calculated kg/m2"
+        string triageNotes
+        datetime recordedAt
     }
 ```
 
 ---
 
-## 🧪 Automated Test Suite Coverage (146 Total Passed Assertions)
+## 🧪 Automated Test Suite Coverage (160 Total Passed Assertions)
 
 | Test Suite File | Module & Day Scope | Assertions | Result |
 |:---|:---|:---:|:---:|
@@ -111,8 +99,9 @@ erDiagram
 | [`server/test-medical-history.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-medical-history.js) | M1 Day 5: Multi-Criteria Search & Longitudinal EHR | 16 | ✅ **100% PASS** |
 | [`server/test-doctor-roster.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-roster.js) | M2 Day 1: Doctor Profile & Shift Rostering | 18 | ✅ **100% PASS** |
 | [`server/test-appointment-booking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-booking.js) | M2 Day 2: Slot Booking Engine & OPD Scheduling | 18 | ✅ **100% PASS** |
-| [`server/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-opd-queue.js) | **M2 Day 3: OPD Queue & Live Token Display** | 18 | ✅ **100% PASS** |
-| **Total Test Coverage** | **All Modules (M1 Complete + M2 Days 1-3)** | **146 Assertions** | ✅ **100% Passed** |
+| [`server/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-opd-queue.js) | M2 Day 3: OPD Queue & Live Token Display | 18 | ✅ **100% PASS** |
+| [`server/test-nurse-triage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-nurse-triage.js) | **M2 Day 4: Nurse Vitals Triage & Early Warning Alerts** | 14 | ✅ **100% PASS** |
+| **Total Test Coverage** | **All Modules (M1 Complete + M2 Days 1-4)** | **160 Assertions** | ✅ **100% Passed** |
 
 ---
 
@@ -126,7 +115,7 @@ npx prisma generate
 npx prisma db push
 node prisma/seed.js
 
-# Run All 7 Automated Test Suites (146 Assertions):
+# Run All 8 Automated Test Suites (160 Assertions):
 node test-auth.js
 node test-rbac.js
 node test-patient-registration.js
@@ -134,6 +123,7 @@ node test-medical-history.js
 node test-doctor-roster.js
 node test-appointment-booking.js
 node test-opd-queue.js
+node test-nurse-triage.js
 
 # Start Backend Server (Port 5000):
 npm run dev
@@ -150,5 +140,5 @@ Open **[http://localhost:5173](http://localhost:5173)** in your browser.
 ---
 
 **Author:** [ansariking51214](https://github.com/ansariking51214)  
-**Internship ID:** `ZYNVEX-CERT-110`  
+**Internship ID:** `ZYNVEX-CERT-1101`  
 **Repository:** [https://github.com/ansariking51214/Smart-Hospital-management-system](https://github.com/ansariking51214/Smart-Hospital-management-system)
