@@ -8,7 +8,7 @@
 ---
 
 ## 📌 Project Overview
-The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack healthcare web application designed to automate clinical operations, outpatient scheduling, dynamic time slot booking, electronic health records (EHR), physician shift rostering, pharmacy dispensing, inpatient bed tracking, and billing workflows.
+The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack healthcare web application designed to automate clinical operations, outpatient scheduling, dynamic time slot booking, electronic health records (EHR), physician shift rostering, OPD live queue & token calling, pharmacy dispensing, inpatient bed tracking, and billing workflows.
 
 ---
 
@@ -29,35 +29,35 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 | Day | Date | Focus Scope | Key Deliverables | Status |
 |:---:|:---:|:---|:---|:---:|
 | **Day 1** | Aug 31 / Sep 01 | Doctor Profile & Shift Rostering | Physician Onboarding, Shift Schedules, Weekly Rosters, Real-time Duty Board | ✅ **Completed** |
-| **Day 2** | Sep 02 | **Slot Booking Engine & OPD Scheduling** | **Dynamic Slot Generation, Collision Guard, Queue Token Issuance & Rescheduling** | ✅ **Completed & Verified** |
-| **Day 3** | Sep 03 | OPD Queue & Token Display | Real-Time Live Queue Display & Token Calling | ⏳ *Next Milestone* |
-| **Day 4** | Sep 04 | Nurse Vitals Triage Desk | Clinical Vitals Recording & Triage Status | ⏳ *Upcoming* |
+| **Day 2** | Sep 02 | Slot Booking Engine & OPD Scheduling | Dynamic Slot Generation, Collision Guard, Queue Token Issuance & Rescheduling | ✅ **Completed** |
+| **Day 3** | Sep 03 | **OPD Queue & Token Display System** | **Live Patient Calling Board, Sequential Tokens, TV Display Screen, Triage Desk** | ✅ **Completed & Verified** |
+| **Day 4** | Sep 04 | Nurse Vitals Triage Desk | Clinical Vitals Recording & Triage Status | ⏳ *Next Milestone* |
 | **Day 5** | Sep 05 | Appointment Status Flow | Check-In, In-Consultation & Completion Workflow | ⏳ *Upcoming* |
 
 ---
 
-## 📅 Module 2 — Day 2 Deliverables: Slot Booking Engine & OPD Appointment Scheduling
+## 🎫 Module 2 — Day 3 Deliverables: OPD Live Queue & Token Display System
 
-### 1. Dynamic Time Slot Generator & Booking Engine
-* **Controller:** [`server/src/controllers/appointmentBookingController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/appointmentBookingController.js)
-* **Routes:** [`server/src/routes/appointmentRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/appointmentRoutes.js) mounted on `/api/appointments`
-* **Validation:** [`server/src/middleware/validateAppointmentBooking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/middleware/validateAppointmentBooking.js)
+### 1. Backend OPD Queue Management Core & API Endpoints
+* **Controller:** [`server/src/controllers/opdQueueController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/opdQueueController.js)
+* **Routes:** [`server/src/routes/opdQueueRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/opdQueueRoutes.js) mounted on `/api/queue`
+* **Validation:** [`server/src/middleware/validateOpdQueue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/middleware/validateOpdQueue.js)
 
 | Method | Endpoint | Access | Purpose |
 |:---|:---|:---:|:---|
-| `GET` | `/api/appointments/slots` | Public / Staff | Dynamically generates all time slots from physician shift hours, marks occupied/available slots |
-| `POST` | `/api/appointments/book` | Authenticated | Books appointment with double-booking collision guard and issues automated `QueueToken` |
-| `GET` | `/api/appointments` | Authenticated | List & filter appointments by date, doctor, patient, or status (`SCHEDULED`, `CONFIRMED`, `CANCELLED`) |
-| `PATCH` | `/api/appointments/:id/reschedule` | Authenticated | Reschedules appointment to a new date/time slot with real-time conflict verification |
-| `PATCH` | `/api/appointments/:id/cancel` | Authenticated | Cancels appointment and immediately releases the reserved slot for new bookings |
-| `GET` | `/api/appointments/stats/overview` | Public / Staff | Live OPD booking statistics (Today's Total, Scheduled, Completed, Cancelled) |
+| `GET` | `/api/queue/live` | Public / Staff | Real-time live OPD queue board returning Currently Serving, Waiting Line with estimated wait times, and Completed tokens |
+| `POST` | `/api/queue/call-next` | Doctor / Receptionist | Pages and calls next waiting patient in line, updates status to `CALLED`, sets `calledAt` timestamp, and triggers room chime |
+| `PATCH` | `/api/queue/token/:id/status` | Doctor / Receptionist | Transitions token state (`IN_CONSULTATION`, `COMPLETED`, `SKIPPED`, `RECALLED`) and updates linked appointment |
+| `POST` | `/api/queue/issue-walkin` | Receptionist / Admin | Issues instant walk-in OPD token with sequential numbering (e.g. `CARD-001`, `PEDS-002`) |
+| `GET` | `/api/queue/stats/overview` | Public / Staff | Live queue statistics: currently serving count, waiting depth, completed consultations, and average wait time |
 
-### 2. Interactive Frontend Slot Booking Explorer
-* **React Component:** [`client/src/components/Day2AppointmentBookingExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day2AppointmentBookingExplorer.jsx)
+### 2. Interactive Frontend OPD Queue & TV Display Dashboard
+* **React Component:** [`client/src/components/Day3OpdQueueExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day3OpdQueueExplorer.jsx)
 * **Features:**
-  * **3-Step Booking Wizard:** (1) Select Doctor & Department, (2) Date Picker & Dynamic Slot Grid (Green = Available, Red = Booked), (3) Patient Selection & Instant Token Generation.
-  * **Digital OPD Voucher & Queue Token Card:** Generates instant printable token vouchers (e.g. `CARD-001`, `PEDS-002`).
-  * **Live Appointment Registry Board:** Filter appointments, 1-Click Reschedule modal, and 1-Click Cancellation.
+  * **Waiting Hall TV Display Mode:** High-contrast pulsing "NOW SERVING" digital cards with Token Code, Patient Name, Attending Doctor, and Examination Room number.
+  * **Doctor Consultation Desk:** 1-Click "Call Next Patient" paging button, Start Consultation, Mark Completed, and Skip / No-Show controls.
+  * **Reception Walk-in Desk:** 1-Click instant walk-in token issuer.
+  * **Auto-Refreshing Live Queue Stream:** 8-second polling lifecycle for real-time waiting hall synchronization.
 
 ---
 
@@ -72,8 +72,21 @@ erDiagram
     DOCTOR_PROFILE ||--o{ APPOINTMENT : "consults"
     PATIENT_PROFILE ||--o{ APPOINTMENT : "books"
     APPOINTMENT ||--o| QUEUE_TOKEN : "issues token"
-    APPOINTMENT ||--o| VITAL_SIGN : "records triage"
-    APPOINTMENT ||--o| CONSULTATION_NOTE : "documents SOAP"
+    PATIENT_PROFILE ||--o{ QUEUE_TOKEN : "holds token"
+    DOCTOR_PROFILE ||--o{ QUEUE_TOKEN : "serves"
+
+    QUEUE_TOKEN {
+        string id PK
+        string appointmentId FK
+        string patientId FK
+        string doctorId FK
+        int tokenNumber "Sequential daily counter (1, 2, 3...)"
+        string tokenCode "e.g. CARD-001, PEDS-002"
+        string status "WAITING | CALLED | IN_CONSULTATION | COMPLETED | SKIPPED | CANCELLED"
+        datetime calledAt
+        datetime completedAt
+        datetime date
+    }
 
     APPOINTMENT {
         string id PK
@@ -81,36 +94,14 @@ erDiagram
         string doctorId FK
         datetime appointmentDate
         string timeSlot "10:00 - 10:30"
-        string type "OPD | FOLLOW_UP | EMERGENCY"
-        string status "SCHEDULED | CONFIRMED | IN_QUEUE | COMPLETED | CANCELLED"
+        string status "SCHEDULED | CONFIRMED | IN_QUEUE | IN_CONSULTATION | COMPLETED | CANCELLED"
         string reasonForVisit
-    }
-
-    QUEUE_TOKEN {
-        string id PK
-        string appointmentId FK
-        string patientId FK
-        string doctorId FK
-        int tokenNumber "Sequence (1, 2, 3...)"
-        string tokenCode "e.g. CARD-001"
-        string status "WAITING | CALLED | COMPLETED | CANCELLED"
-    }
-
-    DOCTOR_PROFILE {
-        string id PK
-        string specialization
-        string licenseNumber UK
-        decimal consultationFee
-        string roomNumber
-        string availableDays
-        string shiftStart
-        string shiftEnd
     }
 ```
 
 ---
 
-## 🧪 Automated Test Suite Coverage (128 Total Passed Assertions)
+## 🧪 Automated Test Suite Coverage (146 Total Passed Assertions)
 
 | Test Suite File | Module & Day Scope | Assertions | Result |
 |:---|:---|:---:|:---:|
@@ -119,8 +110,9 @@ erDiagram
 | [`server/test-patient-registration.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-patient-registration.js) | M1 Day 4: Auto-MRN & Demographic Intake | 17 | ✅ **100% PASS** |
 | [`server/test-medical-history.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-medical-history.js) | M1 Day 5: Multi-Criteria Search & Longitudinal EHR | 16 | ✅ **100% PASS** |
 | [`server/test-doctor-roster.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-roster.js) | M2 Day 1: Doctor Profile & Shift Rostering | 18 | ✅ **100% PASS** |
-| [`server/test-appointment-booking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-booking.js) | **M2 Day 2: Slot Booking Engine & OPD Scheduling** | 18 | ✅ **100% PASS** |
-| **Total Test Coverage** | **All Modules (M1 Complete + M2 Days 1-2)** | **128 Assertions** | ✅ **100% Passed** |
+| [`server/test-appointment-booking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-booking.js) | M2 Day 2: Slot Booking Engine & OPD Scheduling | 18 | ✅ **100% PASS** |
+| [`server/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-opd-queue.js) | **M2 Day 3: OPD Queue & Live Token Display** | 18 | ✅ **100% PASS** |
+| **Total Test Coverage** | **All Modules (M1 Complete + M2 Days 1-3)** | **146 Assertions** | ✅ **100% Passed** |
 
 ---
 
@@ -134,13 +126,14 @@ npx prisma generate
 npx prisma db push
 node prisma/seed.js
 
-# Run All Automated Test Suites:
+# Run All 7 Automated Test Suites (146 Assertions):
 node test-auth.js
 node test-rbac.js
 node test-patient-registration.js
 node test-medical-history.js
 node test-doctor-roster.js
 node test-appointment-booking.js
+node test-opd-queue.js
 
 # Start Backend Server (Port 5000):
 npm run dev

@@ -198,4 +198,28 @@ export const appointmentsAPI = {
   },
 };
 
+// OPD Live Queue & Token Display System (Module 2 Day 3)
+export const opdQueueAPI = {
+  getLiveBoard: async (params = {}) => {
+    const response = await api.get('/queue/live', { params });
+    return response.data;
+  },
+  callNext: async (doctorId) => {
+    const response = await api.post('/queue/call-next', { doctorId });
+    return response.data;
+  },
+  updateStatus: async (tokenId, status) => {
+    const response = await api.patch(`/queue/token/${tokenId}/status`, { status });
+    return response.data;
+  },
+  issueWalkIn: async (walkInData) => {
+    const response = await api.post('/queue/issue-walkin', walkInData);
+    return response.data;
+  },
+  getStats: async () => {
+    const response = await api.get('/queue/stats/overview');
+    return response.data;
+  },
+};
+
 export default api;

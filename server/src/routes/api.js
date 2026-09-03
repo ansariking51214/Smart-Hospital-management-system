@@ -7,6 +7,7 @@ import patientRoutes from './patientRoutes.js';
 import medicalHistoryRoutes from './medicalHistoryRoutes.js';
 import doctorRoutes from './doctorRoutes.js';
 import appointmentRoutes from './appointmentRoutes.js';
+import opdQueueRoutes from './opdQueueRoutes.js';
 
 const apiRouter = Router();
 
@@ -18,6 +19,7 @@ apiRouter.use('/patients', patientRoutes);
 apiRouter.use('/medical-history', medicalHistoryRoutes);
 apiRouter.use('/doctors', doctorRoutes);
 apiRouter.use('/appointments', appointmentRoutes);
+apiRouter.use('/queue', opdQueueRoutes);
 
 // Placeholder routes for Module 1 Day 2-5 (ready to be hooked up)
 apiRouter.get('/version', (req, res) => {

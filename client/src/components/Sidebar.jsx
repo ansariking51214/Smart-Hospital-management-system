@@ -15,6 +15,7 @@ import {
   Search,
   Stethoscope,
   CalendarCheck,
+  Ticket,
 } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab }) {
@@ -36,12 +37,12 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     {
       id: 'module2',
       title: 'Module 2: Doctor Rostering & OPD',
-      badge: 'In Progress (Day 2 Active) 🚀',
+      badge: 'In Progress (Day 3 Active) 🚀',
       badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
       days: [
         { day: 'Day 1', label: 'Doctor Profile & Shift Roster', status: 'completed' },
         { day: 'Day 2', label: 'Slot Booking Engine & Scheduling', status: 'completed' },
-        { day: 'Day 3', label: 'OPD Queue & Token Display', status: 'upcoming' },
+        { day: 'Day 3', label: 'OPD Queue & Token Display Board', status: 'completed' },
         { day: 'Day 4', label: 'Nurse Vitals Triage Desk', status: 'upcoming' },
         { day: 'Day 5', label: 'Appointment Status Flow', status: 'upcoming' },
       ],
@@ -86,22 +87,38 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           Active Workspaces
         </h2>
         <nav className="space-y-1">
-          {/* Module 2 Day 2: Slot Booking Engine (Current) */}
+          {/* Module 2 Day 3: OPD Queue & Token Display (Current) */}
           <button
-            onClick={() => setActiveTab('booking')}
+            onClick={() => setActiveTab('queue')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-              activeTab === 'booking'
+              activeTab === 'queue'
                 ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg shadow-teal-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <CalendarCheck className="w-4 h-4 text-teal-300" />
-              <span>M2 Day 2: Slot Booking Engine</span>
+              <Ticket className="w-4 h-4 text-teal-300" />
+              <span>M2 Day 3: OPD Queue & Tokens</span>
             </div>
             <span className="text-[10px] bg-teal-400/20 text-teal-200 border border-teal-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
               Current
             </span>
+          </button>
+
+          {/* Module 2 Day 2: Slot Booking Engine */}
+          <button
+            onClick={() => setActiveTab('booking')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'booking'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <CalendarCheck className="w-4 h-4" />
+              <span>M2 Day 2: Slot Booking Engine</span>
+            </div>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M2</span>
           </button>
 
           {/* Module 2 Day 1: Doctor Shift Roster */}

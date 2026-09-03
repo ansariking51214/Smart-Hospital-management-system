@@ -11,13 +11,14 @@ import { Day4PatientRegistration } from './components/Day4PatientRegistration';
 import { Day5MedicalHistoryExplorer } from './components/Day5MedicalHistoryExplorer';
 import { Day1DoctorRosterExplorer } from './components/Day1DoctorRosterExplorer';
 import { Day2AppointmentBookingExplorer } from './components/Day2AppointmentBookingExplorer';
+import { Day3OpdQueueExplorer } from './components/Day3OpdQueueExplorer';
 import { AuthModal } from './components/AuthModal';
 import { AuthProvider } from './context/AuthContext';
 import { fetchHealthStatus, fetchSchemaDetails } from './services/api';
-import { RefreshCw, CalendarCheck } from 'lucide-react';
+import { RefreshCw, Ticket } from 'lucide-react';
 
 function DashboardContent() {
-  const [activeTab, setActiveTab] = useState('booking'); // 'booking' | 'roster' | 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
+  const [activeTab, setActiveTab] = useState('queue'); // 'queue' | 'booking' | 'roster' | 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
   const [healthData, setHealthData] = useState(null);
   const [schemaData, setSchemaData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -71,11 +72,11 @@ function DashboardContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-                    <CalendarCheck className="w-5 h-5 text-teal-400" />
-                    Slot Booking Engine & OPD Scheduling Center
+                    <Ticket className="w-5 h-5 text-teal-400" />
+                    OPD Live Queue & Token Display Center
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Module 2 &bull; Day 2: Dynamic Time Slot Generation, Collision Guard, Queue Token Issuance & Rescheduling
+                    Module 2 &bull; Day 3: Real-Time Patient Calling Board, Sequential Token Numbering & Triage Desk
                   </p>
                 </div>
                 <button
@@ -93,6 +94,13 @@ function DashboardContent() {
             </div>
 
             {/* Dynamic Tab Body */}
+            {activeTab === 'queue' && (
+              <div className="space-y-8">
+                <Day3OpdQueueExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
             {activeTab === 'booking' && (
               <div className="space-y-8">
                 <Day2AppointmentBookingExplorer />
@@ -156,7 +164,7 @@ function DashboardContent() {
       {/* Footer */}
       <footer className="border-t border-slate-800/80 bg-slate-900/60 py-4 px-6 text-center text-xs text-slate-500">
         <p>
-          Cloud-Based Hospital Management System (HMS) &bull; Module 2: Day 2 (Slot Booking Engine & OPD Scheduling)
+          Cloud-Based Hospital Management System (HMS) &bull; Module 2: Day 3 (OPD Queue & Token Display System)
         </p>
       </footer>
     </div>
