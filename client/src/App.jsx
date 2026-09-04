@@ -13,13 +13,14 @@ import { Day1DoctorRosterExplorer } from './components/Day1DoctorRosterExplorer'
 import { Day2AppointmentBookingExplorer } from './components/Day2AppointmentBookingExplorer';
 import { Day3OpdQueueExplorer } from './components/Day3OpdQueueExplorer';
 import { Day4NurseTriageExplorer } from './components/Day4NurseTriageExplorer';
+import { Day5AppointmentFlowExplorer } from './components/Day5AppointmentFlowExplorer';
 import { AuthModal } from './components/AuthModal';
 import { AuthProvider } from './context/AuthContext';
 import { fetchHealthStatus, fetchSchemaDetails } from './services/api';
-import { RefreshCw, Activity } from 'lucide-react';
+import { RefreshCw, GitPullRequest } from 'lucide-react';
 
 function DashboardContent() {
-  const [activeTab, setActiveTab] = useState('triage'); // 'triage' | 'queue' | 'booking' | 'roster' | 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
+  const [activeTab, setActiveTab] = useState('flow'); // 'flow' | 'triage' | 'queue' | 'booking' | 'roster' | 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
   const [healthData, setHealthData] = useState(null);
   const [schemaData, setSchemaData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -73,11 +74,11 @@ function DashboardContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-                    <Activity className="w-5 h-5 text-teal-400" />
-                    Nurse Vitals Triage Desk & Early Warning Center
+                    <GitPullRequest className="w-5 h-5 text-teal-400" />
+                    Appointment Status & Outpatient Consultation Flow
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Module 2 &bull; Day 4: Pre-Consultation Vitals Screening, Auto-BMI Calculation & NEWS Severity Alerts
+                    Module 2 &bull; Day 5: Patient Check-In, Active Room Examination, SOAP Consultation Notes & Longitudinal Journey Timeline
                   </p>
                 </div>
                 <button
@@ -95,6 +96,13 @@ function DashboardContent() {
             </div>
 
             {/* Dynamic Tab Body */}
+            {activeTab === 'flow' && (
+              <div className="space-y-8">
+                <Day5AppointmentFlowExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
             {activeTab === 'triage' && (
               <div className="space-y-8">
                 <Day4NurseTriageExplorer />
@@ -172,7 +180,7 @@ function DashboardContent() {
       {/* Footer */}
       <footer className="border-t border-slate-800/80 bg-slate-900/60 py-4 px-6 text-center text-xs text-slate-500">
         <p>
-          Cloud-Based Hospital Management System (HMS) &bull; Module 2: Day 4 (Nurse Vitals Triage Desk & Early Warning System)
+          Cloud-Based Hospital Management System (HMS) &bull; Module 2 (Doctor Rostering & OPD Management Complete ✅)
         </p>
       </footer>
     </div>

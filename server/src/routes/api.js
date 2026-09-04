@@ -9,6 +9,7 @@ import doctorRoutes from './doctorRoutes.js';
 import appointmentRoutes from './appointmentRoutes.js';
 import opdQueueRoutes from './opdQueueRoutes.js';
 import nurseTriageRoutes from './nurseTriageRoutes.js';
+import appointmentFlowRoutes from './appointmentFlowRoutes.js';
 
 const apiRouter = Router();
 
@@ -22,6 +23,7 @@ apiRouter.use('/doctors', doctorRoutes);
 apiRouter.use('/appointments', appointmentRoutes);
 apiRouter.use('/queue', opdQueueRoutes);
 apiRouter.use('/triage', nurseTriageRoutes);
+apiRouter.use('/appointment-flow', appointmentFlowRoutes);
 
 // Placeholder routes for Module 1 Day 2-5 (ready to be hooked up)
 apiRouter.get('/version', (req, res) => {

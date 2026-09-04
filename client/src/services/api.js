@@ -242,4 +242,32 @@ export const triageAPI = {
   },
 };
 
+// Appointment Status & Consultation Flow (Module 2 Day 5)
+export const appointmentFlowAPI = {
+  getBoard: async (params = {}) => {
+    const response = await api.get('/appointment-flow/board', { params });
+    return response.data;
+  },
+  updateStatus: async (id, statusData) => {
+    const response = await api.patch(`/appointment-flow/${id}/status`, statusData);
+    return response.data;
+  },
+  recordNote: async (id, noteData) => {
+    const response = await api.post(`/appointment-flow/${id}/consultation-note`, noteData);
+    return response.data;
+  },
+  getTimeline: async (id) => {
+    const response = await api.get(`/appointment-flow/${id}/timeline`);
+    return response.data;
+  },
+  scheduleFollowUp: async (id, followUpData) => {
+    const response = await api.post(`/appointment-flow/${id}/schedule-followup`, followUpData);
+    return response.data;
+  },
+  getStats: async () => {
+    const response = await api.get('/appointment-flow/stats/lifecycle');
+    return response.data;
+  },
+};
+
 export default api;

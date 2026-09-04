@@ -8,7 +8,7 @@
 ---
 
 ## 📌 Project Overview
-The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack healthcare web application designed to automate clinical operations, outpatient scheduling, dynamic time slot booking, electronic health records (EHR), physician shift rostering, OPD live queue & token calling, nurse vitals triage desk & early warning scoring, pharmacy dispensing, inpatient bed tracking, and billing workflows.
+The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack healthcare web application designed to automate clinical operations, outpatient scheduling, dynamic time slot booking, electronic health records (EHR), physician shift rostering, OPD live queue & token calling, nurse vitals triage desk & early warning scoring, consultation status flows & SOAP notes, pharmacy dispensing, inpatient bed tracking, and billing workflows.
 
 ---
 
@@ -25,91 +25,53 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 
 ---
 
-### 🩺 Module 2: Doctor Rostering & OPD Management (Days 1 — 4 Completed & Verified)
+### 🩺 Module 2: Doctor Rostering & OPD Management (100% Completed ✅)
 | Day | Date | Focus Scope | Key Deliverables | Status |
 |:---:|:---:|:---|:---|:---:|
 | **Day 1** | Aug 31 / Sep 01 | Doctor Profile & Shift Rostering | Physician Onboarding, Shift Schedules, Weekly Rosters, Real-time Duty Board | ✅ **Completed** |
-| **Day 2** | Sep 02 | **Slot Booking Engine & OPD Scheduling** | **Dynamic Slot Generation, Collision Guard, Queue Token Issuance & Rescheduling** | ✅ **Completed & Verified** |
-| **Day 3** | Sep 03 | **OPD Queue & Token Display System** | **Live Patient Calling Board, Sequential Tokens, TV Display Screen, Triage Desk** | ✅ **Completed & Verified** |
-| **Day 4** | Sep 04 | **Nurse Vitals Triage Desk & Alerts** | **Pre-Consultation Vitals, Auto-BMI, NEWS Early Warning Severity Alerts (Green/Amber/Red)** | ✅ **Completed & Verified** |
-| **Day 5** | Sep 05 | Appointment Status Flow | Check-In, In-Consultation & Completion Workflow | ⏳ *Next Milestone* |
+| **Day 2** | Sep 02 | Slot Booking Engine & OPD Scheduling | Dynamic Slot Generation, Collision Guard, Queue Token Issuance & Rescheduling | ✅ **Completed** |
+| **Day 3** | Sep 03 | OPD Queue & Token Display System | Live Patient Calling Board, Sequential Tokens, TV Display Screen, Triage Desk | ✅ **Completed** |
+| **Day 4** | Sep 04 | Nurse Vitals Triage Desk & Alerts | Pre-Consultation Vitals, Auto-BMI, NEWS Early Warning Severity Alerts (Green/Amber/Red) | ✅ **Completed** |
+| **Day 5** | Sep 05 | **Appointment Status & Consultation Flow** | **End-to-End Outpatient Lifecycle, Patient Check-In, Clinical SOAP Documentation, Visit Checkout & Longitudinal Journey Timeline** | ✅ **Completed & Verified** |
 
 ---
 
-## 📅 Module 2 — Day 2 Deliverables: Slot Booking Engine & OPD Scheduling
+## 🩺 Module 2 — Complete Deliverables Breakdown (Days 1 — 5)
 
-### 1. Backend Core & Dynamic Time Slot Generator
+### 📅 Day 1: Doctor Profile & Clinical Shift Rostering
+* **Controller:** [`server/src/controllers/doctorRosterController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/doctorRosterController.js)
+* **Frontend:** [`client/src/components/Day1DoctorRosterExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day1DoctorRosterExplorer.jsx)
+* **Features:** Physician profile onboarding, weekly shift scheduling, consultation room allocation, and active duty roster board.
+* **Test Suite:** [`server/test-doctor-roster.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-roster.js) (**18/18 Passed**).
+
+### 📅 Day 2: Dynamic Slot Booking Engine & OPD Scheduling
 * **Controller:** [`server/src/controllers/appointmentBookingController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/appointmentBookingController.js)
-* **Routes:** [`server/src/routes/appointmentRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/appointmentRoutes.js) mounted on `/api/appointments`
-* **Validation:** [`server/src/middleware/validateAppointmentBooking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/middleware/validateAppointmentBooking.js)
+* **Frontend:** [`client/src/components/Day2AppointmentBookingExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day2AppointmentBookingExplorer.jsx)
+* **Features:** Dynamic 30-minute time slot generation from shift hours (`09:00 - 15:00`), double-booking collision guard, automated queue token issuance, 1-click rescheduling, and cancellation.
+* **Test Suite:** [`server/test-appointment-booking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-booking.js) (**18/18 Passed**).
 
-| Method | Endpoint | Access | Description |
-|:---|:---|:---:|:---|
-| `GET` | `/api/appointments/slots` | Public / Staff | Dynamically computes 30-minute time intervals from doctor's shift schedule (`09:00 - 15:00`), marks booked vs available slots |
-| `POST` | `/api/appointments/book` | Authenticated | Books appointment with double-booking collision guard and auto-issues daily `QueueToken` |
-| `GET` | `/api/appointments` | Authenticated | List & filter appointments by date, doctor, patient MRN, or status (`SCHEDULED`, `CONFIRMED`, `CANCELLED`) |
-| `PATCH` | `/api/appointments/:id/reschedule` | Authenticated | Reschedules appointment to a new date/time slot with real-time conflict verification |
-| `PATCH` | `/api/appointments/:id/cancel` | Authenticated | Cancels appointment and immediately releases the reserved slot for new bookings |
-| `GET` | `/api/appointments/stats/overview` | Public / Staff | Live OPD booking statistics (Today's Total, Scheduled, Completed, Cancelled) |
-
-### 2. Frontend React Component (`Day2AppointmentBookingExplorer.jsx`)
-* **Location:** [`client/src/components/Day2AppointmentBookingExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day2AppointmentBookingExplorer.jsx)
-* **Features:**
-  * **3-Step Booking Wizard:** (1) Select Physician & Department &rarr; (2) Date Picker & Color-Coded Slot Grid (Green = Available, Red = Booked) &rarr; (3) Patient Selection & Token Generation.
-  * **Instant Digital OPD Voucher Card:** Generates printable appointment vouchers with Token #, Room #, and MRN.
-  * **Live Appointment Registry Board:** 1-Click Reschedule modal and 1-Click Cancellation.
-* **Automated Tests:** [`server/test-appointment-booking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-booking.js) (**18/18 Passed**).
-
----
-
-## 🎫 Module 2 — Day 3 Deliverables: OPD Live Queue & Token Display System
-
-### 1. Backend Live Queue Board & Patient Calling Core
+### 📅 Day 3: OPD Live Queue & Token Display System
 * **Controller:** [`server/src/controllers/opdQueueController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/opdQueueController.js)
-* **Routes:** [`server/src/routes/opdQueueRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/opdQueueRoutes.js) mounted on `/api/queue`
-* **Validation:** [`server/src/middleware/validateOpdQueue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/middleware/validateOpdQueue.js)
+* **Frontend:** [`client/src/components/Day3OpdQueueExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day3OpdQueueExplorer.jsx)
+* **Features:** Live OPD Queue Stream (`/api/queue/live`), 1-Click "Call Next Patient" paging desk, public waiting hall TV display mode with pulsing "NOW SERVING" cards, walk-in token issuance, and estimated wait-time algorithms.
+* **Test Suite:** [`server/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-opd-queue.js) (**18/18 Passed**).
 
-| Method | Endpoint | Access | Description |
-|:---|:---|:---:|:---|
-| `GET` | `/api/queue/live` | Public / Staff | Real-time live OPD queue board returning Currently Serving, Waiting Line with estimated wait times, and Completed tokens |
-| `POST` | `/api/queue/call-next` | Doctor / Receptionist | Pages and calls next waiting patient in line, updates status to `CALLED`, sets `calledAt` timestamp, and triggers room chime |
-| `PATCH` | `/api/queue/token/:id/status` | Doctor / Receptionist | Transitions token state (`IN_CONSULTATION`, `COMPLETED`, `SKIPPED`, `RECALLED`) and updates linked appointment |
-| `POST` | `/api/queue/issue-walkin` | Receptionist / Admin | Issues instant walk-in OPD token with sequential numbering (e.g. `CARD-001`, `PEDS-002`) |
-| `GET` | `/api/queue/stats/overview` | Public / Staff | Live queue statistics: currently serving count, waiting depth, completed consultations, and average wait time |
-
-### 2. Frontend React Component (`Day3OpdQueueExplorer.jsx`)
-* **Location:** [`client/src/components/Day3OpdQueueExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day3OpdQueueExplorer.jsx)
-* **Features:**
-  * **Waiting Hall Public TV Display Mode:** High-contrast pulsing "NOW SERVING" digital cards with Token Code, Patient Name, Attending Doctor, and Examination Room number.
-  * **Doctor Consultation Desk:** 1-Click "Call Next Patient" paging button, Start Consultation, Mark Completed, and Skip / No-Show controls.
-  * **Reception Walk-in Desk:** 1-Click instant walk-in token issuer.
-  * **Auto-Refreshing Live Queue Stream:** 8-second polling lifecycle for real-time waiting hall synchronization.
-* **Automated Tests:** [`server/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-opd-queue.js) (**18/18 Passed**).
-
----
-
-## 🩺 Module 2 — Day 4 Deliverables: Nurse Vitals Triage Desk & Early Warning System
-
-### 1. Clinical Vitals Engine & NEWS Triage Risk Classifier
+### 📅 Day 4: Nurse Vitals Triage Desk & Early Warning System
 * **Controller:** [`server/src/controllers/nurseTriageController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/nurseTriageController.js)
-* **Routes:** [`server/src/routes/nurseTriageRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/nurseTriageRoutes.js) mounted on `/api/triage`
-* **Validation:** [`server/src/middleware/validateNurseTriage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/middleware/validateNurseTriage.js)
+* **Frontend:** [`client/src/components/Day4NurseTriageExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day4NurseTriageExplorer.jsx)
+* **Features:** Pre-consultation vital signs screening (BP, Pulse, SpO2, Temp, RR, Height, Weight), real-time Auto-BMI calculator, and NEWS Clinical Early Warning Scoring (Green Stable, Amber Urgent, Red Critical alerts).
+* **Test Suite:** [`server/test-nurse-triage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-nurse-triage.js) (**14/14 Passed**).
 
-| Method | Endpoint | Access | Description |
-|:---|:---|:---:|:---|
-| `POST` | `/api/triage/vitals` | Nurse / Doctor / Admin | Records BP, Pulse, SpO2, Temp, RR, Height, Weight; auto-computes BMI and evaluates NEWS triage risk level (`GREEN`, `AMBER`, `RED`) |
-| `GET` | `/api/triage/queue` | Authenticated | Pre-consultation nurse triage queue (checked-in patients pending vital signs screening) |
-| `GET` | `/api/triage/patient/:patientId/history` | Authenticated | Longitudinal vitals time-series history for clinical trend analysis |
-| `GET` | `/api/triage/stats/overview` | Authenticated | Triage metrics: Total Vitals Today, Red Critical Alerts, Amber Urgent Alerts, Green Stable |
-
-### 2. Frontend React Component (`Day4NurseTriageExplorer.jsx`)
-* **Location:** [`client/src/components/Day4NurseTriageExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day4NurseTriageExplorer.jsx)
+### 📅 Day 5: Appointment Status & Consultation Flow (End-to-End Outpatient Lifecycle)
+* **Controller:** [`server/src/controllers/appointmentFlowController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/appointmentFlowController.js)
+* **Routes:** [`server/src/routes/appointmentFlowRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/appointmentFlowRoutes.js) mounted on `/api/appointment-flow`
+* **Frontend:** [`client/src/components/Day5AppointmentFlowExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day5AppointmentFlowExplorer.jsx)
 * **Features:**
-  * **Interactive Intake Form:** Real-time dual-slider and numerical entry with immediate auto-BMI calculation and color category badges (`Underweight`, `Normal`, `Overweight`, `Obese`).
-  * **Live Early Warning Score (NEWS / Triage Risk Badge):** Real-time physiological alert generation for acute hypoxemia (SpO2 < 90%), hypertensive crisis (BP > 180/110), tachycardia, and pyrexia.
-  * **Pre-Consultation Triage Queue:** 1-Click triage intake for waiting patients.
-  * **Longitudinal Vitals Trend Log:** Historical time-series record with clinical annotations.
-* **Automated Tests:** [`server/test-nurse-triage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-nurse-triage.js) (**14/14 Passed**).
+  * **OPD Floor Kanban / Pipeline Flow Board:** 4 real-time stages: (1) Booked / Scheduled &rarr; (2) Checked-In / Waiting Hall &rarr; (3) In Active Consultation &rarr; (4) Completed & Checked Out.
+  * **Clinical SOAP Consultation Documentation:** Full clinical notes capturing **Subjective (S)**, **Objective (O)**, **Assessment / Diagnosis (A)** with ICD-10 coding, and **Treatment Plan (P)**.
+  * **Longitudinal Patient Journey Timeline:** 5-step visual audit trail tracking each milestone from initial booking through checkout.
+  * **Follow-up Consultation Scheduler:** 1-Click return visit booking.
+* **Test Suite:** [`server/test-appointment-flow.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-flow.js) (**16/16 Passed**).
 
 ---
 
@@ -128,7 +90,8 @@ erDiagram
     DOCTOR_PROFILE ||--o{ QUEUE_TOKEN : "serves"
     PATIENT_PROFILE ||--o{ VITAL_SIGN : "has vitals recorded"
     APPOINTMENT ||--o| VITAL_SIGN : "linked to consultation"
-    USER ||--o{ VITAL_SIGN : "nurse recorded"
+    APPOINTMENT ||--o| CONSULTATION_NOTE : "documents SOAP"
+    USER ||--o{ CONSULTATION_NOTE : "doctor writes"
 
     APPOINTMENT {
         string id PK
@@ -137,8 +100,22 @@ erDiagram
         datetime appointmentDate
         string timeSlot "10:00 - 10:30"
         string type "OPD | FOLLOW_UP | EMERGENCY"
-        string status "SCHEDULED | CONFIRMED | IN_QUEUE | IN_CONSULTATION | COMPLETED | CANCELLED"
+        string status "SCHEDULED | CHECKED_IN | IN_QUEUE | IN_CONSULTATION | COMPLETED | CANCELLED"
         string reasonForVisit
+        string notes
+    }
+
+    CONSULTATION_NOTE {
+        string id PK
+        string appointmentId FK
+        string patientId FK
+        string doctorId FK
+        string subjective "Chief Complaints"
+        string objective "Physical Findings & Vitals"
+        string assessment "Diagnosis"
+        string plan "Treatment & Rx"
+        string icd10Codes "e.g. I10"
+        datetime followUpDate
     }
 
     QUEUE_TOKEN {
@@ -146,9 +123,9 @@ erDiagram
         string appointmentId FK
         string patientId FK
         string doctorId FK
-        int tokenNumber "Sequential daily counter (1, 2, 3...)"
-        string tokenCode "e.g. CARD-001, PEDS-002"
-        string status "WAITING | CALLED | IN_CONSULTATION | COMPLETED | SKIPPED | CANCELLED"
+        int tokenNumber "Sequential daily counter"
+        string tokenCode "e.g. CARD-001"
+        string status "WAITING | CALLED | IN_CONSULTATION | COMPLETED | CANCELLED"
         datetime calledAt
         datetime completedAt
         datetime date
@@ -158,24 +135,19 @@ erDiagram
         string id PK
         string patientId FK
         string appointmentId FK
-        string recordedById FK
-        int systolicBp "mmHg (50 - 260)"
-        int diastolicBp "mmHg (30 - 160)"
-        int pulseRate "bpm (30 - 240)"
-        float temperature "°F (85.0 - 110.0)"
-        int respiratoryRate "breaths/min"
-        float oxygenSaturation "SpO2 % (50 - 100)"
-        float heightCm "cm"
-        float weightKg "kg"
-        float bmi "Auto-calculated kg/m2"
+        int systolicBp
+        int diastolicBp
+        int pulseRate
+        float temperature
+        float oxygenSaturation
+        float bmi
         string triageNotes
-        datetime recordedAt
     }
 ```
 
 ---
 
-## 🧪 Automated Test Suite Coverage (160 Total Passed Assertions)
+## 🧪 Automated Test Suite Coverage (176 Total Passed Assertions across 9 Suites)
 
 | Test Suite File | Module & Day Scope | Assertions | Result |
 |:---|:---|:---:|:---:|
@@ -184,10 +156,11 @@ erDiagram
 | [`server/test-patient-registration.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-patient-registration.js) | M1 Day 4: Auto-MRN & Demographic Intake | 17 | ✅ **100% PASS** |
 | [`server/test-medical-history.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-medical-history.js) | M1 Day 5: Multi-Criteria Search & Longitudinal EHR | 16 | ✅ **100% PASS** |
 | [`server/test-doctor-roster.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-roster.js) | M2 Day 1: Doctor Profile & Shift Rostering | 18 | ✅ **100% PASS** |
-| [`server/test-appointment-booking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-booking.js) | **M2 Day 2: Slot Booking Engine & OPD Scheduling** | 18 | ✅ **100% PASS** |
-| [`server/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-opd-queue.js) | **M2 Day 3: OPD Queue & Live Token Display** | 18 | ✅ **100% PASS** |
-| [`server/test-nurse-triage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-nurse-triage.js) | **M2 Day 4: Nurse Vitals Triage & Early Warning Alerts** | 14 | ✅ **100% PASS** |
-| **Total Test Coverage** | **All Modules (M1 Complete + M2 Days 1-4)** | **160 Assertions** | ✅ **100% Passed** |
+| [`server/test-appointment-booking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-booking.js) | M2 Day 2: Slot Booking Engine & OPD Scheduling | 18 | ✅ **100% PASS** |
+| [`server/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-opd-queue.js) | M2 Day 3: OPD Queue & Live Token Display | 18 | ✅ **100% PASS** |
+| [`server/test-nurse-triage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-nurse-triage.js) | M2 Day 4: Nurse Vitals Triage & Early Warning Alerts | 14 | ✅ **100% PASS** |
+| [`server/test-appointment-flow.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-flow.js) | **M2 Day 5: Appointment Status & Consultation Flow** | 16 | ✅ **100% PASS** |
+| **Total Test Coverage** | **All Modules (Module 1 Complete + Module 2 Complete)** | **176 Assertions** | ✅ **100% Passed** |
 
 ---
 
@@ -201,7 +174,7 @@ npx prisma generate
 npx prisma db push
 node prisma/seed.js
 
-# Run All 8 Automated Test Suites (160 Assertions):
+# Run All 9 Automated Test Suites (176 Total Assertions):
 node test-auth.js
 node test-rbac.js
 node test-patient-registration.js
@@ -210,6 +183,7 @@ node test-doctor-roster.js
 node test-appointment-booking.js
 node test-opd-queue.js
 node test-nurse-triage.js
+node test-appointment-flow.js
 
 # Start Backend Server (Port 5000):
 npm run dev
