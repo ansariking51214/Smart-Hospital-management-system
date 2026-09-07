@@ -53,14 +53,14 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     {
       id: 'module3',
       title: 'Module 3: EHR & e-Prescriptions',
-      badge: 'Upcoming (Module 3)',
-      badgeColor: 'bg-slate-800 text-slate-400 border-slate-700',
+      badge: 'In Progress (Day 1 Active) 🚀',
+      badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
       days: [
-        { day: 'Day 1', label: 'Doctor Consultation UI' },
-        { day: 'Day 2', label: 'Clinical SOAP Notes' },
-        { day: 'Day 3', label: 'ICD-10 & Allergy Alerts' },
-        { day: 'Day 4', label: 'e-Prescribing Engine' },
-        { day: 'Day 5', label: 'Lab Orders & PDF Export' },
+        { day: 'Day 1', label: 'Doctor Consultation UI & EHR', status: 'completed' },
+        { day: 'Day 2', label: 'Clinical SOAP Notes', status: 'upcoming' },
+        { day: 'Day 3', label: 'ICD-10 & Allergy Alerts', status: 'upcoming' },
+        { day: 'Day 4', label: 'e-Prescribing Engine', status: 'upcoming' },
+        { day: 'Day 5', label: 'Lab Orders & PDF Export', status: 'upcoming' },
       ],
       icon: FileText,
     },
@@ -89,22 +89,38 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           Active Workspaces
         </h2>
         <nav className="space-y-1">
-          {/* Module 2 Day 5: Appointment Flow & SOAP (Current) */}
+          {/* Module 3 Day 1: Doctor Consultation Workspace (Current) */}
           <button
-            onClick={() => setActiveTab('flow')}
+            onClick={() => setActiveTab('consultation')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-              activeTab === 'flow'
+              activeTab === 'consultation'
                 ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg shadow-teal-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <GitPullRequest className="w-4 h-4 text-teal-300" />
-              <span>M2 Day 5: Consultation Flow</span>
+              <Stethoscope className="w-4 h-4 text-teal-300" />
+              <span>M3 Day 1: Doctor Consultation UI</span>
             </div>
             <span className="text-[10px] bg-teal-400/20 text-teal-200 border border-teal-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
               Current
             </span>
+          </button>
+
+          {/* Module 2 Day 5: Appointment Flow & SOAP */}
+          <button
+            onClick={() => setActiveTab('flow')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'flow'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <GitPullRequest className="w-4 h-4" />
+              <span>M2 Day 5: Consultation Flow</span>
+            </div>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M2</span>
           </button>
 
           {/* Module 2 Day 4: Nurse Vitals Triage Desk */}
@@ -259,21 +275,22 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
             Internship Syllabus Roadmap
           </h2>
-          <span className="text-[10px] text-emerald-400 font-mono font-bold">Module 2 Complete</span>
+          <span className="text-[10px] text-teal-400 font-mono font-bold">Module 3 Active</span>
         </div>
 
         <div className="space-y-3">
           {modules.map((m) => {
             const Icon = m.icon;
+            const isCurrentModule = m.id === 'module3';
             const isCompletedModule = m.id === 'module1' || m.id === 'module2';
 
             return (
               <div
                 key={m.id}
                 className={`p-3 rounded-xl border transition ${
-                  m.id === 'module2'
+                  isCurrentModule
                     ? 'bg-teal-950/20 border-teal-500/40 ring-1 ring-teal-500/20'
-                    : m.id === 'module1'
+                    : isCompletedModule
                     ? 'bg-emerald-950/20 border-emerald-500/30'
                     : 'bg-slate-800/40 border-slate-800/80 opacity-75'
                 }`}
@@ -282,7 +299,11 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                   <div className="flex items-center gap-2">
                     <div
                       className={`p-1.5 rounded-lg ${
-                        isCompletedModule ? 'bg-emerald-600 text-white' : 'bg-slate-700 text-slate-300'
+                        isCurrentModule
+                          ? 'bg-teal-600 text-white font-bold'
+                          : isCompletedModule
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-slate-700 text-slate-300'
                       }`}
                     >
                       <Icon className="w-4 h-4" />
@@ -297,18 +318,35 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                   </span>
                 </div>
 
-                {isCompletedModule && (
+                {/* Progress breakdown for active & completed modules */}
+                {(isCurrentModule || isCompletedModule) && (
                   <div className="mt-2 space-y-1.5 pt-2 border-t border-slate-700/50">
                     {m.days.map((d, dIdx) => (
                       <div key={dIdx} className="flex items-center justify-between text-xs py-0.5">
                         <div className="flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                          <span className="text-slate-300">
-                            <strong className="text-emerald-300">{d.day}:</strong> {d.label}
+                          {d.status === 'completed' ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+                          ) : (
+                            <CircleDot className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                          )}
+                          <span
+                            className={
+                              d.status === 'completed'
+                                ? 'text-teal-300 font-semibold'
+                                : 'text-slate-400'
+                            }
+                          >
+                            <strong className="text-slate-300">{d.day}:</strong> {d.label}
                           </span>
                         </div>
-                        <span className="text-[10px] px-1.5 py-0.2 rounded font-mono bg-emerald-500/20 text-emerald-300">
-                          Done
+                        <span
+                          className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                            d.status === 'completed'
+                              ? 'bg-teal-500/20 text-teal-300'
+                              : 'bg-slate-800 text-slate-500'
+                          }`}
+                        >
+                          {d.status === 'completed' ? 'Done' : 'Next'}
                         </span>
                       </div>
                     ))}

@@ -8,7 +8,7 @@
 ---
 
 ## 📌 Project Overview
-The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack healthcare web application designed to automate clinical operations, outpatient scheduling, dynamic time slot booking, electronic health records (EHR), physician shift rostering, OPD live queue & token calling, nurse vitals triage desk & early warning scoring, consultation status flows & SOAP notes, pharmacy dispensing, inpatient bed tracking, and billing workflows.
+The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack healthcare web application designed to automate clinical operations, outpatient scheduling, dynamic time slot booking, electronic health records (EHR), physician shift rostering, OPD live queue & token calling, nurse vitals triage desk & early warning scoring, physician consultation workstations & SOAP notes, pharmacy dispensing, inpatient bed tracking, and billing workflows.
 
 ---
 
@@ -25,53 +25,50 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 
 ---
 
-### 🩺 Module 2: Doctor Rostering & OPD Management (100% Completed ✅)
+### ✅ Module 2: Doctor Rostering & OPD Management (100% Completed)
 | Day | Date | Focus Scope | Key Deliverables | Status |
 |:---:|:---:|:---|:---|:---:|
 | **Day 1** | Aug 31 / Sep 01 | Doctor Profile & Shift Rostering | Physician Onboarding, Shift Schedules, Weekly Rosters, Real-time Duty Board | ✅ **Completed** |
 | **Day 2** | Sep 02 | Slot Booking Engine & OPD Scheduling | Dynamic Slot Generation, Collision Guard, Queue Token Issuance & Rescheduling | ✅ **Completed** |
 | **Day 3** | Sep 03 | OPD Queue & Token Display System | Live Patient Calling Board, Sequential Tokens, TV Display Screen, Triage Desk | ✅ **Completed** |
 | **Day 4** | Sep 04 | Nurse Vitals Triage Desk & Alerts | Pre-Consultation Vitals, Auto-BMI, NEWS Early Warning Severity Alerts (Green/Amber/Red) | ✅ **Completed** |
-| **Day 5** | Sep 05 | **Appointment Status & Consultation Flow** | **End-to-End Outpatient Lifecycle, Patient Check-In, Clinical SOAP Documentation, Visit Checkout & Longitudinal Journey Timeline** | ✅ **Completed & Verified** |
+| **Day 5** | Sep 05 | Appointment Status & Consultation Flow | End-to-End Outpatient Lifecycle, Patient Check-In, Clinical SOAP Documentation | ✅ **Completed** |
 
 ---
 
-## 🩺 Module 2 — Complete Deliverables Breakdown (Days 1 — 5)
+### 🩺 Module 3: EHR & e-Prescriptions (In Progress)
+| Day | Date | Focus Scope | Key Deliverables | Status |
+|:---:|:---:|:---|:---|:---:|
+| **Day 1** | Sep 07 | **Doctor Consultation UI & Clinical EHR** | **Physician Encounter Console, 360° Patient Snapshot, Vitals Radar, Critical Allergy Alerts & Outpatient Worklist** | ✅ **Completed & Verified** |
+| **Day 2** | Sep 08 | Clinical SOAP Notes | Structured Subjective, Objective, Assessment, Plan & Encounter Summary | ⏳ *Next Milestone* |
+| **Day 3** | Sep 09 | ICD-10 & Allergy Interaction Alerts | Diagnostic Coding, Drug-Drug & Allergy Interaction Alert Engine | ⏳ *Upcoming* |
+| **Day 4** | Sep 10 | e-Prescribing Engine | Dosage, Frequency, Route, Duration & Medication Catalog | ⏳ *Upcoming* |
+| **Day 5** | Sep 11 | Lab Orders & PDF Export | Diagnostic Lab Orders, Results Tracking & Clinical PDF Summary | ⏳ *Upcoming* |
 
-### 📅 Day 1: Doctor Profile & Clinical Shift Rostering
-* **Controller:** [`server/src/controllers/doctorRosterController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/doctorRosterController.js)
-* **Frontend:** [`client/src/components/Day1DoctorRosterExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day1DoctorRosterExplorer.jsx)
-* **Features:** Physician profile onboarding, weekly shift scheduling, consultation room allocation, and active duty roster board.
-* **Test Suite:** [`server/test-doctor-roster.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-roster.js) (**18/18 Passed**).
+---
 
-### 📅 Day 2: Dynamic Slot Booking Engine & OPD Scheduling
-* **Controller:** [`server/src/controllers/appointmentBookingController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/appointmentBookingController.js)
-* **Frontend:** [`client/src/components/Day2AppointmentBookingExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day2AppointmentBookingExplorer.jsx)
-* **Features:** Dynamic 30-minute time slot generation from shift hours (`09:00 - 15:00`), double-booking collision guard, automated queue token issuance, 1-click rescheduling, and cancellation.
-* **Test Suite:** [`server/test-appointment-booking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-booking.js) (**18/18 Passed**).
+## 🩺 Module 3 — Day 1 Deliverables: Doctor Consultation UI & Clinical EHR Workspace
 
-### 📅 Day 3: OPD Live Queue & Token Display System
-* **Controller:** [`server/src/controllers/opdQueueController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/opdQueueController.js)
-* **Frontend:** [`client/src/components/Day3OpdQueueExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day3OpdQueueExplorer.jsx)
-* **Features:** Live OPD Queue Stream (`/api/queue/live`), 1-Click "Call Next Patient" paging desk, public waiting hall TV display mode with pulsing "NOW SERVING" cards, walk-in token issuance, and estimated wait-time algorithms.
-* **Test Suite:** [`server/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-opd-queue.js) (**18/18 Passed**).
+### 1. Physician Clinical Encounter Core & API Endpoints
+* **Controller:** [`server/src/controllers/doctorConsultationController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/doctorConsultationController.js)
+* **Routes:** [`server/src/routes/doctorConsultationRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/doctorConsultationRoutes.js) mounted on `/api/consultation`
+* **Validation:** [`server/src/middleware/validateDoctorConsultation.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/middleware/validateDoctorConsultation.js)
 
-### 📅 Day 4: Nurse Vitals Triage Desk & Early Warning System
-* **Controller:** [`server/src/controllers/nurseTriageController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/nurseTriageController.js)
-* **Frontend:** [`client/src/components/Day4NurseTriageExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day4NurseTriageExplorer.jsx)
-* **Features:** Pre-consultation vital signs screening (BP, Pulse, SpO2, Temp, RR, Height, Weight), real-time Auto-BMI calculator, and NEWS Clinical Early Warning Scoring (Green Stable, Amber Urgent, Red Critical alerts).
-* **Test Suite:** [`server/test-nurse-triage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-nurse-triage.js) (**14/14 Passed**).
+| Method | Endpoint | Access | Description |
+|:---|:---|:---:|:---|
+| `GET` | `/api/consultation/active-patient/:patientId` | Doctor / Admin | 360° EHR snapshot: demographics, known drug allergies, chronic baseline, latest triage vitals radar, previous visits & active prescriptions |
+| `GET` | `/api/consultation/doctor-worklist` | Doctor / Admin | Attending physician's daily queue categorized into Waiting, In-Consultation, and Completed visits |
+| `POST` | `/api/consultation/encounter/start` | Doctor / Admin | Initializes formal clinical encounter, locks state to `IN_CONSULTATION`, updates queue token, and logs audit trail |
+| `GET` | `/api/consultation/patient/:patientId/history-drawer` | Doctor / Admin | Longitudinal quick-drawer retrieving past consultation encounters, historical SOAP diagnoses, and medications |
+| `GET` | `/api/consultation/stats/overview` | Doctor / Admin | Physician clinical statistics: today's total scheduled, in-consultation count, completed visits, and total EHR patients |
 
-### 📅 Day 5: Appointment Status & Consultation Flow (End-to-End Outpatient Lifecycle)
-* **Controller:** [`server/src/controllers/appointmentFlowController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/appointmentFlowController.js)
-* **Routes:** [`server/src/routes/appointmentFlowRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/appointmentFlowRoutes.js) mounted on `/api/appointment-flow`
-* **Frontend:** [`client/src/components/Day5AppointmentFlowExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day5AppointmentFlowExplorer.jsx)
+### 2. Interactive Frontend Doctor Consultation Console
+* **React Component:** [`client/src/components/Day1ConsultationWorkspaceExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day1ConsultationWorkspaceExplorer.jsx)
 * **Features:**
-  * **OPD Floor Kanban / Pipeline Flow Board:** 4 real-time stages: (1) Booked / Scheduled &rarr; (2) Checked-In / Waiting Hall &rarr; (3) In Active Consultation &rarr; (4) Completed & Checked Out.
-  * **Clinical SOAP Consultation Documentation:** Full clinical notes capturing **Subjective (S)**, **Objective (O)**, **Assessment / Diagnosis (A)** with ICD-10 coding, and **Treatment Plan (P)**.
-  * **Longitudinal Patient Journey Timeline:** 5-step visual audit trail tracking each milestone from initial booking through checkout.
-  * **Follow-up Consultation Scheduler:** 1-Click return visit booking.
-* **Test Suite:** [`server/test-appointment-flow.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-flow.js) (**16/16 Passed**).
+  * **Critical Allergy Warning Banner:** High-visibility pulsing red alert for severe drug allergies (e.g. `⚠️ CRITICAL ALLERGY WARNING: Penicillin (Severe Anaphylaxis)`).
+  * **Live Vitals Radar Card:** Real-time physiological indicators (BP, Pulse, SpO2, Temp, BMI) with NEWS clinical severity status pills.
+  * **Doctor's Daily Outpatient Worklist:** 1-Click "Start Visit" button to page waiting patients into the examination room.
+  * **Longitudinal Patient History Drawer:** Slide-out drawer reviewing past clinical notes and diagnoses.
 
 ---
 
@@ -86,24 +83,12 @@ erDiagram
     DOCTOR_PROFILE ||--o{ APPOINTMENT : "consults"
     PATIENT_PROFILE ||--o{ APPOINTMENT : "books"
     APPOINTMENT ||--o| QUEUE_TOKEN : "issues token"
-    PATIENT_PROFILE ||--o{ QUEUE_TOKEN : "holds token"
-    DOCTOR_PROFILE ||--o{ QUEUE_TOKEN : "serves"
     PATIENT_PROFILE ||--o{ VITAL_SIGN : "has vitals recorded"
     APPOINTMENT ||--o| VITAL_SIGN : "linked to consultation"
     APPOINTMENT ||--o| CONSULTATION_NOTE : "documents SOAP"
     USER ||--o{ CONSULTATION_NOTE : "doctor writes"
-
-    APPOINTMENT {
-        string id PK
-        string patientId FK
-        string doctorId FK
-        datetime appointmentDate
-        string timeSlot "10:00 - 10:30"
-        string type "OPD | FOLLOW_UP | EMERGENCY"
-        string status "SCHEDULED | CHECKED_IN | IN_QUEUE | IN_CONSULTATION | COMPLETED | CANCELLED"
-        string reasonForVisit
-        string notes
-    }
+    CONSULTATION_NOTE ||--o| PRESCRIPTION : "generates Rx"
+    CONSULTATION_NOTE ||--o{ LAB_ORDER : "orders diagnostic lab"
 
     CONSULTATION_NOTE {
         string id PK
@@ -118,36 +103,21 @@ erDiagram
         datetime followUpDate
     }
 
-    QUEUE_TOKEN {
+    PRESCRIPTION {
         string id PK
-        string appointmentId FK
+        string prescriptionNumber UK
         string patientId FK
         string doctorId FK
-        int tokenNumber "Sequential daily counter"
-        string tokenCode "e.g. CARD-001"
-        string status "WAITING | CALLED | IN_CONSULTATION | COMPLETED | CANCELLED"
-        datetime calledAt
-        datetime completedAt
-        datetime date
-    }
-
-    VITAL_SIGN {
-        string id PK
-        string patientId FK
-        string appointmentId FK
-        int systolicBp
-        int diastolicBp
-        int pulseRate
-        float temperature
-        float oxygenSaturation
-        float bmi
-        string triageNotes
+        string consultationNoteId FK
+        string generalAdvice
+        string dietaryAdvice
+        datetime issuedAt
     }
 ```
 
 ---
 
-## 🧪 Automated Test Suite Coverage (176 Total Passed Assertions across 9 Suites)
+## 🧪 Automated Test Suite Coverage (193 Total Passed Assertions across 10 Suites)
 
 | Test Suite File | Module & Day Scope | Assertions | Result |
 |:---|:---|:---:|:---:|
@@ -159,8 +129,9 @@ erDiagram
 | [`server/test-appointment-booking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-booking.js) | M2 Day 2: Slot Booking Engine & OPD Scheduling | 18 | ✅ **100% PASS** |
 | [`server/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-opd-queue.js) | M2 Day 3: OPD Queue & Live Token Display | 18 | ✅ **100% PASS** |
 | [`server/test-nurse-triage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-nurse-triage.js) | M2 Day 4: Nurse Vitals Triage & Early Warning Alerts | 14 | ✅ **100% PASS** |
-| [`server/test-appointment-flow.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-flow.js) | **M2 Day 5: Appointment Status & Consultation Flow** | 16 | ✅ **100% PASS** |
-| **Total Test Coverage** | **All Modules (Module 1 Complete + Module 2 Complete)** | **176 Assertions** | ✅ **100% Passed** |
+| [`server/test-appointment-flow.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-flow.js) | M2 Day 5: Appointment Status & Consultation Flow | 16 | ✅ **100% PASS** |
+| [`server/test-doctor-consultation.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-consultation.js) | **M3 Day 1: Doctor Consultation UI & Clinical Workspace** | 17 | ✅ **100% PASS** |
+| **Total Test Coverage** | **All Modules (Module 1 + Module 2 + Module 3 Day 1)** | **193 Assertions** | ✅ **100% Passed** |
 
 ---
 
@@ -174,7 +145,7 @@ npx prisma generate
 npx prisma db push
 node prisma/seed.js
 
-# Run All 9 Automated Test Suites (176 Total Assertions):
+# Run All 10 Automated Test Suites (193 Total Assertions):
 node test-auth.js
 node test-rbac.js
 node test-patient-registration.js
@@ -184,6 +155,7 @@ node test-appointment-booking.js
 node test-opd-queue.js
 node test-nurse-triage.js
 node test-appointment-flow.js
+node test-doctor-consultation.js
 
 # Start Backend Server (Port 5000):
 npm run dev

@@ -270,4 +270,28 @@ export const appointmentFlowAPI = {
   },
 };
 
+// Doctor Consultation UI & Clinical Workspace (Module 3 Day 1)
+export const consultationAPI = {
+  getActivePatientSnapshot: async (patientId) => {
+    const response = await api.get(`/consultation/active-patient/${patientId}`);
+    return response.data;
+  },
+  getDoctorWorklist: async (params = {}) => {
+    const response = await api.get('/consultation/doctor-worklist', { params });
+    return response.data;
+  },
+  startEncounter: async (encounterData) => {
+    const response = await api.post('/consultation/encounter/start', encounterData);
+    return response.data;
+  },
+  getHistoryDrawer: async (patientId) => {
+    const response = await api.get(`/consultation/patient/${patientId}/history-drawer`);
+    return response.data;
+  },
+  getStats: async () => {
+    const response = await api.get('/consultation/stats/overview');
+    return response.data;
+  },
+};
+
 export default api;
