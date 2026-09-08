@@ -6,7 +6,7 @@
 > **Repository:** [Smart-Hospital-management-system](https://github.com/ansariking51214/Smart-Hospital-management-system)
 
 ---
---
+
 ## 📌 Project Overview
 The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack healthcare web application designed to automate clinical operations, outpatient scheduling, dynamic time slot booking, electronic health records (EHR), physician shift rostering, OPD live queue & token calling, nurse vitals triage desk & early warning scoring, physician consultation workstations & SOAP notes, pharmacy dispensing, inpatient bed tracking, and billing workflows.
 
