@@ -6,7 +6,7 @@
 > **Repository:** [Smart-Hospital-management-system](https://github.com/ansariking51214/Smart-Hospital-management-system)
 
 ---
-
+--
 ## 📌 Project Overview
 The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack healthcare web application designed to automate clinical operations, outpatient scheduling, dynamic time slot booking, electronic health records (EHR), physician shift rostering, OPD live queue & token calling, nurse vitals triage desk & early warning scoring, physician consultation workstations & SOAP notes, pharmacy dispensing, inpatient bed tracking, and billing workflows.
 
@@ -40,7 +40,7 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 | Day | Date | Focus Scope | Key Deliverables | Status |
 |:---:|:---:|:---|:---|:---:|
 | **Day 1** | Sep 07 | **Doctor Consultation UI & Clinical EHR** | **Physician Encounter Console, 360° Patient Snapshot, Vitals Radar, Critical Allergy Alerts & Outpatient Worklist** | ✅ **Completed & Verified** |
-| **Day 2** | Sep 08 | Clinical SOAP Notes | Structured Subjective, Objective, Assessment, Plan & Encounter Summary | ⏳ *Next Milestone* |
+| **Day 2** | Sep 08 | **Clinical SOAP Notes** | **Structured Subjective, Objective, Assessment, Plan & Encounter Summary** | ✅ **Completed & Verified** |
 | **Day 3** | Sep 09 | ICD-10 & Allergy Interaction Alerts | Diagnostic Coding, Drug-Drug & Allergy Interaction Alert Engine | ⏳ *Upcoming* |
 | **Day 4** | Sep 10 | e-Prescribing Engine | Dosage, Frequency, Route, Duration & Medication Catalog | ⏳ *Upcoming* |
 | **Day 5** | Sep 11 | Lab Orders & PDF Export | Diagnostic Lab Orders, Results Tracking & Clinical PDF Summary | ⏳ *Upcoming* |
@@ -69,6 +69,34 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
   * **Live Vitals Radar Card:** Real-time physiological indicators (BP, Pulse, SpO2, Temp, BMI) with NEWS clinical severity status pills.
   * **Doctor's Daily Outpatient Worklist:** 1-Click "Start Visit" button to page waiting patients into the examination room.
   * **Longitudinal Patient History Drawer:** Slide-out drawer reviewing past clinical notes and diagnoses.
+
+---
+
+## 🩺 Module 3 — Day 2 Deliverables: Structured Clinical SOAP Notes & Encounter Finalization Engine
+
+### 1. Clinical SOAP Notes Core & API Endpoints
+* **Controller:** [`server/src/controllers/doctorConsultationController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/doctorConsultationController.js)
+* **Routes:** [`server/src/routes/doctorConsultationRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/doctorConsultationRoutes.js) mounted on `/api/consultation`
+* **Validation:** [`server/src/middleware/validateDoctorConsultation.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/middleware/validateDoctorConsultation.js)
+
+| Method | Endpoint | Access | Description |
+|:---|:---|:---:|:---|
+| `POST` | `/api/consultation/soap-notes` | Doctor / Admin | Creates or updates structured clinical SOAP note (Subjective, Objective, Assessment, Plan, ICD-10 codes, follow-up date) |
+| `GET` | `/api/consultation/soap-notes/patient/:patientId` | Doctor / Admin | Retrieves complete longitudinal SOAP history for a specific patient by ID or MRN |
+| `GET` | `/api/consultation/soap-notes/templates` | Doctor / Admin | Returns clinical documentation macro templates (Hypertension, URTI, T2DM, Gastroenteritis) |
+| `GET` | `/api/consultation/soap-notes/:id` | Doctor / Admin | Fetches single SOAP note record with full patient, doctor, and appointment relations |
+| `PUT` | `/api/consultation/soap-notes/:id` | Doctor / Admin | Updates and refines draft SOAP note content |
+| `POST` | `/api/consultation/soap-notes/:id/finalize` | Doctor / Admin | Finalizes clinical encounter, signs note, updates appointment & queue token status to `COMPLETED`, and logs audit trail |
+| `DELETE` | `/api/consultation/soap-notes/:id` | Doctor / Admin | Deletes unfinalized draft SOAP note record |
+
+### 2. Interactive Frontend Clinical SOAP Workstation
+* **React Component:** [`client/src/components/Day2SoapNotesExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day2SoapNotesExplorer.jsx)
+* **Key Features:**
+  * **4-Quadrant SOAP Console:** Dedicated S (Subjective), O (Objective), A (Assessment), P (Plan) clinical documentation fields with real-time validation.
+  * **1-Click Clinical Macro Templates:** Pre-built macros (Cardiology HTN, Pulmonology URTI, Endocrinology T2DM, Gastroenteritis) to auto-fill notes instantly.
+  * **ICD-10 Diagnostic Tagging & Suggestions:** Interactive ICD-10 code manager with 1-click addition (`I10`, `E11.9`, `J06.9`).
+  * **Encounter Finalization & Signing:** 1-Click "Finalize & Sign Encounter" transition locking appointment and queue token to `COMPLETED`.
+  * **Longitudinal History Timeline:** Slide-out/tabbed drawer reviewing past SOAP documentation per patient.
 
 ---
 
@@ -117,7 +145,7 @@ erDiagram
 
 ---
 
-## 🧪 Automated Test Suite Coverage (193 Total Passed Assertions across 10 Suites)
+## 🧪 Automated Test Suite Coverage (216 Total Passed Assertions across 11 Suites)
 
 | Test Suite File | Module & Day Scope | Assertions | Result |
 |:---|:---|:---:|:---:|
@@ -130,8 +158,9 @@ erDiagram
 | [`server/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-opd-queue.js) | M2 Day 3: OPD Queue & Live Token Display | 18 | ✅ **100% PASS** |
 | [`server/test-nurse-triage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-nurse-triage.js) | M2 Day 4: Nurse Vitals Triage & Early Warning Alerts | 14 | ✅ **100% PASS** |
 | [`server/test-appointment-flow.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-flow.js) | M2 Day 5: Appointment Status & Consultation Flow | 16 | ✅ **100% PASS** |
-| [`server/test-doctor-consultation.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-consultation.js) | **M3 Day 1: Doctor Consultation UI & Clinical Workspace** | 17 | ✅ **100% PASS** |
-| **Total Test Coverage** | **All Modules (Module 1 + Module 2 + Module 3 Day 1)** | **193 Assertions** | ✅ **100% Passed** |
+| [`server/test-doctor-consultation.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-consultation.js) | M3 Day 1: Doctor Consultation UI & Clinical Workspace | 17 | ✅ **100% PASS** |
+| [`server/test-soap-notes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-soap-notes.js) | **M3 Day 2: Clinical SOAP Notes & Encounter Finalization** | 23 | ✅ **100% PASS** |
+| **Total Test Coverage** | **All Modules (Module 1 + Module 2 + Module 3 Day 2)** | **216 Assertions** | ✅ **100% Passed** |
 
 ---
 
@@ -145,7 +174,7 @@ npx prisma generate
 npx prisma db push
 node prisma/seed.js
 
-# Run All 10 Automated Test Suites (193 Total Assertions):
+# Run All 11 Automated Test Suites (216 Total Assertions):
 node test-auth.js
 node test-rbac.js
 node test-patient-registration.js
@@ -156,6 +185,7 @@ node test-opd-queue.js
 node test-nurse-triage.js
 node test-appointment-flow.js
 node test-doctor-consultation.js
+node test-soap-notes.js
 
 # Start Backend Server (Port 5000):
 npm run dev
@@ -168,6 +198,7 @@ npm install
 npm run dev
 ```
 Open **[http://localhost:5173](http://localhost:5173)** in your browser.
+
 
 ---
 

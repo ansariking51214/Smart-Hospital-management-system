@@ -5,11 +5,19 @@ import {
   startClinicalEncounter,
   getPatientHistoryDrawer,
   getConsultationStats,
+  createOrUpdateSoapNote,
+  getPatientSoapNotes,
+  getSoapNoteById,
+  finalizeSoapEncounter,
+  getSoapMacrosAndTemplates,
+  deleteSoapNoteDraft,
 } from '../controllers/doctorConsultationController.js';
 import { authenticateToken, requireRoles } from '../middleware/authMiddleware.js';
 import {
   validateStartEncounter,
   validatePatientIdParam,
+  validateSoapNoteInput,
+  validateSoapNoteIdParam,
 } from '../middleware/validateDoctorConsultation.js';
 
 const router = Router();
@@ -50,4 +58,65 @@ router.get(
   getPatientHistoryDrawer
 );
 
+// -------------------------------------------------------------
+// MODULE 3 - DAY 2: CLINICAL SOAP NOTES & ENCOUNTER FINALIZATION
+// -------------------------------------------------------------
+
+// 6. Get Clinical SOAP Documentation Templates & Macros
+router.get('/soap-notes/templates', getSoapMacrosAndTemplates);
+
+// 7. Get SOAP Notes History for Patient
+router.get(
+  '/soap-notes/patient/:patientId',
+  authenticateToken,
+  validatePatientIdParam,
+  getPatientSoapNotes
+);
+
+// 8. Create Clinical SOAP Note
+router.post(
+  '/soap-notes',
+  authenticateToken,
+  requireRoles('DOCTOR', 'ADMIN'),
+  validateSoapNoteInput,
+  createOrUpdateSoapNote
+);
+
+// 9. Get Single SOAP Note by ID
+router.get(
+  '/soap-notes/:id',
+  authenticateToken,
+  validateSoapNoteIdParam,
+  getSoapNoteById
+);
+
+// 10. Update Clinical SOAP Note
+router.put(
+  '/soap-notes/:id',
+  authenticateToken,
+  requireRoles('DOCTOR', 'ADMIN'),
+  validateSoapNoteIdParam,
+  validateSoapNoteInput,
+  createOrUpdateSoapNote
+);
+
+// 11. Finalize Clinical Encounter & Sign SOAP Note
+router.post(
+  '/soap-notes/:id/finalize',
+  authenticateToken,
+  requireRoles('DOCTOR', 'ADMIN'),
+  validateSoapNoteIdParam,
+  finalizeSoapEncounter
+);
+
+// 12. Delete Draft SOAP Note
+router.delete(
+  '/soap-notes/:id',
+  authenticateToken,
+  requireRoles('DOCTOR', 'ADMIN'),
+  validateSoapNoteIdParam,
+  deleteSoapNoteDraft
+);
+
 export default router;
+

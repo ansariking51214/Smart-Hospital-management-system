@@ -15,13 +15,14 @@ import { Day3OpdQueueExplorer } from './components/Day3OpdQueueExplorer';
 import { Day4NurseTriageExplorer } from './components/Day4NurseTriageExplorer';
 import { Day5AppointmentFlowExplorer } from './components/Day5AppointmentFlowExplorer';
 import { Day1ConsultationWorkspaceExplorer } from './components/Day1ConsultationWorkspaceExplorer';
+import { Day2SoapNotesExplorer } from './components/Day2SoapNotesExplorer';
 import { AuthModal } from './components/AuthModal';
 import { AuthProvider } from './context/AuthContext';
 import { fetchHealthStatus, fetchSchemaDetails } from './services/api';
-import { RefreshCw, Stethoscope } from 'lucide-react';
+import { RefreshCw, Stethoscope, FileText } from 'lucide-react';
 
 function DashboardContent() {
-  const [activeTab, setActiveTab] = useState('consultation'); // 'consultation' | 'flow' | 'triage' | 'queue' | 'booking' | 'roster' | 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
+  const [activeTab, setActiveTab] = useState('soap'); // 'soap' | 'consultation' | 'flow' | 'triage' | 'queue' | 'booking' | 'roster' | 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
   const [healthData, setHealthData] = useState(null);
   const [schemaData, setSchemaData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -75,11 +76,11 @@ function DashboardContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-                    <Stethoscope className="w-5 h-5 text-teal-400" />
-                    Doctor Consultation UI & Clinical EHR Workspace
+                    <FileText className="w-5 h-5 text-teal-400" />
+                    Clinical SOAP Notes & EHR Documentation Workstation
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Module 3 &bull; Day 1: Physician Encounter Station, 360° EHR Record, Vitals Radar, Allergy Warnings & Outpatient Worklist
+                    Module 3 &bull; Day 2: Structured Subjective, Objective, Assessment, Plan & Encounter Summary
                   </p>
                 </div>
                 <button
@@ -97,12 +98,20 @@ function DashboardContent() {
             </div>
 
             {/* Dynamic Tab Body */}
+            {activeTab === 'soap' && (
+              <div className="space-y-8">
+                <Day2SoapNotesExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
             {activeTab === 'consultation' && (
               <div className="space-y-8">
                 <Day1ConsultationWorkspaceExplorer />
                 <ModuleTimeline />
               </div>
             )}
+
 
             {activeTab === 'flow' && (
               <div className="space-y-8">

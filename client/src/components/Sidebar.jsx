@@ -53,11 +53,11 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     {
       id: 'module3',
       title: 'Module 3: EHR & e-Prescriptions',
-      badge: 'In Progress (Day 1 Active) 🚀',
+      badge: 'In Progress (Day 2 Active) 🚀',
       badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
       days: [
         { day: 'Day 1', label: 'Doctor Consultation UI & EHR', status: 'completed' },
-        { day: 'Day 2', label: 'Clinical SOAP Notes', status: 'upcoming' },
+        { day: 'Day 2', label: 'Clinical SOAP Notes', status: 'completed' },
         { day: 'Day 3', label: 'ICD-10 & Allergy Alerts', status: 'upcoming' },
         { day: 'Day 4', label: 'e-Prescribing Engine', status: 'upcoming' },
         { day: 'Day 5', label: 'Lab Orders & PDF Export', status: 'upcoming' },
@@ -89,22 +89,38 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           Active Workspaces
         </h2>
         <nav className="space-y-1">
-          {/* Module 3 Day 1: Doctor Consultation Workspace (Current) */}
+          {/* Module 3 Day 2: Clinical SOAP Notes (Current) */}
           <button
-            onClick={() => setActiveTab('consultation')}
+            onClick={() => setActiveTab('soap')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
-              activeTab === 'consultation'
+              activeTab === 'soap'
                 ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg shadow-teal-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <Stethoscope className="w-4 h-4 text-teal-300" />
-              <span>M3 Day 1: Doctor Consultation UI</span>
+              <FileText className="w-4 h-4 text-teal-300" />
+              <span>M3 Day 2: Clinical SOAP Notes</span>
             </div>
             <span className="text-[10px] bg-teal-400/20 text-teal-200 border border-teal-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
               Current
             </span>
+          </button>
+
+          {/* Module 3 Day 1: Doctor Consultation Workspace */}
+          <button
+            onClick={() => setActiveTab('consultation')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'consultation'
+                ? 'bg-teal-600 text-white shadow-lg shadow-teal-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Stethoscope className="w-4 h-4 text-teal-300" />
+              <span>M3 Day 1: Consultation UI</span>
+            </div>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M3</span>
           </button>
 
           {/* Module 2 Day 5: Appointment Flow & SOAP */}
@@ -116,6 +132,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
+
             <div className="flex items-center gap-2.5">
               <GitPullRequest className="w-4 h-4" />
               <span>M2 Day 5: Consultation Flow</span>
