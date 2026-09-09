@@ -16,13 +16,14 @@ import { Day4NurseTriageExplorer } from './components/Day4NurseTriageExplorer';
 import { Day5AppointmentFlowExplorer } from './components/Day5AppointmentFlowExplorer';
 import { Day1ConsultationWorkspaceExplorer } from './components/Day1ConsultationWorkspaceExplorer';
 import { Day2SoapNotesExplorer } from './components/Day2SoapNotesExplorer';
+import { Day3ClinicalSafetyExplorer } from './components/Day3ClinicalSafetyExplorer';
 import { AuthModal } from './components/AuthModal';
 import { AuthProvider } from './context/AuthContext';
 import { fetchHealthStatus, fetchSchemaDetails } from './services/api';
 import { RefreshCw, Stethoscope, FileText } from 'lucide-react';
 
 function DashboardContent() {
-  const [activeTab, setActiveTab] = useState('soap'); // 'soap' | 'consultation' | 'flow' | 'triage' | 'queue' | 'booking' | 'roster' | 'history' | 'patients' | 'rbac' | 'auth' | 'schema' | 'seed'
+  const [activeTab, setActiveTab] = useState('clinical-safety');
   const [healthData, setHealthData] = useState(null);
   const [schemaData, setSchemaData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -80,7 +81,7 @@ function DashboardContent() {
                     Clinical SOAP Notes & EHR Documentation Workstation
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Module 3 &bull; Day 2: Structured Subjective, Objective, Assessment, Plan & Encounter Summary
+                    Module 3 &bull; Day 3: ICD-10 Coding & Clinical Safety Alerts
                   </p>
                 </div>
                 <button
@@ -101,6 +102,13 @@ function DashboardContent() {
             {activeTab === 'soap' && (
               <div className="space-y-8">
                 <Day2SoapNotesExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
+            {activeTab === 'clinical-safety' && (
+              <div className="space-y-8">
+                <Day3ClinicalSafetyExplorer />
                 <ModuleTimeline />
               </div>
             )}
@@ -197,7 +205,7 @@ function DashboardContent() {
       {/* Footer */}
       <footer className="border-t border-slate-800/80 bg-slate-900/60 py-4 px-6 text-center text-xs text-slate-500">
         <p>
-          Cloud-Based Hospital Management System (HMS) &bull; Module 3: Day 1 (Doctor Consultation UI & Clinical EHR Workspace)
+          Cloud-Based Hospital Management System (HMS) &bull; Module 3: Day 3 (ICD-10 Coding & Clinical Safety Alerts)
         </p>
       </footer>
     </div>

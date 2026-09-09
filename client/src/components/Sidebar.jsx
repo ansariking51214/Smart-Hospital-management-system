@@ -53,12 +53,12 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     {
       id: 'module3',
       title: 'Module 3: EHR & e-Prescriptions',
-      badge: 'In Progress (Day 2 Active) 🚀',
+      badge: 'In Progress (Day 3 Active) 🚀',
       badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
       days: [
         { day: 'Day 1', label: 'Doctor Consultation UI & EHR', status: 'completed' },
         { day: 'Day 2', label: 'Clinical SOAP Notes', status: 'completed' },
-        { day: 'Day 3', label: 'ICD-10 & Allergy Alerts', status: 'upcoming' },
+        { day: 'Day 3', label: 'ICD-10 & Allergy Alerts', status: 'completed' },
         { day: 'Day 4', label: 'e-Prescribing Engine', status: 'upcoming' },
         { day: 'Day 5', label: 'Lab Orders & PDF Export', status: 'upcoming' },
       ],
@@ -89,6 +89,21 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           Active Workspaces
         </h2>
         <nav className="space-y-1">
+          <button
+            onClick={() => setActiveTab('clinical-safety')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'clinical-safety'
+                ? 'bg-gradient-to-r from-amber-600 to-rose-600 text-white shadow-lg shadow-rose-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <ShieldCheck className="w-4 h-4 text-amber-300" />
+              <span>M3 Day 3: Safety Alerts</span>
+            </div>
+            <span className="text-[10px] bg-white/15 px-1.5 py-0.5 rounded-md font-bold uppercase">Current</span>
+          </button>
+
           {/* Module 3 Day 2: Clinical SOAP Notes (Current) */}
           <button
             onClick={() => setActiveTab('soap')}

@@ -292,6 +292,14 @@ export const consultationAPI = {
     const response = await api.get('/consultation/stats/overview');
     return response.data;
   },
+  getClinicalCatalog: async (params = {}) => {
+    const response = await api.get('/consultation/clinical-catalog', { params });
+    return response.data;
+  },
+  checkClinicalSafety: async (payload) => {
+    const response = await api.post('/consultation/clinical-safety/check', payload);
+    return response.data;
+  },
 };
 
 export default api;

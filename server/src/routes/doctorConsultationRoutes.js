@@ -11,6 +11,8 @@ import {
   finalizeSoapEncounter,
   getSoapMacrosAndTemplates,
   deleteSoapNoteDraft,
+  getClinicalCatalog,
+  checkClinicalSafety,
 } from '../controllers/doctorConsultationController.js';
 import { authenticateToken, requireRoles } from '../middleware/authMiddleware.js';
 import {
@@ -61,6 +63,10 @@ router.get(
 // -------------------------------------------------------------
 // MODULE 3 - DAY 2: CLINICAL SOAP NOTES & ENCOUNTER FINALIZATION
 // -------------------------------------------------------------
+
+// MODULE 3 - DAY 3: ICD-10 CATALOG & CLINICAL SAFETY ALERTS
+router.get('/clinical-catalog', authenticateToken, requireRoles('DOCTOR', 'ADMIN'), getClinicalCatalog);
+router.post('/clinical-safety/check', authenticateToken, requireRoles('DOCTOR', 'ADMIN'), checkClinicalSafety);
 
 // 6. Get Clinical SOAP Documentation Templates & Macros
 router.get('/soap-notes/templates', getSoapMacrosAndTemplates);

@@ -41,7 +41,7 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 |:---:|:---:|:---|:---|:---:|
 | **Day 1** | Sep 07 | **Doctor Consultation UI & Clinical EHR** | **Physician Encounter Console, 360° Patient Snapshot, Vitals Radar, Critical Allergy Alerts & Outpatient Worklist** | ✅ **Completed & Verified** |
 | **Day 2** | Sep 08 | **Clinical SOAP Notes** | **Structured Subjective, Objective, Assessment, Plan & Encounter Summary** | ✅ **Completed & Verified** |
-| **Day 3** | Sep 09 | ICD-10 & Allergy Interaction Alerts | Diagnostic Coding, Drug-Drug & Allergy Interaction Alert Engine | ⏳ *Upcoming* |
+| **Day 3** | Sep 09 | **ICD-10 & Allergy Interaction Alerts** | **Diagnostic Coding Catalog, Patient Allergy Screening, Drug-Drug Interaction Alert Engine** | ✅ **Completed & Verified** |
 | **Day 4** | Sep 10 | e-Prescribing Engine | Dosage, Frequency, Route, Duration & Medication Catalog | ⏳ *Upcoming* |
 | **Day 5** | Sep 11 | Lab Orders & PDF Export | Diagnostic Lab Orders, Results Tracking & Clinical PDF Summary | ⏳ *Upcoming* |
 
@@ -98,6 +98,29 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
   * **Encounter Finalization & Signing:** 1-Click "Finalize & Sign Encounter" transition locking appointment and queue token to `COMPLETED`.
   * **Longitudinal History Timeline:** Slide-out/tabbed drawer reviewing past SOAP documentation per patient.
 
+## 🩺 Module 3 — Day 3 Deliverables: ICD-10 Coding & Clinical Safety Alerts
+
+Day 3 adds a clinician-facing safety review before medication decisions are finalized. The workflow resolves the selected patient from the existing `PatientProfile` record, preserves structured ICD-10 codes, and checks proposed medicines against known allergies and high-risk combinations.
+
+### 1. Clinical Safety API
+* **Controller:** [`server/src/controllers/doctorConsultationController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/doctorConsultationController.js)
+* **Rules & Catalog:** [`server/src/utils/clinicalSafety.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/utils/clinicalSafety.js)
+* **Routes:** [`server/src/routes/doctorConsultationRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/doctorConsultationRoutes.js) mounted on `/api/consultation`
+
+| Method | Endpoint | Access | Description |
+|:---|:---|:---:|:---|
+| `GET` | `/api/consultation/clinical-catalog?search=...&type=...` | Doctor / Admin | Searches the curated ICD-10 diagnosis and medication catalogs. |
+| `POST` | `/api/consultation/clinical-safety/check` | Doctor / Admin | Resolves patient allergies, evaluates proposed medicines, returns severity-ranked allergy and interaction alerts, and writes an audit event. |
+
+### 2. Interactive Clinical Safety Workspace
+* **React Component:** [`client/src/components/Day3ClinicalSafetyExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day3ClinicalSafetyExplorer.jsx)
+* **Features:**
+  * Patient selector backed by the existing patient registry.
+  * Searchable ICD-10 suggestions with selected-code chips.
+  * Medication entry with curated medicine-class suggestions.
+  * Critical, high, and moderate alert presentation for allergy and drug-drug conflicts.
+  * Audited safety-check action available only to authenticated doctors and administrators.
+
 ---
 
 ## 🏗️ Architecture & Entity Relationship Diagram (ERD)
@@ -145,7 +168,7 @@ erDiagram
 
 ---
 
-## 🧪 Automated Test Suite Coverage (216 Total Passed Assertions across 11 Suites)
+## 🧪 Automated Test Suite Coverage (224 Total Passed Assertions across 12 Suites)
 
 | Test Suite File | Module & Day Scope | Assertions | Result |
 |:---|:---|:---:|:---:|
@@ -160,7 +183,8 @@ erDiagram
 | [`server/test-appointment-flow.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-flow.js) | M2 Day 5: Appointment Status & Consultation Flow | 16 | ✅ **100% PASS** |
 | [`server/test-doctor-consultation.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-consultation.js) | M3 Day 1: Doctor Consultation UI & Clinical Workspace | 17 | ✅ **100% PASS** |
 | [`server/test-soap-notes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-soap-notes.js) | **M3 Day 2: Clinical SOAP Notes & Encounter Finalization** | 23 | ✅ **100% PASS** |
-| **Total Test Coverage** | **All Modules (Module 1 + Module 2 + Module 3 Day 2)** | **216 Assertions** | ✅ **100% Passed** |
+| [`server/test-clinical-safety.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-clinical-safety.js) | **M3 Day 3: ICD-10, Allergy & Drug Interaction Safety** | 8 | ✅ **100% PASS** |
+| **Total Test Coverage** | **All Modules (Module 1 + Module 2 + Module 3 Day 3)** | **224 Assertions** | ✅ **100% Passed** |
 
 ---
 
@@ -174,7 +198,7 @@ npx prisma generate
 npx prisma db push
 node prisma/seed.js
 
-# Run All 11 Automated Test Suites (216 Total Assertions):
+# Run All 12 Automated Test Suites (224 Total Assertions):
 node test-auth.js
 node test-rbac.js
 node test-patient-registration.js
@@ -186,6 +210,7 @@ node test-nurse-triage.js
 node test-appointment-flow.js
 node test-doctor-consultation.js
 node test-soap-notes.js
+node test-clinical-safety.js
 
 # Start Backend Server (Port 5000):
 npm run dev

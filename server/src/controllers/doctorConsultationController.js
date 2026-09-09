@@ -1,4 +1,51 @@
 import prisma from '../config/db.js';
+import { evaluateClinicalSafety, searchClinicalCatalog } from '../utils/clinicalSafety.js';
+
+export async function getClinicalCatalog(req, res, next) {
+  try {
+    const { search = '', type = 'all' } = req.query;
+    return res.json({ success: true, ...searchClinicalCatalog(search, type) });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function checkClinicalSafety(req, res, next) {
+  try {
+    const { patientId, allergies, medications = [], icd10Codes = [] } = req.body;
+    let resolvedAllergies = allergies;
+    let patient = null;
+
+    if (patientId) {
+      patient = await prisma.patientProfile.findFirst({
+        where: { OR: [{ id: patientId }, { mrn: patientId }] },
+        select: { id: true, mrn: true, firstName: true, lastName: true, allergies: true },
+      });
+      if (!patient) {
+        return res.status(404).json({ success: false, code: 'PATIENT_NOT_FOUND', message: 'Patient profile not found.' });
+      }
+      resolvedAllergies = patient.allergies || '';
+    }
+
+    const safety = evaluateClinicalSafety({ allergies: resolvedAllergies, medications, icd10Codes });
+    if (req.user) {
+      await prisma.auditLog.create({
+        data: {
+          userId: req.user.id,
+          action: 'CLINICAL_SAFETY_CHECKED',
+          entity: 'PatientProfile',
+          entityId: patient?.id,
+          details: JSON.stringify({ medications: safety.medications, icd10Codes: safety.icd10Codes, alertCount: safety.alerts.length }),
+          ipAddress: req.ip,
+        },
+      });
+    }
+
+    return res.json({ success: true, patient, ...safety });
+  } catch (error) {
+    next(error);
+  }
+}
 
 /**
  * Get Active Patient 360° EHR Clinical Encounter Snapshot
