@@ -17,13 +17,14 @@ import { Day5AppointmentFlowExplorer } from './components/Day5AppointmentFlowExp
 import { Day1ConsultationWorkspaceExplorer } from './components/Day1ConsultationWorkspaceExplorer';
 import { Day2SoapNotesExplorer } from './components/Day2SoapNotesExplorer';
 import { Day3ClinicalSafetyExplorer } from './components/Day3ClinicalSafetyExplorer';
+import { Day4EPrescribingExplorer } from './components/Day4EPrescribingExplorer';
 import { AuthModal } from './components/AuthModal';
 import { AuthProvider } from './context/AuthContext';
 import { fetchHealthStatus, fetchSchemaDetails } from './services/api';
 import { RefreshCw, Stethoscope, FileText } from 'lucide-react';
 
 function DashboardContent() {
-  const [activeTab, setActiveTab] = useState('clinical-safety');
+  const [activeTab, setActiveTab] = useState('eprescribing');
   const [healthData, setHealthData] = useState(null);
   const [schemaData, setSchemaData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -81,7 +82,7 @@ function DashboardContent() {
                     Clinical SOAP Notes & EHR Documentation Workstation
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Module 3 &bull; Day 3: ICD-10 Coding & Clinical Safety Alerts
+                    Module 3 &bull; Day 4: Electronic Prescribing Engine
                   </p>
                 </div>
                 <button
@@ -109,6 +110,13 @@ function DashboardContent() {
             {activeTab === 'clinical-safety' && (
               <div className="space-y-8">
                 <Day3ClinicalSafetyExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
+            {activeTab === 'eprescribing' && (
+              <div className="space-y-8">
+                <Day4EPrescribingExplorer />
                 <ModuleTimeline />
               </div>
             )}
@@ -205,7 +213,7 @@ function DashboardContent() {
       {/* Footer */}
       <footer className="border-t border-slate-800/80 bg-slate-900/60 py-4 px-6 text-center text-xs text-slate-500">
         <p>
-          Cloud-Based Hospital Management System (HMS) &bull; Module 3: Day 3 (ICD-10 Coding & Clinical Safety Alerts)
+          Cloud-Based Hospital Management System (HMS) &bull; Module 3: Day 4 (Electronic Prescribing Engine)
         </p>
       </footer>
     </div>

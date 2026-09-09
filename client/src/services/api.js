@@ -300,6 +300,14 @@ export const consultationAPI = {
     const response = await api.post('/consultation/clinical-safety/check', payload);
     return response.data;
   },
+  issuePrescription: async (payload) => {
+    const response = await api.post('/consultation/prescriptions', payload);
+    return response.data;
+  },
+  getPatientPrescriptions: async (patientId) => {
+    const response = await api.get(`/consultation/prescriptions/patient/${patientId}`);
+    return response.data;
+  },
 };
 
 export default api;

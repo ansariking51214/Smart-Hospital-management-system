@@ -10,6 +10,7 @@ import {
   Layers,
   Sparkles,
   ShieldCheck,
+  FilePlus2,
   Users,
   UserPlus,
   Search,
@@ -53,7 +54,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     {
       id: 'module3',
       title: 'Module 3: EHR & e-Prescriptions',
-      badge: 'In Progress (Day 3 Active) 🚀',
+      badge: 'In Progress (Day 4 Active) 🚀',
       badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
       days: [
         { day: 'Day 1', label: 'Doctor Consultation UI & EHR', status: 'completed' },
@@ -89,6 +90,18 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           Active Workspaces
         </h2>
         <nav className="space-y-1">
+          <button
+            onClick={() => setActiveTab('eprescribing')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'eprescribing'
+                ? 'bg-gradient-to-r from-teal-600 to-cyan-600 text-white shadow-lg shadow-teal-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5"><FilePlus2 className="w-4 h-4 text-teal-300" /><span>M3 Day 4: e-Prescribing</span></div>
+            <span className="text-[10px] bg-teal-400/20 text-teal-200 border border-teal-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">New</span>
+          </button>
+
           <button
             onClick={() => setActiveTab('clinical-safety')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${

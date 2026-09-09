@@ -36,13 +36,13 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 
 ---
 
-### 🩺 Module 3: EHR & e-Prescriptions (In Progress)
+### 🩺 Module 3: EHR & e-Prescriptions (80% Completed)
 | Day | Date | Focus Scope | Key Deliverables | Status |
 |:---:|:---:|:---|:---|:---:|
 | **Day 1** | Sep 07 | **Doctor Consultation UI & Clinical EHR** | **Physician Encounter Console, 360° Patient Snapshot, Vitals Radar, Critical Allergy Alerts & Outpatient Worklist** | ✅ **Completed & Verified** |
 | **Day 2** | Sep 08 | **Clinical SOAP Notes** | **Structured Subjective, Objective, Assessment, Plan & Encounter Summary** | ✅ **Completed & Verified** |
 | **Day 3** | Sep 09 | **ICD-10 & Allergy Interaction Alerts** | **Diagnostic Coding Catalog, Patient Allergy Screening, Drug-Drug Interaction Alert Engine** | ✅ **Completed & Verified** |
-| **Day 4** | Sep 10 | e-Prescribing Engine | Dosage, Frequency, Route, Duration & Medication Catalog | ⏳ *Upcoming* |
+| **Day 4** | Sep 10 | **e-Prescribing Engine** | **Structured medication orders, server-side allergy/interaction safety gate, prescription numbering, audit trail & patient prescription history** | ✅ **Completed & Verified** |
 | **Day 5** | Sep 11 | Lab Orders & PDF Export | Diagnostic Lab Orders, Results Tracking & Clinical PDF Summary | ⏳ *Upcoming* |
 
 ---
@@ -121,6 +121,27 @@ Day 3 adds a clinician-facing safety review before medication decisions are fina
   * Critical, high, and moderate alert presentation for allergy and drug-drug conflicts.
   * Audited safety-check action available only to authenticated doctors and administrators.
 
+## 🩺 Module 3 — Day 4 Deliverables: Electronic Prescribing Engine
+
+Day 4 turns the Day 3 safety review into a guarded e-prescribing workflow. Doctors and administrators can create structured medication orders, while critical allergy and interaction alerts block issuance before anything is persisted.
+
+### 1. Electronic Prescribing API
+* **Controller:** [`server/src/controllers/doctorConsultationController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/doctorConsultationController.js)
+* **Routes:** [`server/src/routes/doctorConsultationRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/doctorConsultationRoutes.js) mounted on `/api/consultation`
+
+| Method | Endpoint | Access | Description |
+|:---|:---|:---:|:---|
+| `POST` | `/api/consultation/prescriptions` | Doctor / Admin | Validates medication rows, reruns clinical safety checks, blocks critical conflicts, persists a numbered prescription and writes an audit event. |
+| `GET` | `/api/consultation/prescriptions/patient/:patientId` | Doctor / Admin | Returns a patient's prescription history with medication items and prescriber details. |
+
+### 2. Interactive e-Prescribing Workspace
+* **React Component:** [`client/src/components/Day4EPrescribingExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day4EPrescribingExplorer.jsx)
+* **Features:**
+  * Patient selector and repeatable structured medication rows for name, dosage, frequency, duration, timing and instructions.
+  * Server-side safety gate shared with Day 3 clinical safety rules.
+  * Clear blocked, warning and issued states with generated `RX-YYYY-####` prescription number.
+  * Role-protected API access for doctors and administrators.
+
 ---
 
 ## 🏗️ Architecture & Entity Relationship Diagram (ERD)
@@ -184,7 +205,7 @@ erDiagram
 | [`server/test-doctor-consultation.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-consultation.js) | M3 Day 1: Doctor Consultation UI & Clinical Workspace | 17 | ✅ **100% PASS** |
 | [`server/test-soap-notes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-soap-notes.js) | **M3 Day 2: Clinical SOAP Notes & Encounter Finalization** | 23 | ✅ **100% PASS** |
 | [`server/test-clinical-safety.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-clinical-safety.js) | **M3 Day 3: ICD-10, Allergy & Drug Interaction Safety** | 8 | ✅ **100% PASS** |
-| **Total Test Coverage** | **All Modules (Module 1 + Module 2 + Module 3 Day 3)** | **224 Assertions** | ✅ **100% Passed** |
+| **Total Test Coverage** | **All Modules (Module 1 + Module 2 + Module 3 Day 4)** | **224 Assertions** | ✅ **100% Passed** |
 
 ---
 

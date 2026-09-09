@@ -47,6 +47,138 @@ export async function checkClinicalSafety(req, res, next) {
   }
 }
 
+export async function createPrescription(req, res, next) {
+  try {
+    const {
+      patientId,
+      consultationNoteId,
+      doctorId,
+      generalAdvice = '',
+      dietaryAdvice = '',
+      validUntil,
+      items = [],
+    } = req.body;
+
+    if (!patientId || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({
+        success: false,
+        code: 'PRESCRIPTION_VALIDATION_FAILED',
+        message: 'Patient and at least one medication are required to issue a prescription.',
+      });
+    }
+
+    const patient = await prisma.patientProfile.findFirst({
+      where: { OR: [{ id: patientId }, { mrn: patientId }] },
+      select: { id: true, mrn: true, firstName: true, lastName: true, allergies: true },
+    });
+    if (!patient) {
+      return res.status(404).json({ success: false, code: 'PATIENT_NOT_FOUND', message: 'Patient profile not found.' });
+    }
+
+    const invalidItem = items.find((item) => !item.medicineName || !item.dosage || !item.frequency || !item.duration);
+    if (invalidItem) {
+      return res.status(400).json({
+        success: false,
+        code: 'PRESCRIPTION_ITEM_INVALID',
+        message: 'Each medication requires a name, dosage, frequency, and duration.',
+      });
+    }
+
+    const safety = evaluateClinicalSafety({
+      allergies: patient.allergies,
+      medications: items.map((item) => item.medicineName),
+    });
+    if (safety.hasCriticalAlerts) {
+      return res.status(409).json({
+        success: false,
+        code: 'PRESCRIPTION_BLOCKED_BY_SAFETY_ALERT',
+        message: 'Prescription blocked until critical clinical safety alerts are resolved.',
+        safety,
+      });
+    }
+
+    const prescribingUser = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      include: { doctorProfile: true },
+    });
+    const resolvedDoctorId = doctorId || prescribingUser?.doctorProfile?.id;
+    if (!resolvedDoctorId) {
+      return res.status(400).json({
+        success: false,
+        code: 'DOCTOR_PROFILE_REQUIRED',
+        message: 'A doctor profile is required to issue an electronic prescription.',
+      });
+    }
+
+    const doctor = await prisma.doctorProfile.findUnique({ where: { id: resolvedDoctorId }, select: { id: true } });
+    if (!doctor) {
+      return res.status(404).json({ success: false, code: 'DOCTOR_NOT_FOUND', message: 'Prescribing doctor not found.' });
+    }
+
+    const year = new Date().getFullYear();
+    const prescriptionCount = await prisma.prescription.count({
+      where: { issuedDate: { gte: new Date(`${year}-01-01T00:00:00.000Z`) } },
+    });
+    const prescriptionNumber = `RX-${year}-${String(prescriptionCount + 1).padStart(4, '0')}`;
+    const prescription = await prisma.prescription.create({
+      data: {
+        prescriptionNumber,
+        patientId: patient.id,
+        doctorId: doctor.id,
+        consultationNoteId: consultationNoteId || null,
+        generalAdvice: generalAdvice.trim() || null,
+        dietaryAdvice: dietaryAdvice.trim() || null,
+        validUntil: validUntil ? new Date(validUntil) : null,
+        items: {
+          create: items.map((item) => ({
+            medicineName: item.medicineName.trim(),
+            dosage: item.dosage.trim(),
+            frequency: item.frequency.trim(),
+            timing: item.timing?.trim() || null,
+            duration: item.duration.trim(),
+            instructions: item.instructions?.trim() || null,
+          })),
+        },
+      },
+      include: { items: true, patient: true, doctor: { include: { user: true } } },
+    });
+
+    await prisma.auditLog.create({
+      data: {
+        userId: req.user.id,
+        action: 'PRESCRIPTION_ISSUED',
+        entity: 'Prescription',
+        entityId: prescription.id,
+        details: JSON.stringify({ patientMrn: patient.mrn, prescriptionNumber, itemCount: items.length }),
+        ipAddress: req.ip,
+      },
+    });
+
+    return res.status(201).json({ success: true, prescription, safety });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getPatientPrescriptions(req, res, next) {
+  try {
+    const patient = await prisma.patientProfile.findFirst({
+      where: { OR: [{ id: req.params.patientId }, { mrn: req.params.patientId }] },
+      select: { id: true, mrn: true, firstName: true, lastName: true },
+    });
+    if (!patient) return res.status(404).json({ success: false, code: 'PATIENT_NOT_FOUND', message: 'Patient profile not found.' });
+
+    const prescriptions = await prisma.prescription.findMany({
+      where: { patientId: patient.id },
+      orderBy: { issuedDate: 'desc' },
+      include: { items: true, doctor: { include: { user: true } } },
+    });
+    return res.json({ success: true, patient, prescriptions });
+  } catch (error) {
+    next(error);
+  }
+}
+
 /**
  * Get Active Patient 360° EHR Clinical Encounter Snapshot
  * GET /api/consultation/active-patient/:patientId
