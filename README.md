@@ -36,14 +36,14 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 
 ---
 
-### 🩺 Module 3: EHR & e-Prescriptions (80% Completed)
+### ✅ Module 3: EHR, SOAP Clinical Notes & e-Prescriptions with PDF Export (100% Completed)
 | Day | Date | Focus Scope | Key Deliverables | Status |
 |:---:|:---:|:---|:---|:---:|
 | **Day 1** | Sep 07 | **Doctor Consultation UI & Clinical EHR** | **Physician Encounter Console, 360° Patient Snapshot, Vitals Radar, Critical Allergy Alerts & Outpatient Worklist** | ✅ **Completed & Verified** |
 | **Day 2** | Sep 08 | **Clinical SOAP Notes** | **Structured Subjective, Objective, Assessment, Plan & Encounter Summary** | ✅ **Completed & Verified** |
 | **Day 3** | Sep 09 | **ICD-10 & Allergy Interaction Alerts** | **Diagnostic Coding Catalog, Patient Allergy Screening, Drug-Drug Interaction Alert Engine** | ✅ **Completed & Verified** |
 | **Day 4** | Sep 10 | **e-Prescribing Engine** | **Structured medication orders, server-side allergy/interaction safety gate, prescription numbering, audit trail & patient prescription history** | ✅ **Completed & Verified** |
-| **Day 5** | Sep 11 | Lab Orders & PDF Export | Diagnostic Lab Orders, Results Tracking & Clinical PDF Summary | ⏳ *Upcoming* |
+| **Day 5** | Sep 11 | **Diagnostic Test Orders & PDF Export** | **Diagnostic test order requests (Lab/Radiology), specimen tracking, results entry, printable Prescription PDF & 360° EHR clinical summary** | ✅ **Completed & Verified** |
 
 ---
 
@@ -144,6 +144,38 @@ Day 4 turns the Day 3 safety review into a guarded e-prescribing workflow. Docto
 
 ---
 
+## 🩺 Module 3 — Day 5 Deliverables: Diagnostic Test Orders (Lab/Radiology) & Prescription PDF Export
+
+Day 5 delivers full-stack diagnostic test ordering spanning Laboratory & Radiology categories, real-time specimen tracking, quantitative clinical results documentation, high-fidelity printable Prescription PDF export, and comprehensive 360° EHR clinical summary reporting.
+
+### 1. Diagnostic Test Ordering & PDF Export API
+* **Controller:** [`server/src/controllers/doctorConsultationController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/doctorConsultationController.js)
+* **Catalog & Helpers:** [`server/src/utils/labCatalog.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/utils/labCatalog.js)
+* **Routes:** [`server/src/routes/doctorConsultationRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/doctorConsultationRoutes.js) mounted on `/api/consultation`
+
+| Method | Endpoint | Access | Description |
+|:---|:---|:---:|:---|
+| `GET` | `/api/consultation/lab-orders/catalog` | Authenticated | Searches curated diagnostic lab & radiology catalog (CBC, HbA1c, Lipid, RFT, LFT, CXR, ECG, etc.). |
+| `POST` | `/api/consultation/lab-orders` | Doctor / Admin | Creates diagnostic test orders with sequential `LAB-YYYY-####` numbering, links to patient, and logs audit trail. |
+| `GET` | `/api/consultation/lab-orders/patient/:patientId` | Authenticated | Retrieves longitudinal diagnostic order history for a patient. |
+| `GET` | `/api/consultation/lab-orders` | Doctor / Admin / Nurse | Hospital-wide diagnostic orders queue with status and category filtering. |
+| `GET` | `/api/consultation/lab-orders/:id` | Authenticated | Fetches a single diagnostic order with full patient and encounter details. |
+| `PATCH` | `/api/consultation/lab-orders/:id/status` | Doctor / Admin / Nurse | Updates order status (`REQUESTED` -> `SAMPLE_COLLECTED` -> `PROCESSING` -> `COMPLETED`), documents findings, and logs audit event. |
+| `GET` | `/api/consultation/prescriptions/:id/pdf` | Public / Doctor | High-fidelity printable Prescription PDF export styled for A4 printing with hospital header, Rx table, advice, and doctor signature. |
+| `GET` | `/api/consultation/patient/:patientId/clinical-summary` | Authenticated | 360° EHR dossier consolidating demographics, vital signs, SOAP notes, active prescriptions, and lab results. |
+| `GET` | `/api/consultation/patient/:patientId/clinical-summary/export` | Authenticated | Printable Clinical Encounter & Discharge Summary report ready for PDF export. |
+
+### 2. Interactive Diagnostic Lab/Radiology Workstation & PDF Export
+* **React Component:** [`client/src/components/Day5LabOrdersExportExplorer.jsx`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/client/src/components/Day5LabOrdersExportExplorer.jsx)
+* **Features:**
+  * **Quick Diagnostic Panels:** 1-Click test selection for CBC, FBG, HbA1c, Lipid Profile, Renal Function (RFT), Liver Function (LFT), Chest X-Ray, and 12-Lead ECG.
+  * **Specimen Lifecycle Pipeline:** Real-time visual tracking from `REQUESTED` to `SAMPLE_COLLECTED`, `PROCESSING`, and `COMPLETED`.
+  * **Quantitative Results Documentation:** Dedicated modal to enter clinical findings, reference comparisons, and completion timestamps.
+  * **1-Click Prescription PDF Export:** Instant printable prescription view with hospital branding, official stamps, and signature blocks.
+  * **360° Longitudinal EHR Clinical Summary:** Consolidated printable medical report for patient referrals and discharge documentation.
+
+---
+
 ## 🏗️ Architecture & Entity Relationship Diagram (ERD)
 
 ```mermaid
@@ -189,7 +221,7 @@ erDiagram
 
 ---
 
-## 🧪 Automated Test Suite Coverage (224 Total Passed Assertions across 12 Suites)
+## 🧪 Automated Test Suite Coverage (253 Total Passed Assertions across 13 Suites)
 
 | Test Suite File | Module & Day Scope | Assertions | Result |
 |:---|:---|:---:|:---:|
@@ -205,7 +237,8 @@ erDiagram
 | [`server/test-doctor-consultation.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-consultation.js) | M3 Day 1: Doctor Consultation UI & Clinical Workspace | 17 | ✅ **100% PASS** |
 | [`server/test-soap-notes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-soap-notes.js) | **M3 Day 2: Clinical SOAP Notes & Encounter Finalization** | 23 | ✅ **100% PASS** |
 | [`server/test-clinical-safety.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-clinical-safety.js) | **M3 Day 3: ICD-10, Allergy & Drug Interaction Safety** | 8 | ✅ **100% PASS** |
-| **Total Test Coverage** | **All Modules (Module 1 + Module 2 + Module 3 Day 4)** | **224 Assertions** | ✅ **100% Passed** |
+| [`server/test-lab-orders.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-lab-orders.js) | **M3 Day 5: Diagnostic Orders (Lab/Radiology) & PDF Export** | 29 | ✅ **100% PASS** |
+| **Total Test Coverage** | **All Modules (Module 1 + Module 2 + Module 3 Complete)** | **253 Assertions** | ✅ **100% Passed** |
 
 ---
 
@@ -219,7 +252,7 @@ npx prisma generate
 npx prisma db push
 node prisma/seed.js
 
-# Run All 12 Automated Test Suites (224 Total Assertions):
+# Run All 13 Automated Test Suites (253 Total Assertions):
 node test-auth.js
 node test-rbac.js
 node test-patient-registration.js
@@ -232,6 +265,7 @@ node test-appointment-flow.js
 node test-doctor-consultation.js
 node test-soap-notes.js
 node test-clinical-safety.js
+node test-lab-orders.js
 
 # Start Backend Server (Port 5000):
 npm run dev

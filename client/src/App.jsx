@@ -18,13 +18,14 @@ import { Day1ConsultationWorkspaceExplorer } from './components/Day1Consultation
 import { Day2SoapNotesExplorer } from './components/Day2SoapNotesExplorer';
 import { Day3ClinicalSafetyExplorer } from './components/Day3ClinicalSafetyExplorer';
 import { Day4EPrescribingExplorer } from './components/Day4EPrescribingExplorer';
+import { Day5LabOrdersExportExplorer } from './components/Day5LabOrdersExportExplorer';
 import { AuthModal } from './components/AuthModal';
 import { AuthProvider } from './context/AuthContext';
 import { fetchHealthStatus, fetchSchemaDetails } from './services/api';
-import { RefreshCw, Stethoscope, FileText } from 'lucide-react';
+import { RefreshCw, Stethoscope, FileText, FlaskConical } from 'lucide-react';
 
 function DashboardContent() {
-  const [activeTab, setActiveTab] = useState('eprescribing');
+  const [activeTab, setActiveTab] = useState('lab-orders');
   const [healthData, setHealthData] = useState(null);
   const [schemaData, setSchemaData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -78,11 +79,11 @@ function DashboardContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-teal-400" />
-                    Clinical SOAP Notes & EHR Documentation Workstation
+                    <FlaskConical className="w-5 h-5 text-teal-400" />
+                    Diagnostic Test Orders & Clinical PDF Export Workstation
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Module 3 &bull; Day 4: Electronic Prescribing Engine
+                    Module 3 &bull; Day 5: Diagnostic Test Order Requests (Lab/Radiology) & Prescription PDF Export
                   </p>
                 </div>
                 <button
@@ -100,6 +101,20 @@ function DashboardContent() {
             </div>
 
             {/* Dynamic Tab Body */}
+            {activeTab === 'lab-orders' && (
+              <div className="space-y-8">
+                <Day5LabOrdersExportExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
+            {activeTab === 'eprescribing' && (
+              <div className="space-y-8">
+                <Day4EPrescribingExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
             {activeTab === 'soap' && (
               <div className="space-y-8">
                 <Day2SoapNotesExplorer />
@@ -213,7 +228,7 @@ function DashboardContent() {
       {/* Footer */}
       <footer className="border-t border-slate-800/80 bg-slate-900/60 py-4 px-6 text-center text-xs text-slate-500">
         <p>
-          Cloud-Based Hospital Management System (HMS) &bull; Module 3: Day 4 (Electronic Prescribing Engine)
+          Cloud-Based Hospital Management System (HMS) &bull; Module 3: Day 5 (Diagnostic Test Orders &amp; Prescription PDF Export)
         </p>
       </footer>
     </div>

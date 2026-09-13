@@ -15,6 +15,15 @@ import {
   checkClinicalSafety,
   createPrescription,
   getPatientPrescriptions,
+  getDiagnosticCatalogHandler,
+  createLabOrders,
+  getPatientLabOrders,
+  getAllLabOrders,
+  getLabOrderById,
+  updateLabOrderStatus,
+  exportPrescriptionPdfHtml,
+  getPatientClinicalSummary,
+  exportClinicalSummaryPdfHtml,
 } from '../controllers/doctorConsultationController.js';
 import { authenticateToken, requireRoles } from '../middleware/authMiddleware.js';
 import {
@@ -128,6 +137,70 @@ router.delete(
   requireRoles('DOCTOR', 'ADMIN'),
   validateSoapNoteIdParam,
   deleteSoapNoteDraft
+);
+
+// -------------------------------------------------------------
+// MODULE 3 - DAY 5: DIAGNOSTIC LAB/RADIOLOGY ORDERS & PDF EXPORT
+// -------------------------------------------------------------
+
+// Diagnostic Lab & Radiology Test Catalog
+router.get('/lab-orders/catalog', authenticateToken, getDiagnosticCatalogHandler);
+
+// Create Diagnostic Lab/Radiology Orders
+router.post(
+  '/lab-orders',
+  authenticateToken,
+  requireRoles('DOCTOR', 'ADMIN'),
+  createLabOrders
+);
+
+// Get Patient Diagnostic Orders
+router.get(
+  '/lab-orders/patient/:patientId',
+  authenticateToken,
+  validatePatientIdParam,
+  getPatientLabOrders
+);
+
+// Get All Diagnostic Orders (Hospital/Lab queue)
+router.get(
+  '/lab-orders',
+  authenticateToken,
+  requireRoles('DOCTOR', 'ADMIN', 'NURSE'),
+  getAllLabOrders
+);
+
+// Get Single Lab Order by ID
+router.get(
+  '/lab-orders/:id',
+  authenticateToken,
+  getLabOrderById
+);
+
+// Update Lab Order Status & Results
+router.patch(
+  '/lab-orders/:id/status',
+  authenticateToken,
+  requireRoles('DOCTOR', 'ADMIN', 'NURSE'),
+  updateLabOrderStatus
+);
+
+// Printable Prescription PDF Export
+router.get('/prescriptions/:id/pdf', exportPrescriptionPdfHtml);
+
+// 360° Comprehensive Clinical EHR Summary (Data)
+router.get(
+  '/patient/:patientId/clinical-summary',
+  authenticateToken,
+  validatePatientIdParam,
+  getPatientClinicalSummary
+);
+
+// Export 360° Clinical Encounter & Discharge Summary (Printable HTML / PDF)
+router.get(
+  '/patient/:patientId/clinical-summary/export',
+  validatePatientIdParam,
+  exportClinicalSummaryPdfHtml
 );
 
 export default router;

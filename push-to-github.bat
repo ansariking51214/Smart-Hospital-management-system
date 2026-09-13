@@ -2,7 +2,7 @@
 set "PATH=C:\Users\hm\.gemini\antigravity\scratch\git-bin\cmd;%PATH%"
 echo ========================================================
 echo   Pushing Smart Hospital Management System to GitHub
-echo   Module 3: Day 1 (Doctor Consultation UI & EHR Workspace)
+echo   Module 3: Day 5 (Diagnostic Test Orders & Prescription PDF Export)
 echo   Target: https://github.com/ansariking51214/Smart-Hospital-management-system.git
 echo ========================================================
 
@@ -15,12 +15,12 @@ if not exist ".git" (
 )
 
 REM 2. Stage all project files
-echo [2/5] Staging Module 3 Day 1 project files...
+echo [2/5] Staging Module 3 Day 5 project files...
 git add .
 
 REM 3. Create commit
-echo [3/5] Committing changes for Module 3 Day 1...
-git commit -m "feat(module3-day1): implement doctor consultation workstation, 360 patient EHR snapshot, live vitals radar, critical allergy warnings, and outpatient worklist"
+echo [3/5] Committing changes for Module 3 Day 5...
+git commit -m "feat(module3-day5): implement diagnostic test orders (lab/radiology), results tracking, prescription pdf export & 360 ehr summary"
 
 REM 4. Set main branch & remote origin
 echo [4/5] Setting default branch and remote origin...

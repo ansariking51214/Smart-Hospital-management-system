@@ -308,6 +308,46 @@ export const consultationAPI = {
     const response = await api.get(`/consultation/prescriptions/patient/${patientId}`);
     return response.data;
   },
+  getPrescriptionPdfUrl: (prescriptionId) => {
+    const base = api.defaults.baseURL || '/api';
+    return `${base}/consultation/prescriptions/${prescriptionId}/pdf`;
+  },
+  getClinicalSummary: async (patientId) => {
+    const response = await api.get(`/consultation/patient/${patientId}/clinical-summary`);
+    return response.data;
+  },
+  getClinicalSummaryExportUrl: (patientId) => {
+    const base = api.defaults.baseURL || '/api';
+    return `${base}/consultation/patient/${patientId}/clinical-summary/export`;
+  },
+};
+
+// Diagnostic Lab & Radiology Orders & Results Tracking (Module 3 Day 5)
+export const labOrdersAPI = {
+  getCatalog: async (params = {}) => {
+    const response = await api.get('/consultation/lab-orders/catalog', { params });
+    return response.data;
+  },
+  create: async (payload) => {
+    const response = await api.post('/consultation/lab-orders', payload);
+    return response.data;
+  },
+  getByPatient: async (patientId) => {
+    const response = await api.get(`/consultation/lab-orders/patient/${patientId}`);
+    return response.data;
+  },
+  getAll: async (params = {}) => {
+    const response = await api.get('/consultation/lab-orders', { params });
+    return response.data;
+  },
+  getById: async (id) => {
+    const response = await api.get(`/consultation/lab-orders/${id}`);
+    return response.data;
+  },
+  updateStatus: async (id, payload) => {
+    const response = await api.patch(`/consultation/lab-orders/${id}/status`, payload);
+    return response.data;
+  },
 };
 
 export default api;

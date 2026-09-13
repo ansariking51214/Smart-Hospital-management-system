@@ -19,6 +19,8 @@ import {
   Ticket,
   Activity,
   GitPullRequest,
+  FlaskConical,
+  Printer,
 } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab }) {
@@ -54,14 +56,14 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     {
       id: 'module3',
       title: 'Module 3: EHR & e-Prescriptions',
-      badge: 'In Progress (Day 4 Active) 🚀',
-      badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
+      badge: 'Completed (Days 1 - 5 Done) ✅',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
       days: [
         { day: 'Day 1', label: 'Doctor Consultation UI & EHR', status: 'completed' },
         { day: 'Day 2', label: 'Clinical SOAP Notes', status: 'completed' },
         { day: 'Day 3', label: 'ICD-10 & Allergy Alerts', status: 'completed' },
-        { day: 'Day 4', label: 'e-Prescribing Engine', status: 'upcoming' },
-        { day: 'Day 5', label: 'Lab Orders & PDF Export', status: 'upcoming' },
+        { day: 'Day 4', label: 'e-Prescribing Engine', status: 'completed' },
+        { day: 'Day 5', label: 'Lab Orders & PDF Export', status: 'completed' },
       ],
       icon: FileText,
     },
@@ -91,6 +93,23 @@ export default function Sidebar({ activeTab, setActiveTab }) {
         </h2>
         <nav className="space-y-1">
           <button
+            onClick={() => setActiveTab('lab-orders')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'lab-orders'
+                ? 'bg-gradient-to-r from-teal-600 to-indigo-600 text-white shadow-lg shadow-teal-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <FlaskConical className="w-4 h-4 text-teal-300" />
+              <span>M3 Day 5: Lab & PDF Export</span>
+            </div>
+            <span className="text-[10px] bg-teal-400/20 text-teal-200 border border-teal-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
+              New
+            </span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('eprescribing')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'eprescribing'
@@ -99,7 +118,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
             }`}
           >
             <div className="flex items-center gap-2.5"><FilePlus2 className="w-4 h-4 text-teal-300" /><span>M3 Day 4: e-Prescribing</span></div>
-            <span className="text-[10px] bg-teal-400/20 text-teal-200 border border-teal-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">New</span>
+            <span className="text-[10px] bg-white/15 px-1.5 py-0.5 rounded-md font-bold uppercase">Done</span>
           </button>
 
           <button
