@@ -11,6 +11,9 @@ import opdQueueRoutes from './opdQueueRoutes.js';
 import nurseTriageRoutes from './nurseTriageRoutes.js';
 import appointmentFlowRoutes from './appointmentFlowRoutes.js';
 import doctorConsultationRoutes from './doctorConsultationRoutes.js';
+import pharmacyRoutes from './pharmacyRoutes.js';
+import ipdRoutes from './ipdRoutes.js';
+import billingRoutes from './billingRoutes.js';
 
 const apiRouter = Router();
 
@@ -26,13 +29,15 @@ apiRouter.use('/queue', opdQueueRoutes);
 apiRouter.use('/triage', nurseTriageRoutes);
 apiRouter.use('/appointment-flow', appointmentFlowRoutes);
 apiRouter.use('/consultation', doctorConsultationRoutes);
+apiRouter.use('/pharmacy', pharmacyRoutes);
+apiRouter.use('/ipd', ipdRoutes);
+apiRouter.use('/billing', billingRoutes);
 
-// Placeholder routes for Module 1 Day 2-5 (ready to be hooked up)
 apiRouter.get('/version', (req, res) => {
   res.json({
     name: 'Smart Hospital Management System API',
-    version: '1.0.0',
-    module: 'Module 1: Authentication, RBAC & Patient Registration',
+    version: '1.4.0',
+    module: 'Module 4: Pharmacy Stock, Inpatient (IPD) Bed Allocation, Integrated Billing, and Final Deployment',
     status: 'Operational',
   });
 });

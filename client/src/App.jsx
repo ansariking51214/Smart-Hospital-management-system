@@ -19,13 +19,18 @@ import { Day2SoapNotesExplorer } from './components/Day2SoapNotesExplorer';
 import { Day3ClinicalSafetyExplorer } from './components/Day3ClinicalSafetyExplorer';
 import { Day4EPrescribingExplorer } from './components/Day4EPrescribingExplorer';
 import { Day5LabOrdersExportExplorer } from './components/Day5LabOrdersExportExplorer';
+import { Day1PharmacyStockExplorer } from './components/Day1PharmacyStockExplorer';
+import { Day2IpdBedMatrixExplorer } from './components/Day2IpdBedMatrixExplorer';
+import { Day3AutoBillingExplorer } from './components/Day3AutoBillingExplorer';
+import { Day4InvoicePdfExplorer } from './components/Day4InvoicePdfExplorer';
+import { Day5IntegrationExplorer } from './components/Day5IntegrationExplorer';
 import { AuthModal } from './components/AuthModal';
 import { AuthProvider } from './context/AuthContext';
 import { fetchHealthStatus, fetchSchemaDetails } from './services/api';
-import { RefreshCw, Stethoscope, FileText, FlaskConical } from 'lucide-react';
+import { RefreshCw, Building2 } from 'lucide-react';
 
 function DashboardContent() {
-  const [activeTab, setActiveTab] = useState('lab-orders');
+  const [activeTab, setActiveTab] = useState('integration-m4');
   const [healthData, setHealthData] = useState(null);
   const [schemaData, setSchemaData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -79,11 +84,11 @@ function DashboardContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-                    <FlaskConical className="w-5 h-5 text-teal-400" />
-                    Diagnostic Test Orders & Clinical PDF Export Workstation
+                    <Building2 className="w-5 h-5 text-emerald-400" />
+                    Smart Hospital Management System Workspace
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Module 3 &bull; Day 5: Diagnostic Test Order Requests (Lab/Radiology) & Prescription PDF Export
+                    Module 4 &bull; Pharmacy Stock, IPD Bed Matrix, Integrated Billing Invoices &amp; Final Deployment
                   </p>
                 </div>
                 <button
@@ -92,7 +97,7 @@ function DashboardContent() {
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-300 transition"
                   title="Refresh status from backend"
                 >
-                  <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-teal-400' : ''}`} />
+                  <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-emerald-400' : ''}`} />
                   <span>Sync</span>
                 </button>
               </div>
@@ -101,6 +106,41 @@ function DashboardContent() {
             </div>
 
             {/* Dynamic Tab Body */}
+            {activeTab === 'integration-m4' && (
+              <div className="space-y-8">
+                <Day5IntegrationExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
+            {activeTab === 'invoice-pdf' && (
+              <div className="space-y-8">
+                <Day4InvoicePdfExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
+            {activeTab === 'billing' && (
+              <div className="space-y-8">
+                <Day3AutoBillingExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
+            {activeTab === 'ipd' && (
+              <div className="space-y-8">
+                <Day2IpdBedMatrixExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
+            {activeTab === 'pharmacy' && (
+              <div className="space-y-8">
+                <Day1PharmacyStockExplorer />
+                <ModuleTimeline />
+              </div>
+            )}
+
             {activeTab === 'lab-orders' && (
               <div className="space-y-8">
                 <Day5LabOrdersExportExplorer />
@@ -129,20 +169,12 @@ function DashboardContent() {
               </div>
             )}
 
-            {activeTab === 'eprescribing' && (
-              <div className="space-y-8">
-                <Day4EPrescribingExplorer />
-                <ModuleTimeline />
-              </div>
-            )}
-
             {activeTab === 'consultation' && (
               <div className="space-y-8">
                 <Day1ConsultationWorkspaceExplorer />
                 <ModuleTimeline />
               </div>
             )}
-
 
             {activeTab === 'flow' && (
               <div className="space-y-8">
@@ -228,7 +260,7 @@ function DashboardContent() {
       {/* Footer */}
       <footer className="border-t border-slate-800/80 bg-slate-900/60 py-4 px-6 text-center text-xs text-slate-500">
         <p>
-          Cloud-Based Hospital Management System (HMS) &bull; Module 3: Day 5 (Diagnostic Test Orders &amp; Prescription PDF Export)
+          Cloud-Based Hospital Management System (HMS) &bull; Module 4: Pharmacy, Beds, Billing &amp; Final Deployment (100% Complete)
         </p>
       </footer>
     </div>

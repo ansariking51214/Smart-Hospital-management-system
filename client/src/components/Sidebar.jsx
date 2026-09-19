@@ -21,6 +21,10 @@ import {
   GitPullRequest,
   FlaskConical,
   Printer,
+  Pill,
+  BedDouble,
+  Calculator,
+  Rocket,
 } from 'lucide-react';
 
 export default function Sidebar({ activeTab, setActiveTab }) {
@@ -70,14 +74,14 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     {
       id: 'module4',
       title: 'Module 4: Pharmacy, Beds & Billing',
-      badge: 'Upcoming (Module 4)',
-      badgeColor: 'bg-slate-800 text-slate-400 border-slate-700',
+      badge: 'Completed (Days 1 - 5 Done) ✅',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
       days: [
-        { day: 'Day 1', label: 'Pharmacy Stock Inventory' },
-        { day: 'Day 2', label: 'Inpatient Bed Matrix' },
-        { day: 'Day 3', label: 'Auto Billing Calculator' },
-        { day: 'Day 4', label: 'Printable Invoice Generator' },
-        { day: 'Day 5', label: 'Integration & Deployment' },
+        { day: 'Day 1', label: 'Pharmacy Stock Inventory', status: 'completed' },
+        { day: 'Day 2', label: 'Inpatient Bed Matrix', status: 'completed' },
+        { day: 'Day 3', label: 'Auto Billing Calculator', status: 'completed' },
+        { day: 'Day 4', label: 'Printable Invoice Generator', status: 'completed' },
+        { day: 'Day 5', label: 'Integration & Deployment', status: 'completed' },
       ],
       icon: Building2,
     },
@@ -88,44 +92,133 @@ export default function Sidebar({ activeTab, setActiveTab }) {
       {/* Navigation Tabs */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-sm">
         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
-          <Layers className="w-4 h-4 text-teal-400" />
+          <Layers className="w-4 h-4 text-emerald-400" />
           Active Workspaces
         </h2>
         <nav className="space-y-1">
+          {/* Module 4 Workspaces */}
+          <button
+            onClick={() => setActiveTab('integration-m4')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'integration-m4'
+                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/20 font-bold'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Rocket className="w-4 h-4 text-emerald-300" />
+              <span>M4 Day 5: Full Deployment</span>
+            </div>
+            <span className="text-[10px] bg-emerald-400/20 text-emerald-200 border border-emerald-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
+              100%
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('invoice-pdf')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'invoice-pdf'
+                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Printer className="w-4 h-4 text-purple-300" />
+              <span>M4 Day 4: PDF Invoice &amp; Pay</span>
+            </div>
+            <span className="text-[10px] bg-purple-400/20 text-purple-200 border border-purple-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
+              M4
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('billing')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'billing'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Calculator className="w-4 h-4 text-indigo-300" />
+              <span>M4 Day 3: Auto Billing Engine</span>
+            </div>
+            <span className="text-[10px] bg-indigo-400/20 text-indigo-200 border border-indigo-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
+              M4
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('ipd')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'ipd'
+                ? 'bg-gradient-to-r from-cyan-600 to-indigo-600 text-white shadow-lg shadow-cyan-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <BedDouble className="w-4 h-4 text-cyan-300" />
+              <span>M4 Day 2: IPD Bed Matrix</span>
+            </div>
+            <span className="text-[10px] bg-cyan-400/20 text-cyan-200 border border-cyan-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
+              M4
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('pharmacy')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'pharmacy'
+                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Pill className="w-4 h-4 text-emerald-300" />
+              <span>M4 Day 1: Pharmacy Stock</span>
+            </div>
+            <span className="text-[10px] bg-emerald-400/20 text-emerald-200 border border-emerald-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
+              M4
+            </span>
+          </button>
+
+          {/* Module 3 Workspaces */}
+          <div className="pt-2 border-t border-slate-800/80 my-1">
+            <span className="text-[10px] font-bold text-slate-500 uppercase px-3 block mb-1">Module 3 Workspaces</span>
+          </div>
+
           <button
             onClick={() => setActiveTab('lab-orders')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'lab-orders'
-                ? 'bg-gradient-to-r from-teal-600 to-indigo-600 text-white shadow-lg shadow-teal-600/20'
+                ? 'bg-teal-600 text-white shadow-lg shadow-teal-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5">
               <FlaskConical className="w-4 h-4 text-teal-300" />
-              <span>M3 Day 5: Lab & PDF Export</span>
+              <span>M3 Day 5: Lab &amp; PDF Export</span>
             </div>
-            <span className="text-[10px] bg-teal-400/20 text-teal-200 border border-teal-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
-              New
-            </span>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M3</span>
           </button>
 
           <button
             onClick={() => setActiveTab('eprescribing')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'eprescribing'
-                ? 'bg-gradient-to-r from-teal-600 to-cyan-600 text-white shadow-lg shadow-teal-600/20'
+                ? 'bg-teal-600 text-white shadow-lg shadow-teal-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5"><FilePlus2 className="w-4 h-4 text-teal-300" /><span>M3 Day 4: e-Prescribing</span></div>
-            <span className="text-[10px] bg-white/15 px-1.5 py-0.5 rounded-md font-bold uppercase">Done</span>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M3</span>
           </button>
 
           <button
             onClick={() => setActiveTab('clinical-safety')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'clinical-safety'
-                ? 'bg-gradient-to-r from-amber-600 to-rose-600 text-white shadow-lg shadow-rose-600/20'
+                ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
@@ -133,15 +226,14 @@ export default function Sidebar({ activeTab, setActiveTab }) {
               <ShieldCheck className="w-4 h-4 text-amber-300" />
               <span>M3 Day 3: Safety Alerts</span>
             </div>
-            <span className="text-[10px] bg-white/15 px-1.5 py-0.5 rounded-md font-bold uppercase">Current</span>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M3</span>
           </button>
 
-          {/* Module 3 Day 2: Clinical SOAP Notes (Current) */}
           <button
             onClick={() => setActiveTab('soap')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'soap'
-                ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg shadow-teal-600/20'
+                ? 'bg-teal-600 text-white shadow-lg shadow-teal-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
@@ -149,12 +241,9 @@ export default function Sidebar({ activeTab, setActiveTab }) {
               <FileText className="w-4 h-4 text-teal-300" />
               <span>M3 Day 2: Clinical SOAP Notes</span>
             </div>
-            <span className="text-[10px] bg-teal-400/20 text-teal-200 border border-teal-400/30 px-1.5 py-0.5 rounded-md font-bold uppercase">
-              Current
-            </span>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M3</span>
           </button>
 
-          {/* Module 3 Day 1: Doctor Consultation Workspace */}
           <button
             onClick={() => setActiveTab('consultation')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
@@ -170,7 +259,11 @@ export default function Sidebar({ activeTab, setActiveTab }) {
             <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M3</span>
           </button>
 
-          {/* Module 2 Day 5: Appointment Flow & SOAP */}
+          {/* Module 2 & 1 Workspaces */}
+          <div className="pt-2 border-t border-slate-800/80 my-1">
+            <span className="text-[10px] font-bold text-slate-500 uppercase px-3 block mb-1">Module 1 &amp; 2 Workspaces</span>
+          </div>
+
           <button
             onClick={() => setActiveTab('flow')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
@@ -179,7 +272,6 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
-
             <div className="flex items-center gap-2.5">
               <GitPullRequest className="w-4 h-4" />
               <span>M2 Day 5: Consultation Flow</span>
@@ -187,7 +279,6 @@ export default function Sidebar({ activeTab, setActiveTab }) {
             <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M2</span>
           </button>
 
-          {/* Module 2 Day 4: Nurse Vitals Triage Desk */}
           <button
             onClick={() => setActiveTab('triage')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
@@ -198,12 +289,11 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           >
             <div className="flex items-center gap-2.5">
               <Activity className="w-4 h-4" />
-              <span>M2 Day 4: Nurse Vitals Triage</span>
+              <span>M2 Day 4: Nurse Triage Desk</span>
             </div>
             <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M2</span>
           </button>
 
-          {/* Module 2 Day 3: OPD Queue & Token Display */}
           <button
             onClick={() => setActiveTab('queue')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
@@ -214,12 +304,11 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           >
             <div className="flex items-center gap-2.5">
               <Ticket className="w-4 h-4" />
-              <span>M2 Day 3: OPD Queue & Tokens</span>
+              <span>M2 Day 3: OPD Live Queue</span>
             </div>
             <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M2</span>
           </button>
 
-          {/* Module 2 Day 2: Slot Booking Engine */}
           <button
             onClick={() => setActiveTab('booking')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
@@ -230,12 +319,11 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           >
             <div className="flex items-center gap-2.5">
               <CalendarCheck className="w-4 h-4" />
-              <span>M2 Day 2: Slot Booking Engine</span>
+              <span>M2 Day 2: Slot Booking</span>
             </div>
             <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M2</span>
           </button>
 
-          {/* Module 2 Day 1: Doctor Shift Roster */}
           <button
             onClick={() => setActiveTab('roster')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
@@ -246,176 +334,136 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           >
             <div className="flex items-center gap-2.5">
               <Stethoscope className="w-4 h-4" />
-              <span>M2 Day 1: Doctor Shift Roster</span>
+              <span>M2 Day 1: Doctor Roster</span>
             </div>
             <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M2</span>
           </button>
 
-          {/* Module 1 Day 5: Search & History Tab */}
           <button
             onClick={() => setActiveTab('history')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'history'
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5">
               <Search className="w-4 h-4" />
-              <span>M1 Day 5: Patient Search & EHR</span>
+              <span>M1 Day 5: Patient EHR History</span>
             </div>
             <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M1</span>
           </button>
 
-          {/* Module 1 Day 4: Patient Registration Tab */}
           <button
             onClick={() => setActiveTab('patients')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'patients'
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5">
               <UserPlus className="w-4 h-4" />
-              <span>M1 Day 4: Patient Registration</span>
+              <span>M1 Day 4: Auto-MRN Intake</span>
             </div>
-            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">MRN</span>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M1</span>
           </button>
 
-          {/* Module 1 Day 3: RBAC Tab */}
           <button
             onClick={() => setActiveTab('rbac')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'rbac'
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5">
               <Users className="w-4 h-4" />
-              <span>M1 Day 3: RBAC Access Control</span>
+              <span>M1 Day 3: RBAC Guards</span>
             </div>
-            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">RBAC</span>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M1</span>
           </button>
 
-          {/* Module 1 Day 2: JWT Auth Tab */}
           <button
             onClick={() => setActiveTab('auth')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'auth'
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <ShieldCheck className="w-4 h-4" />
-              <span>M1 Day 2: JWT Security</span>
+              <KeyRound className="w-4 h-4" />
+              <span>M1 Day 2: JWT Engine</span>
             </div>
-            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">Auth</span>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M1</span>
           </button>
 
-          {/* Module 1 Day 1: Schema Tab */}
           <button
             onClick={() => setActiveTab('schema')}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
               activeTab === 'schema'
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
                 : 'text-slate-300 hover:bg-slate-800 hover:text-white'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <Database className="w-4 h-4" />
-              <span>M1 Day 1: Database & ERD</span>
+              <Database className="w-4 h-4 text-blue-300" />
+              <span>M1 Day 1: Relational Schema</span>
             </div>
-            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">11 Models</span>
+            <span className="text-xs bg-black/20 px-2 py-0.5 rounded-md">M1</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('seed')}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+              activeTab === 'seed'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="w-4 h-4 text-yellow-300" />
+              <span>Seed Data Viewer</span>
+            </div>
+            <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded-md font-semibold">
+              Live
+            </span>
           </button>
         </nav>
       </div>
 
-      {/* 4-Module Internship Project Roadmap */}
+      {/* Course Milestone Overview Cards */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-            Internship Syllabus Roadmap
-          </h2>
-          <span className="text-[10px] text-teal-400 font-mono font-bold">Module 3 Active</span>
-        </div>
-
+        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-emerald-400" />
+          Syllabus Milestones (100%)
+        </h2>
         <div className="space-y-3">
-          {modules.map((m) => {
-            const Icon = m.icon;
-            const isCurrentModule = m.id === 'module3';
-            const isCompletedModule = m.id === 'module1' || m.id === 'module2';
-
+          {modules.map((mod) => {
+            const Icon = mod.icon;
             return (
-              <div
-                key={m.id}
-                className={`p-3 rounded-xl border transition ${
-                  isCurrentModule
-                    ? 'bg-teal-950/20 border-teal-500/40 ring-1 ring-teal-500/20'
-                    : isCompletedModule
-                    ? 'bg-emerald-950/20 border-emerald-500/30'
-                    : 'bg-slate-800/40 border-slate-800/80 opacity-75'
-                }`}
-              >
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className={`p-1.5 rounded-lg ${
-                        isCurrentModule
-                          ? 'bg-teal-600 text-white font-bold'
-                          : isCompletedModule
-                          ? 'bg-emerald-600 text-white'
-                          : 'bg-slate-700 text-slate-300'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <h3 className="text-xs font-bold text-slate-200">{m.title}</h3>
+              <div key={mod.id} className="bg-slate-950 p-3 rounded-xl border border-slate-800/80 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs font-bold text-white">
+                    <Icon className="w-4 h-4 text-emerald-400" />
+                    <span>{mod.title}</span>
                   </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 mb-2.5">
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full border ${m.badgeColor}`}>
-                    {m.badge}
+                  <span className={`text-[10px] px-2 py-0.5 rounded-md border font-semibold ${mod.badgeColor}`}>
+                    {mod.badge}
                   </span>
                 </div>
-
-                {/* Progress breakdown for active & completed modules */}
-                {(isCurrentModule || isCompletedModule) && (
-                  <div className="mt-2 space-y-1.5 pt-2 border-t border-slate-700/50">
-                    {m.days.map((d, dIdx) => (
-                      <div key={dIdx} className="flex items-center justify-between text-xs py-0.5">
-                        <div className="flex items-center gap-1.5">
-                          {d.status === 'completed' ? (
-                            <CheckCircle2 className="w-3.5 h-3.5 text-teal-400 shrink-0" />
-                          ) : (
-                            <CircleDot className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                          )}
-                          <span
-                            className={
-                              d.status === 'completed'
-                                ? 'text-teal-300 font-semibold'
-                                : 'text-slate-400'
-                            }
-                          >
-                            <strong className="text-slate-300">{d.day}:</strong> {d.label}
-                          </span>
-                        </div>
-                        <span
-                          className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
-                            d.status === 'completed'
-                              ? 'bg-teal-500/20 text-teal-300'
-                              : 'bg-slate-800 text-slate-500'
-                          }`}
-                        >
-                          {d.status === 'completed' ? 'Done' : 'Next'}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <div className="space-y-1 pl-6">
+                  {mod.days.map((d, idx) => (
+                    <div key={idx} className="flex items-center justify-between text-[11px] text-slate-400">
+                      <span className="flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                        <span>{d.day}: {d.label}</span>
+                      </span>
+                      <span className="text-[10px] text-emerald-400 font-mono">Done</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             );
           })}

@@ -350,4 +350,97 @@ export const labOrdersAPI = {
   },
 };
 
+// Pharmacy Inventory & Stock Management (Module 4 Day 1)
+export const pharmacyAPI = {
+  getMedicines: async (params = {}) => {
+    const response = await api.get('/pharmacy/medicines', { params });
+    return response.data;
+  },
+  addMedicine: async (medicineData) => {
+    const response = await api.post('/pharmacy/medicines', medicineData);
+    return response.data;
+  },
+  updateMedicine: async (id, updateData) => {
+    const response = await api.put(`/pharmacy/medicines/${id}`, updateData);
+    return response.data;
+  },
+  deleteMedicine: async (id) => {
+    const response = await api.delete(`/pharmacy/medicines/${id}`);
+    return response.data;
+  },
+  getBatches: async () => {
+    const response = await api.get('/pharmacy/batches');
+    return response.data;
+  },
+  addBatch: async (batchData) => {
+    const response = await api.post('/pharmacy/batches', batchData);
+    return response.data;
+  },
+  getStats: async () => {
+    const response = await api.get('/pharmacy/stats');
+    return response.data;
+  },
+};
+
+// Inpatient (IPD) Ward & Bed Allocation Matrix (Module 4 Day 2)
+export const ipdAPI = {
+  getWards: async () => {
+    const response = await api.get('/ipd/wards');
+    return response.data;
+  },
+  createWard: async (wardData) => {
+    const response = await api.post('/ipd/wards', wardData);
+    return response.data;
+  },
+  getBeds: async (params = {}) => {
+    const response = await api.get('/ipd/beds', { params });
+    return response.data;
+  },
+  createBed: async (bedData) => {
+    const response = await api.post('/ipd/beds', bedData);
+    return response.data;
+  },
+  allocateBed: async (allocationData) => {
+    const response = await api.post('/ipd/allocations', allocationData);
+    return response.data;
+  },
+  dischargeBed: async (allocationId, dischargeData = {}) => {
+    const response = await api.post(`/ipd/allocations/${allocationId}/discharge`, dischargeData);
+    return response.data;
+  },
+  getActiveAllocations: async () => {
+    const response = await api.get('/ipd/allocations/active');
+    return response.data;
+  },
+};
+
+// Integrated Billing & Printable PDF Invoices (Module 4 Day 3 & 4)
+export const billingAPI = {
+  getUnbilledCharges: async (patientId) => {
+    const response = await api.get(`/billing/unbilled-charges/${patientId}`);
+    return response.data;
+  },
+  createInvoice: async (invoiceData) => {
+    const response = await api.post('/billing/invoices', invoiceData);
+    return response.data;
+  },
+  getInvoices: async (params = {}) => {
+    const response = await api.get('/billing/invoices', { params });
+    return response.data;
+  },
+  getInvoiceById: async (id) => {
+    const response = await api.get(`/billing/invoices/${id}`);
+    return response.data;
+  },
+  recordPayment: async (id, paymentData) => {
+    const response = await api.post(`/billing/invoices/${id}/payment`, paymentData);
+    return response.data;
+  },
+  getPdfData: async (id) => {
+    const response = await api.get(`/billing/invoices/${id}/pdf-data`);
+    return response.data;
+  },
+};
+
 export default api;
+
