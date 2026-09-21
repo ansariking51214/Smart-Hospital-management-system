@@ -61,8 +61,8 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 ## 💊 Module 4 Deliverables: Pharmacy, IPD Beds, Integrated Billing & Final Deployment
 
 ### 1. Pharmacy Medicine Stock & Inventory APIs (Day 1)
-* **Controller:** [`server/src/controllers/pharmacyController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/pharmacyController.js)
-* **Routes:** [`server/src/routes/pharmacyRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/pharmacyRoutes.js) mounted on `/api/pharmacy`
+* **Controller:** [`backend/src/controllers/pharmacyController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/src/controllers/pharmacyController.js)
+* **Routes:** [`backend/src/routes/pharmacyRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/src/routes/pharmacyRoutes.js) mounted on `/api/pharmacy`
 
 | Method | Endpoint | Description |
 |:---|:---|:---|
@@ -75,8 +75,8 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 | `GET` | `/api/pharmacy/stats` | Pharmacy metrics (total items, low stock alerts, stock valuation). |
 
 ### 2. Inpatient (IPD) Ward & Bed Allocation Matrix APIs (Day 2)
-* **Controller:** [`server/src/controllers/ipdController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/ipdController.js)
-* **Routes:** [`server/src/routes/ipdRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/ipdRoutes.js) mounted on `/api/ipd`
+* **Controller:** [`backend/src/controllers/ipdController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/src/controllers/ipdController.js)
+* **Routes:** [`backend/src/routes/ipdRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/src/routes/ipdRoutes.js) mounted on `/api/ipd`
 
 | Method | Endpoint | Description |
 |:---|:---|:---|
@@ -89,8 +89,8 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 | `GET` | `/api/ipd/allocations/active` | Retrieve active inpatient admissions. |
 
 ### 3. Integrated Billing & Printable PDF Invoice APIs (Day 3 & Day 4)
-* **Controller:** [`server/src/controllers/billingController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/controllers/billingController.js)
-* **Routes:** [`server/src/routes/billingRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/src/routes/billingRoutes.js) mounted on `/api/billing`
+* **Controller:** [`backend/src/controllers/billingController.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/src/controllers/billingController.js)
+* **Routes:** [`backend/src/routes/billingRoutes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/src/routes/billingRoutes.js) mounted on `/api/billing`
 
 | Method | Endpoint | Description |
 |:---|:---|:---|
@@ -107,23 +107,23 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 
 | Test Suite File | Module & Day Scope | Assertions | Result |
 |:---|:---|:---:|:---:|
-| [`server/test-auth.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-auth.js) | M1 Day 2: JWT Auth, Hashing, Token Tampering | 23 | ✅ **100% PASS** |
-| [`server/test-rbac.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-rbac.js) | M1 Day 3: RBAC Matrix, Route Guards & Admin | 36 | ✅ **100% PASS** |
-| [`server/test-patient-registration.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-patient-registration.js) | M1 Day 4: Auto-MRN & Demographic Intake | 17 | ✅ **100% PASS** |
-| [`server/test-medical-history.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-medical-history.js) | M1 Day 5: Multi-Criteria Search & Longitudinal EHR | 16 | ✅ **100% PASS** |
-| [`server/test-doctor-roster.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-roster.js) | M2 Day 1: Doctor Profile & Shift Rostering | 18 | ✅ **100% PASS** |
-| [`server/test-appointment-booking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-booking.js) | M2 Day 2: Slot Booking Engine & OPD Scheduling | 18 | ✅ **100% PASS** |
-| [`server/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-opd-queue.js) | M2 Day 3: OPD Queue & Live Token Display | 18 | ✅ **100% PASS** |
-| [`server/test-nurse-triage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-nurse-triage.js) | M2 Day 4: Nurse Vitals Triage & Early Warning Alerts | 14 | ✅ **100% PASS** |
-| [`server/test-appointment-flow.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-appointment-flow.js) | M2 Day 5: Appointment Status & Consultation Flow | 16 | ✅ **100% PASS** |
-| [`server/test-doctor-consultation.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-doctor-consultation.js) | M3 Day 1: Doctor Consultation UI & Clinical Workspace | 17 | ✅ **100% PASS** |
-| [`server/test-soap-notes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-soap-notes.js) | M3 Day 2: Clinical SOAP Notes & Encounter Finalization | 23 | ✅ **100% PASS** |
-| [`server/test-clinical-safety.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-clinical-safety.js) | M3 Day 3: ICD-10, Allergy & Drug Interaction Safety | 8 | ✅ **100% PASS** |
-| [`server/test-lab-orders.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-lab-orders.js) | M3 Day 5: Diagnostic Orders (Lab/Radiology) & PDF Export | 29 | ✅ **100% PASS** |
-| [`server/test-pharmacy.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-pharmacy.js) | **M4 Day 1: Pharmacy Stock & Inventory Batches** | 6 | ✅ **100% PASS** |
-| [`server/test-ipd.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-ipd.js) | **M4 Day 2: IPD Ward & Bed Allocation Matrix** | 7 | ✅ **100% PASS** |
-| [`server/test-billing.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-billing.js) | **M4 Day 3 & 4: Integrated Billing & PDF Invoices** | 7 | ✅ **100% PASS** |
-| [`server/test-module4.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/server/test-module4.js) | **M4 Day 5: Master Integration Verification Suite** | Master | ✅ **100% PASS** |
+| [`backend/test-auth.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-auth.js) | M1 Day 2: JWT Auth, Hashing, Token Tampering | 23 | ✅ **100% PASS** |
+| [`backend/test-rbac.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-rbac.js) | M1 Day 3: RBAC Matrix, Route Guards & Admin | 36 | ✅ **100% PASS** |
+| [`backend/test-patient-registration.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-patient-registration.js) | M1 Day 4: Auto-MRN & Demographic Intake | 17 | ✅ **100% PASS** |
+| [`backend/test-medical-history.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-medical-history.js) | M1 Day 5: Multi-Criteria Search & Longitudinal EHR | 16 | ✅ **100% PASS** |
+| [`backend/test-doctor-roster.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-doctor-roster.js) | M2 Day 1: Doctor Profile & Shift Rostering | 18 | ✅ **100% PASS** |
+| [`backend/test-appointment-booking.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-appointment-booking.js) | M2 Day 2: Slot Booking Engine & OPD Scheduling | 18 | ✅ **100% PASS** |
+| [`backend/test-opd-queue.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-opd-queue.js) | M2 Day 3: OPD Queue & Live Token Display | 18 | ✅ **100% PASS** |
+| [`backend/test-nurse-triage.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-nurse-triage.js) | M2 Day 4: Nurse Vitals Triage & Early Warning Alerts | 14 | ✅ **100% PASS** |
+| [`backend/test-appointment-flow.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-appointment-flow.js) | M2 Day 5: Appointment Status & Consultation Flow | 16 | ✅ **100% PASS** |
+| [`backend/test-doctor-consultation.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-doctor-consultation.js) | M3 Day 1: Doctor Consultation UI & Clinical Workspace | 17 | ✅ **100% PASS** |
+| [`backend/test-soap-notes.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-soap-notes.js) | M3 Day 2: Clinical SOAP Notes & Encounter Finalization | 23 | ✅ **100% PASS** |
+| [`backend/test-clinical-safety.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-clinical-safety.js) | M3 Day 3: ICD-10, Allergy & Drug Interaction Safety | 8 | ✅ **100% PASS** |
+| [`backend/test-lab-orders.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-lab-orders.js) | M3 Day 5: Diagnostic Orders (Lab/Radiology) & PDF Export | 29 | ✅ **100% PASS** |
+| [`backend/test-pharmacy.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-pharmacy.js) | **M4 Day 1: Pharmacy Stock & Inventory Batches** | 6 | ✅ **100% PASS** |
+| [`backend/test-ipd.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-ipd.js) | **M4 Day 2: IPD Ward & Bed Allocation Matrix** | 7 | ✅ **100% PASS** |
+| [`backend/test-billing.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-billing.js) | **M4 Day 3 & 4: Integrated Billing & PDF Invoices** | 7 | ✅ **100% PASS** |
+| [`backend/test-module4.js`](https://github.com/ansariking51214/Smart-Hospital-management-system/blob/main/backend/test-module4.js) | **M4 Day 5: Master Integration Verification Suite** | Master | ✅ **100% PASS** |
 | **Total Test Coverage** | **All 4 Modules (Modules 1, 2, 3 & 4 100% Complete)** | **273 Assertions** | ✅ **100% Passed** |
 
 ---
@@ -132,7 +132,7 @@ The **Smart Hospital Management System (HMS)** is an enterprise-grade full-stack
 
 ### 1. Backend Server Setup
 ```powershell
-cd server
+cd backend
 npm install
 npx prisma generate
 npx prisma db push
@@ -147,7 +147,7 @@ npm run dev
 
 ### 2. Frontend Client Setup
 ```powershell
-cd ../client
+cd ../frontend
 npm install
 npm run dev
 ```

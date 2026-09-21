@@ -3,7 +3,7 @@
 
 Write-Host "========================================================" -ForegroundColor Cyan
 Write-Host "  Pushing Smart Hospital Management System to GitHub" -ForegroundColor Cyan
-Write-Host "  Module 3: Day 5 - Diagnostic Orders & PDF Export" -ForegroundColor Yellow
+Write-Host "  Refactor: Separate Frontend & Backend Directories" -ForegroundColor Yellow
 Write-Host "========================================================" -ForegroundColor Cyan
 
 # 1. Check if git is available
@@ -42,12 +42,12 @@ if (-not (Test-Path ".git")) {
 }
 
 # 3. Stage files
-Write-Host "[2/5] Staging Module 3 Day 5 project files..." -ForegroundColor Green
+Write-Host "[2/5] Staging separated frontend & backend project files..." -ForegroundColor Green
 git add .
 
 # 4. Commit
-Write-Host "[3/5] Committing changes for Module 3 Day 5..." -ForegroundColor Green
-git commit -m "feat(module3-day5): implement diagnostic test orders (lab/radiology), results tracking, prescription pdf export & 360 ehr summary"
+Write-Host "[3/5] Committing changes for frontend/backend separation..." -ForegroundColor Green
+git commit -m "refactor: separate project into distinct frontend and backend directories"
 
 # 5. Remote and Branch
 Write-Host "[4/5] Setting up remote origin and branch..." -ForegroundColor Green
